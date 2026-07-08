@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+* {
+  cursor: none !important;
+}
+
+theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+@font-face {
+  font-family: "Android Assassin";
+  src: url("/fonts/AndroidAssassin.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.android-font {
+  font-family: "Android Assassin", sans-serif;
+}
+
+
+
+.swiper-pagination {
+  position: relative !important;
+    margin-top: 50px !important;
+  bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #666;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet-active {
+  background: #D4AF37;
+  width: 28px;
+  border-radius: 999px;
+}
+
+
+.swiper-pagination-progressbar {
+  position: relative !important;
+  margin-top: 45px;
+  width: 260px !important;
+  height: 4px !important;
+  background: rgba(212, 175, 55, 0.15) !important;
+  border-radius: 999px;
+  left: 50% !important;
+  transform: translateX(-50%);
+  overflow: hidden;
+}
+
+.swiper-pagination-progressbar-fill {
+  background: #D4AF37 !important;
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.8);
+}
+
+/* Hide Scrollbar */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* IE / Edge Legacy */
+body {
+  -ms-overflow-style: none;
+}
