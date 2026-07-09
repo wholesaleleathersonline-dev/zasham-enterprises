@@ -8,7 +8,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
-      href={`/team-uniforms/basketball/${product.slug}`}
+     href={`/team-uniforms/${product.sportRoute}/${product.slug}`}
       className="group block overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111111] transition-all duration-500 hover:-translate-y-2 hover:border-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]"
     >
       {/* Image */}

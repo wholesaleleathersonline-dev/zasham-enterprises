@@ -1,17 +1,17 @@
 import type { Product } from "../types/product";
 
-export const basketballProducts: Product[] = [
+export const volleyball: Product[] = [
   
    //1st Product
   {
     id: 1,
 
-    name: "Custom Color Basketball Uniform",
+    name: "Custom Vollyball Uniform",
 
-    slug: "Custom-Color-Basketball-Uniform",
+    slug: "Custom-Vollyball-Uniform",
     
 
-    sport: "Basketball",
+    sport: "volleyball",
 
     category: "Team Uniform",
 
@@ -19,15 +19,15 @@ export const basketballProducts: Product[] = [
 
   uniformType: "Standard",
 
-    image: "/Pictures/basketabll.png",
+    image: "/Pictures/7v7flag.jpg",
 
-    sportRoute: "basketball",
+    sportRoute: "volleyball",
 
     gallery: [
-      "/products/basketball/black-gold-elite/1.jpg",
-      "/products/basketball/black-gold-elite/2.jpg",
-      "/products/basketball/black-gold-elite/3.jpg",
-      "/products/basketball/black-gold-elite/4.jpg",
+      "/products/football/black-gold-elite/1.jpg",
+      "/products/football/black-gold-elite/2.jpg",
+      "/products/football/black-gold-elite/3.jpg",
+      "/products/football/black-gold-elite/4.jpg",
     ],
 
     price: "$25 / Set",
@@ -35,10 +35,10 @@ export const basketballProducts: Product[] = [
     moq: 10,
 
     description:
-      "Premium custom basketball uniform manufactured with lightweight moisture-wicking fabric, vibrant sublimation printing and professional stitching for clubs, schools and organizations.",
+      "Premium custom football uniform manufactured with lightweight moisture-wicking fabric, vibrant sublimation printing and professional stitching for clubs, schools and organizations.",
 
     shortDescription:
-      "Premium Custom Basketball Uniform",
+      "Premium Custom football Uniform",
 
     features: [
       "Moisture Wicking",
@@ -80,7 +80,7 @@ export const basketballProducts: Product[] = [
     ],
 
     tags: [
-      "Basketball",
+      "football",
       "Custom Uniform",
       "Team Jersey",
       "Sportswear",
@@ -89,10 +89,10 @@ export const basketballProducts: Product[] = [
     isFeatured: true,
 
     seoTitle:
-      "Black Gold Elite Basketball Uniform | Custom Basketball Jerseys",
+      "Black Gold Elite football Uniform | Custom football Jerseys",
 
     seoDescription:
-      "Premium custom basketball uniforms manufactured by Zasham Enterprises with worldwide shipping.",
+      "Premium custom football uniforms manufactured by Zasham Enterprises with worldwide shipping.",
   },
 
 

@@ -17,7 +17,7 @@ export default function Home() {
       <WhyChooseUs />
       <ManufacturingProcess />
       <GlobalReach />
-      <Footer />
+      
     </>
   );
 }

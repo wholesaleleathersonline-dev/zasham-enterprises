@@ -2,10 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import InquiryForm from "../../../../components/products/InquiryForm";
-
-
 import Breadcrumb from "../../../../components/common/Breadcrumb";
-import { basketballProducts } from "../../../../data/basketball";
+import { baseball } from "../../../../data/baseball";
 import ProductImageZoom from "../../../../components/products/ProductImageZoom";
 import RelatedProducts from "../../../../components/products/RelatedProducts";
 
@@ -20,7 +18,7 @@ export default async function ProductPage({
 }: ProductPageProps) {
   const { slug } = await params;
 
-  const product = basketballProducts.find(
+const product = baseball.find(
     (item) => item.slug === slug
   );
 
@@ -47,9 +45,9 @@ export default async function ProductPage({
       href: "/team-uniforms",
     },
     {
-      label: "Basketball",
-      href: "/team-uniforms/basketball",
-    },
+  label: "baseball",
+  href: "/team-uniforms/baseball",
+},
     {
       label: product.name,
     },
@@ -188,7 +186,7 @@ export default async function ProductPage({
 
     <RelatedProducts
   currentProductId={product.id}
-  products={basketballProducts}
+  products={baseball}
 />
 
 

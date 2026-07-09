@@ -18,6 +18,7 @@ export interface Product {
   isFeatured: boolean;
   seoTitle: string;
   seoDescription: string;
+  sportRoute: string;
 
   ageGroup: "Youth" | "Adult";
  uniformType: "Standard" | "Reversible";

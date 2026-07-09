@@ -2,10 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import InquiryForm from "../../../../components/products/InquiryForm";
-
-
 import Breadcrumb from "../../../../components/common/Breadcrumb";
-import { basketballProducts } from "../../../../data/basketball";
+import { rugby } from "../../../../data/rugby";
 import ProductImageZoom from "../../../../components/products/ProductImageZoom";
 import RelatedProducts from "../../../../components/products/RelatedProducts";
 
@@ -20,7 +18,7 @@ export default async function ProductPage({
 }: ProductPageProps) {
   const { slug } = await params;
 
-  const product = basketballProducts.find(
+const product = rugby.find(
     (item) => item.slug === slug
   );
 
@@ -47,9 +45,9 @@ export default async function ProductPage({
       href: "/team-uniforms",
     },
     {
-      label: "Basketball",
-      href: "/team-uniforms/basketball",
-    },
+  label: "Rugby",
+  href: "/team-uniforms/Rugby",
+},
     {
       label: product.name,
     },
@@ -88,7 +86,7 @@ export default async function ProductPage({
 
     <p className="mt-5 leading-8 text-gray-300">
       Zasham Enterprises is a trusted custom sportswear manufacturer
-      delivering premium-quality uniforms for basketball, baseball,
+      delivering premium-quality uniforms for basketball, Rugby,
       soccer, football, volleyball, rugby and more. We provide
       factory-direct pricing, premium sublimation printing, precision
       stitching and worldwide shipping for teams, schools, clubs and
@@ -188,7 +186,7 @@ export default async function ProductPage({
 
     <RelatedProducts
   currentProductId={product.id}
-  products={basketballProducts}
+  products={rugby}
 />
 
 
