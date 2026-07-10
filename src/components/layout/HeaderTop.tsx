@@ -115,14 +115,16 @@ const handleSearch = (value: string) => {
 
           {/* Brand */}
           <div className="flex flex-col">
-            <h2 className="android-font text-[22px] leading-none uppercase text-[#D4AF37]">
-              ZASHAM
-            </h2>
-
-            <h2 className="android-font text-[22px] leading-none uppercase text-[#D4AF37]">
-              ENTERPRISES
-            </h2>
-          </div>
+  <h2
+    style={{
+      fontFamily: '"Android Assassin"',
+      color: "#D4AF37",
+      fontSize: "22px",
+    }}
+  >
+    TEST FONT
+  </h2>
+</div>
 
           {/* Search + Social */}
           <div className="flex items-center gap-4">
