@@ -114,17 +114,13 @@ const handleSearch = (value: string) => {
         <div className="flex items-center justify-between gap-3">
 
           {/* Brand */}
-          <div className="flex flex-col">
-  <h2
-    style={{
-      fontFamily: '"Android Assassin"',
-      color: "#D4AF37",
-      fontSize: "22px",
-    }}
-  >
-    TEST FONT
-  </h2>
-</div>
+          <Link href="/">
+  <img
+    src="/logo/ze-logo.png"
+    alt="Zasham Enterprises"
+    className="h-12 w-auto transition duration-300"
+  />
+</Link>
 
           {/* Search + Social */}
           <div className="flex items-center gap-4">
