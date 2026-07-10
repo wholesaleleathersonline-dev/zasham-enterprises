@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import InquiryForm from "../../../../components/products/InquiryForm";
 import Breadcrumb from "../../../../components/common/Breadcrumb";
-import { flagfootball } from "../../../../data/flagfootball";
+import { cricket } from "../../../../data/cricket";
 import ProductImageZoom from "../../../../components/products/ProductImageZoom";
 import RelatedProducts from "../../../../components/products/RelatedProducts";
 
@@ -18,7 +18,7 @@ export default async function ProductPage({
 }: ProductPageProps) {
   const { slug } = await params;
 
-const product = flagfootball.find(
+const product = cricket.find(
     (item) => item.slug === slug
   );
 
@@ -45,11 +45,11 @@ const product = flagfootball.find(
       href: "/team-uniforms",
     },
     {
-  label: "flagfootball",
-  href: "/team-uniforms/flag-football",
+  label: "Cricket",
+  href: "/team-uniforms/Cricket",
 },
     {
-      label: product.name, 
+      label: product.name,
     },
   ]}
 />
@@ -86,7 +86,7 @@ const product = flagfootball.find(
 
     <p className="mt-5 leading-8 text-gray-300">
       Zasham Enterprises is a trusted custom sportswear manufacturer
-      delivering premium-quality uniforms for basketball, baseball,
+      delivering premium-quality uniforms for basketball, Cricket,
       soccer, football, volleyball, rugby and more. We provide
       factory-direct pricing, premium sublimation printing, precision
       stitching and worldwide shipping for teams, schools, clubs and
@@ -186,7 +186,7 @@ const product = flagfootball.find(
 
     <RelatedProducts
   currentProductId={product.id}
-  products={flagfootball}
+  products={cricket}
 />
 
 

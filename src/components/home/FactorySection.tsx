@@ -7,11 +7,11 @@ import {
 
 export default function FactorySection() {
     return (
-        <section className="bg-[#0F0F0F] py-32">
+        <section className="bg-[#0F0F0F] py-16 sm:py-20 lg:py-32">
 
             <div className="mx-auto max-w-7xl px-6">
 
-                <div className="grid items-center gap-20 lg:grid-cols-2">
+                <div className="grid items-center gap-12 lg:gap-20 lg:grid-cols-2">
 
                     {/* LEFT */}
 
@@ -21,7 +21,7 @@ export default function FactorySection() {
                             Manufacturing Facility
                         </p>
 
-                        <h2 className="mt-6 text-6xl xl:text-7xl font-black leading-tight text-white">
+                       <h2 className="mt-5 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl xl:text-7xl">
 
                             Inside Our
 
@@ -33,7 +33,7 @@ export default function FactorySection() {
 
                         </h2>
 
-                        <p className="mt-8 text-xl leading-10 text-gray-400">
+                        <p className="mt-6 text-base leading-8 text-gray-400 sm:text-lg sm:leading-9 lg:text-xl lg:leading-10">
 
                             Every uniform is manufactured in our own facility using
                             premium fabrics, imported machinery and experienced
@@ -41,7 +41,7 @@ export default function FactorySection() {
 
                         </p>
 
-                        <div className="mt-12 space-y-6">
+                       <div className="mt-10 space-y-4 sm:space-y-5 lg:space-y-6">
 
                             {[
                                 "Premium Sublimation Printing",
@@ -56,9 +56,9 @@ export default function FactorySection() {
                                     className="flex items-center gap-5"
                                 >
 
-                                    <FaCheckCircle className="text-2xl text-[#D4AF37]" />
+                                    <FaCheckCircle className="text-xl text-[#D4AF37] sm:text-2xl" />
 
-                                    <span className="text-lg text-white">
+                                   <span className="text-lg text-white">
 
                                         {item}
 
@@ -71,7 +71,7 @@ export default function FactorySection() {
                         </div>
 
                         <button
-                            className="mt-14 rounded-full bg-[#D4AF37] px-10 py-5 font-bold text-black shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_45px_rgba(212,175,55,0.6)]"
+                            className="mt-10 rounded-full bg-[#D4AF37] px-7 py-4 text-sm font-bold text-black shadow-[0_0_25px_rgba(212,175,55,0.35)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_45px_rgba(212,175,55,0.6)] sm:mt-12 sm:px-8 sm:py-4 sm:text-base lg:mt-14 lg:px-10 lg:py-5"
                         >
 
                             GET FREE MOCKUP
@@ -89,14 +89,14 @@ export default function FactorySection() {
 
 
                             src="/Videos/Fac Video/v2.mp4"
-                            className="h-[650px] w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            className="h-[350px] w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-[450px] lg:h-[650px]"
                             autoPlay
                             muted
                             loop
                             playsInline
                         />
 
-                        <div className="absolute left-6 top-6 rounded-full border border-[#D4AF37]/30 bg-black/70 px-5 py-2 text-sm font-semibold text-[#D4AF37] backdrop-blur-md">
+                        <div className="absolute left-4 top-4 rounded-full border border-[#D4AF37]/30 bg-black/70 px-4 py-2 text-xs font-semibold text-[#D4AF37] backdrop-blur-md sm:left-6 sm:top-6 sm:px-5 sm:text-sm">
                             10+ Years Manufacturing Experience
                         </div>
 
@@ -104,9 +104,9 @@ export default function FactorySection() {
 
                         <div className="absolute inset-0 flex items-center justify-center">
 
-                            <div className="flex h-28 w-28 items-center justify-center rounded-full bg-[#D4AF37] text-black shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#D4AF37] text-black shadow-[0_0_40px_rgba(212,175,55,0.6)] transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 sm:h-20 sm:w-20 lg:h-28 lg:w-28">
 
-                                <FaPlay className="ml-2 text-4xl" />
+                                <FaPlay className="ml-1 text-2xl sm:text-3xl lg:ml-2 lg:text-4xl" />
 
                             </div>
 

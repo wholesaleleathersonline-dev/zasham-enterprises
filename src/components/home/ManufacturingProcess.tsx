@@ -64,7 +64,7 @@ export default function ManufacturingProcess() {
 
       <div className="mx-auto max-w-[1600px] px-6">
 
-        <h2 className="text-center text-5xl font-bold text-[#D4AF37]">
+      <h2 className="text-center text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
           Manufacturing Process
         </h2>
 
@@ -80,18 +80,18 @@ export default function ManufacturingProcess() {
 
         <>
   {/* Background Line */}
-  <div className="absolute left-0 top-10 h-[4px] w-full bg-[#D4AF37]/20"></div>
+  <div className="absolute left-0 top-10 hidden h-[4px] w-full bg-[#D4AF37]/20 lg:block"></div>
 
   {/* Active Gold Line */}
   <div
-    className="absolute left-0 top-10 h-[4px] bg-[#D4AF37] transition-all duration-700"
+    className="absolute left-0 top-10 hidden h-[4px] bg-[#D4AF37] transition-all duration-700 lg:block"
     style={{
       width: `${(active / (steps.length - 1)) * 100}%`,
     }}
   ></div>
 </>
 
-          <div className="relative grid grid-cols-6 gap-6">
+        <div className="relative grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-6 lg:grid-cols-6 lg:gap-6">
 
             {steps.map((step, index) => (
 
@@ -102,26 +102,26 @@ export default function ManufacturingProcess() {
               >
 
                 <div
-                  className={`z-10 flex h-20 w-20 items-center justify-center rounded-full border-2 font-bold transition-all duration-500 ${
+                 className={`z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 transition-all duration-500 sm:h-14 sm:w-14 lg:h-20 lg:w-20   ${
                     active === index
                      ? "scale-125 rotate-6 border-[#D4AF37] bg-[#D4AF37] text-black shadow-[0_0_35px_rgba(212,175,55,0.9)]"
                       : "shadow-[0_0_55px_rgba(212,175,55,0.95)]"
                   }`}
                 >
-                 <span className="text-[30px]">
+                <span className="text-lg sm:text-xl lg:text-[30px]">
   {step.icon}
 </span>
                 </div>
 
-                <span
-                  className={`mt-5 text-sm font-semibold transition ${
-                    active === index
-                      ? "text-[#D4AF37]"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {step.title}
-                </span>
+<span
+  className={`mt-2 px-1 text-center text-[11px] font-semibold leading-4 transition-all sm:mt-3 sm:text-xs lg:mt-5 lg:text-sm ${
+    active === index
+      ? "text-[#D4AF37]"
+      : "text-gray-500"
+  }`}
+>
+  {step.title.split(" ")[0]}
+</span>
 
               </button>
 
@@ -135,16 +135,16 @@ export default function ManufacturingProcess() {
 
         {/* Preview Section */}
 
-<div className="mt-24 grid items-center gap-12 lg:grid-cols-2">
+<div className="mt-16 grid items-center gap-10 lg:mt-24 lg:grid-cols-2 lg:gap-16">
 
   {/* Left Image */}
 
-  <div className="group relative overflow-hidden rounded-[35px] border border-[#D4AF37]/20 bg-[#111111] shadow-[0_0_50px_rgba(212,175,55,0.15)]">
+  <div className="group relative w-full overflow-hidden rounded-[35px] border border-[#D4AF37]/20 bg-[#111111] shadow-[0_0_50px_rgba(212,175,55,0.15)]">
 
     <img
       src={steps[active].image}
       alt={steps[active].title}
-      className="h-[650px] w-full object-cover transition-all duration-700 group-hover:scale-105"
+     className="h-[320px] w-full object-cover object-center transition-all duration-700 group-hover:scale-105 sm:h-[450px] lg:h-[650px]"
     />
 
     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
@@ -163,7 +163,7 @@ export default function ManufacturingProcess() {
       {steps[active].title}
     </h3>
 
-    <p className="mt-8 text-xl leading-10 text-gray-400">
+    <p className="mt-6 text-base leading-8 text-gray-400 sm:text-lg sm:leading-9 lg:mt-8 lg:text-xl lg:leading-10">
       {steps[active].description}
     </p>
 
@@ -173,19 +173,7 @@ export default function ManufacturingProcess() {
 
 </div>
 
-        {/* Text */}
-
-        <div className="mt-12 text-center">
-
-          <h3 className="text-4xl font-bold text-[#D4AF37]">
-            {steps[active].title}
-          </h3>
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-gray-400">
-            {steps[active].description}
-          </p>
-
-        </div>
+       
 
       </div>
 

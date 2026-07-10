@@ -6,6 +6,7 @@ import ManufacturingProcess from "../components/home/ManufacturingProcess";
 import Footer from "../components/layout/Footer";
 import CustomCursor from "../components/customcursor";
 import GlobalReach from "../components/home/GlobalReach";
+import FactorySection from "../components/home/FactorySection";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <SportsCategories />
       <WhyChooseUs />
       <ManufacturingProcess />
+      <FactorySection />
       <GlobalReach />
       
     </>
