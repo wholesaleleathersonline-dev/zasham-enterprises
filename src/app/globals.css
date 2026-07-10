@@ -41,7 +41,9 @@ body {
   font-family: "Android Assassin", sans-serif;
 }
 
-
+.android-font {
+  font-family: "Android Assassin", sans-serif;
+}
 
 .swiper-pagination {
   position: relative !important;
