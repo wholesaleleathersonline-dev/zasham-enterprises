@@ -46,7 +46,7 @@ export default function CustomCursor() {
 
   return (
     <div
-      className="pointer-events-none fixed left-0 top-0 z-[9999]"
+      className="pointer-events-none fixed left-0 top-0 z-[999999] will-change-transform"
       style={{
         left: position.x,
         top: position.y,
