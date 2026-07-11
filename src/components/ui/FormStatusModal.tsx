@@ -51,7 +51,7 @@ return createPortal(
      
       {isOpen && (
         <motion.div
-       className="fixed left-0 top-0 z-[10000] flex h-screen w-screen items-center justify-center bg-black/60 p-5"
+       className="fixed left-0 top-0 z-[999999] flex h-screen w-screen items-center justify-center bg-black/60 p-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

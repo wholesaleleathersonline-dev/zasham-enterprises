@@ -23,6 +23,7 @@ export const menuItems: MenuItem[] = [
 
   {
     title: "Team Uniforms",
+    href: "/team-uniforms",
   badge: "Premium Sportswear",
   heading: "Custom Team Uniforms",
   description:
@@ -91,6 +92,7 @@ export const menuItems: MenuItem[] = [
 
   {
     title: "Team Apparel",
+      href: "/team-apparel",
 
   badge: "Premium Team Apparel",
   heading: "Custom Team Apparel",
@@ -106,30 +108,48 @@ export const menuItems: MenuItem[] = [
 
 
     children: [
-      {
-        title: "Tracksuits",
-        href: "#",
-      },
-
-      {
-        title: "Training Shirts",
-        href: "#",
-      },
-
-      {
-        title: "Compression Wear",
-        href: "#",
-      },
-
-      {
-        title: "Polo Shirts",
-        href: "#",
-      },
-    ],
+  {
+    title: "Compression Wear",
+    href: "/team-apparel/compression-wear",
+  },
+  {
+    title: "Hoodies",
+    href: "/team-apparel/hoodies",
+  },
+  {
+    title: "Tracksuits",
+    href: "/team-apparel/tracksuits",
+  },
+  {
+    title: "Warm-Up Suits",
+    href: "/team-apparel/warm-up-suits",
+  },
+  {
+    title: "T-Shirts",
+    href: "/team-apparel/t-shirts",
+  },
+  {
+    title: "Polo Shirts",
+    href: "/team-apparel/polo-shirts",
+  },
+  {
+    title: "Jackets",
+    href: "/team-apparel/jackets",
+  },
+  {
+    title: "Shorts",
+    href: "/team-apparel/shorts",
+  },
+  {
+    title: "Joggers",
+    href: "/team-apparel/joggers",
+  },
+],
   },
 
   {
     title: "Accessories",
+      href: "/accessories",
       badge: "Premium Team Accessories",
   heading: "Custom Team Accessories",
   description:
@@ -142,31 +162,43 @@ export const menuItems: MenuItem[] = [
   ],
 
     children: [
-      {
-        title: "Backpacks",
-        href: "#",
-      },
-
-      {
-        title: "Duffle Bags",
-        href: "#",
-      },
-
-      {
-        title: "Arm Sleeves",
-        href: "#",
-      },
-
-      {
-        title: "Socks",
-        href: "#",
-      },
-
-      {
-        title: "Gloves",
-        href: "#",
-      },
-    ],
+  {
+    title: "Backpacks",
+    href: "/accessories/backpacks",
+  },
+  {
+    title: "Duffle Bags",
+    href: "/accessories/duffle-bags",
+  },
+  {
+    title: "Caps",
+    href: "/accessories/caps",
+  },
+  {
+    title: "Socks",
+    href: "/accessories/socks",
+  },
+  {
+    title: "Arm Sleeves",
+    href: "/accessories/arm-sleeves",
+  },
+  {
+    title: "Leg Sleeves",
+    href: "/accessories/leg-sleeves",
+  },
+  {
+    title: "Headbands",
+    href: "/accessories/headbands",
+  },
+  {
+    title: "Gloves",
+    href: "/accessories/gloves",
+  },
+  {
+    title: "Sports Towels",
+    href: "/accessories/sports-towels",
+  },
+],
   },
 
   {
