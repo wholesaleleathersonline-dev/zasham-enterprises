@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
-import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
 import CustomCursor from "../components/customcursor";
 import PageWrapper from "../components/animation/PageWrapper";
-import WelcomeOfferModal from "../components/ui/WelcomeOfferModal";
+import LayoutWrapper from "../components/layout/LayoutWrapper";
+
 
 
 
@@ -90,15 +89,13 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-[#0F0F0F]">
 
   <CustomCursor />
-  <WelcomeOfferModal />
-
-  <Header />
-
- <main className="flex-1">
+  <LayoutWrapper>
   {children}
-</main>
+</LayoutWrapper>
+  
+ 
 
-<Footer/>
+
 
 </body>
     </html>
