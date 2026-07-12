@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 
-import { getProducts } from "../../../services/admin/product.service";
+import ConfirmModal from "../modals/ConfirmModal";
+import SuccessModal from "../modals/SuccessModal";
+import ErrorModal from "../modals/ErrorModal";
+import {
+  deleteProduct,
+  getProducts,
+} from "../../../services/admin/product.service";
 
 interface Product {
   id: number;
@@ -19,22 +25,82 @@ interface Product {
 export default function ProductsTable(): React.JSX.Element {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] =
+  useState<number | null>(null);
 
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const data = await getProducts();
+const [confirmOpen, setConfirmOpen] =
+  useState(false);
 
-        setProducts((data as Product[]) ?? []);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
+const [successOpen, setSuccessOpen] =
+  useState(false);
+
+const [errorOpen, setErrorOpen] =
+  useState(false);
+
+const [successMessage, setSuccessMessage] =
+  useState("");
+
+const [errorMessage, setErrorMessage] =
+  useState("");
+
+const [isDeleting, setIsDeleting] =
+  useState(false);
+
+  async function loadProducts() {
+  try {
+    const data = await getProducts();
+
+    setProducts((data as Product[]) ?? []);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+}
+
+useEffect(() => {
+  void loadProducts();
+}, []);
+
+async function handleDelete(): Promise<void> {
+  if (!deleteId) {
+    return;
+  }
+
+  try {
+    setIsDeleting(true);
+
+    await deleteProduct(deleteId);
+
+    setConfirmOpen(false);
+
+    setSuccessMessage(
+      "Product deleted successfully."
+    );
+
+    setSuccessOpen(true);
+
+    setDeleteId(null);
+
+    await loadProducts();
+  } catch (error) {
+    console.error(error);
+
+    setConfirmOpen(false);
+
+    if (error instanceof Error) {
+      setErrorMessage(error.message);
+    } else {
+      setErrorMessage(
+        "Failed to delete product."
+      );
     }
 
-    loadProducts();
-  }, []);
+    setErrorOpen(true);
+  } finally {
+    setIsDeleting(false);
+  }
+}
 
   if (loading) {
     return (
@@ -115,9 +181,17 @@ export default function ProductsTable(): React.JSX.Element {
                   className="border-b border-yellow-500/10"
                 >
                   <td className="px-6 py-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#111111]">
-                      📷
-                    </div>
+                    {product.image ? (
+  <img
+    src={product.image}
+    alt={product.name}
+    className="h-12 w-12 rounded-lg object-cover"
+  />
+) : (
+  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#111111]">
+    📷
+  </div>
+)}
                   </td>
 
                   <td className="px-6 py-4 text-white">
@@ -143,9 +217,25 @@ export default function ProductsTable(): React.JSX.Element {
                   </td>
 
                   <td className="px-6 py-4 text-right">
-                    <button className="text-yellow-500 hover:text-yellow-400">
-                      Edit
-                    </button>
+                    <div className="flex justify-end gap-4">
+  <Link
+    href={`/admin/products/edit/${product.id}`}
+    className="font-medium text-yellow-500 transition hover:text-yellow-400"
+  >
+    Edit
+  </Link>
+
+  <button
+  type="button"
+ onClick={() => {
+  setDeleteId(product.id);
+  setConfirmOpen(true);
+}}
+  className="font-medium text-red-500 transition hover:text-red-400"
+>
+  Delete
+</button>
+</div>
                   </td>
                 </tr>
               ))
@@ -153,6 +243,42 @@ export default function ProductsTable(): React.JSX.Element {
           </tbody>
         </table>
       </div>
+
+
+<ConfirmModal
+  isOpen={confirmOpen}
+  title="Delete Product"
+  message="Are you sure you want to delete this product? This action cannot be undone."
+  confirmText="Delete"
+  cancelText="Cancel"
+  isLoading={isDeleting}
+  onConfirm={() => void handleDelete()}
+  onClose={() => {
+    setConfirmOpen(false);
+    setDeleteId(null);
+  }}
+/>
+
+<SuccessModal
+  isOpen={successOpen}
+  title="Success"
+  message={successMessage}
+  onClose={() => {
+    setSuccessOpen(false);
+  }}
+/>
+
+<ErrorModal
+  isOpen={errorOpen}
+  title="Error"
+  message={errorMessage}
+  onClose={() => {
+    setErrorOpen(false);
+  }}
+/>
+
+
+
     </div>
   );
 }

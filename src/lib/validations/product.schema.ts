@@ -62,6 +62,13 @@ isFeatured: z.boolean(),
     .trim()
     .optional(),
 
+    image: z
+  .string()
+  .trim()
+  .optional(),
+
+  galleryImages: z.array(z.string()),
+
 
     
 });

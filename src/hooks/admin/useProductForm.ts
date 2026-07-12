@@ -26,6 +26,8 @@ export function useProductForm() {
       ageGroup: "",
       uniformType: "",
       isFeatured: false,
+      image: "",
+      galleryImages: [],
     },
     mode: "onChange",
   });
