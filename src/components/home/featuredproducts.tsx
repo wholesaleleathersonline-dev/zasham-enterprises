@@ -6,43 +6,33 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-const products = [
-  {
-    title: "Basketball Uniform",
-    image: "/Pictures/basketabll.png",
-  },
-  {
-    title: "American Football",
-    image: "/Pictures/American Football 1.png",
-  },
-  {
-    title: "Soccer Uniform",
-    image: "/Pictures/Soccer.png",
-  },
-  {
-    title: "Baseball Uniform",
-    image: "/Pictures/baseball.png",
-  },
-  {
-    title: "Volleyball Uniform",
-    image: "/Pictures/Vollyball Uniforms.png",
-  },
-  {
-    title: "Cricket Uniform",
-    image: "/Pictures/Cricket.png",
-  },
-  {
-    title: "Rugby Uniform",
-    image: "/Pictures/Rugby Uniforms.png",
-  },
-  {
-    title: "Ice Hockey",
-    image: "/Pictures/Ice Hockey.png",
-  },
-];
+import type { Product } from "../../types/product";
+import { getFeaturedProducts } from "../../services/website/product.service";
+
+
 
 export default function FeaturedProducts() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+
+  useEffect(() => {
+  async function loadProducts() {
+    try {
+      const data = await getFeaturedProducts();
+
+      setProducts(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  void loadProducts();
+}, []);
+
+
   return (
     <section className="bg-[#0F0F0F] py-24">
 
@@ -82,25 +72,28 @@ export default function FeaturedProducts() {
           }}
         >
           {products.map((product) => (
-            <SwiperSlide key={product.title}>
+            <SwiperSlide key={product.id}>
 
-              <div className="overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111]">
+             <Link
+  href={`/team-uniforms/${product.sportRoute}/${product.slug}`}
+  className="block overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111] transition hover:border-[#D4AF37] hover:shadow-[0_0_30px_rgba(212,175,55,.2)]"
+>
 
                 <img
-                  src={product.image}
-                  alt={product.title}
-                  className="h-[420px] w-full object-cover"
+                 src={product.image || "/Pictures/pch.jpg"}
+                  alt={product.name}
+                 className="h-[420px] w-full object-contain bg-[#111]"
                 />
 
                 <div className="p-5">
 
                   <h3 className="text-xl font-semibold text-white">
-                    {product.title}
+                    {product.name}
                   </h3>
 
                 </div>
 
-              </div>
+              </Link>
 
             </SwiperSlide>
           ))}
