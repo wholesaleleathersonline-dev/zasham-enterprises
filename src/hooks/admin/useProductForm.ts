@@ -27,6 +27,15 @@ export function useProductForm() {
       uniformType: "",
       isFeatured: false,
       image: "",
+      features: [],
+
+      colors: [],
+
+      sizes: [],
+
+      fabric: [],
+
+      tags: [],
       galleryImages: [],
     },
     mode: "onChange",

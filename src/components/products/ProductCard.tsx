@@ -1,27 +1,39 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import type { Product } from "../../types/product";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+}: ProductCardProps): React.JSX.Element {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <Link
       href={`/team-uniforms/${product.sportRoute}/${product.slug}`}
-      className="group block overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111111] transition-all duration-500 hover:-translate-y-2 hover:border-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]"
+      className="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111111] transition-all duration-500 hover:-translate-y-2 hover:border-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]"
     >
       {/* Image */}
-      <div className="p-5">
+      <div className="flex h-[320px] items-center justify-center overflow-hidden p-5">
         <img
-          src={product.image}
+          src={
+            imageError || !product.image
+              ? "/Pictures/pch.jpg"
+              : product.image
+          }
           alt={product.name}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+          onError={() => setImageError(true)}
+          className="max-h-full max-w-full object-contain transition duration-700 group-hover:scale-105"
         />
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="flex min-h-[220px] flex-1 flex-col p-6">
         <h3 className="line-clamp-2 text-lg font-bold text-white">
           {product.name}
         </h3>
@@ -34,11 +46,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           MOQ {product.moq} Sets
         </p>
 
-        <button
-          className="mt-4 w-full rounded-xl bg-[#D4AF37] py-3 text-sm font-semibold uppercase tracking-wider text-black transition-all duration-300 hover:bg-[#e5c158] hover:shadow-lg"
-        >
-          View Details
-        </button>
+        <div className="mt-auto pt-6">
+          <button
+            type="button"
+            className="w-full rounded-xl bg-[#D4AF37] py-3 text-sm font-semibold uppercase tracking-wider text-black transition-all duration-300 hover:bg-[#e5c158] hover:shadow-lg"
+          >
+            View Details
+          </button>
+        </div>
       </div>
     </Link>
   );

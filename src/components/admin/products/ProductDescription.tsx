@@ -2,12 +2,16 @@
 
 import { useFormContext } from "react-hook-form";
 import type { ProductFormData } from "../../../lib/validations/product.schema";
+import ArrayInput from "../shared/ArrayInput";
+import { useState } from "react";
 
 export default function ProductDescription(): React.JSX.Element {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext<ProductFormData>();
+const {
+  register,
+  formState: { errors },
+} = useFormContext<ProductFormData>();
+
+
 
   return (
     <div className="rounded-xl border border-yellow-500/20 bg-[#1A1A1A] p-6">
@@ -57,6 +61,36 @@ export default function ProductDescription(): React.JSX.Element {
             </p>
           )}
         </div>
+
+{/* Features */}
+
+<ArrayInput
+  label="Features"
+  field="features"
+/>
+
+<ArrayInput
+  label="Colors"
+  field="colors"
+/>
+
+<ArrayInput
+  label="Sizes"
+  field="sizes"
+/>
+
+<ArrayInput
+  label="Fabric"
+  field="fabric"
+/>
+
+<ArrayInput
+  label="Tags"
+  field="tags"
+/>
+
+
+
       </div>
     </div>
   );

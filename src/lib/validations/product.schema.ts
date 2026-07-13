@@ -66,8 +66,17 @@ isFeatured: z.boolean(),
   .string()
   .trim()
   .optional(),
+ features: z.array(z.string()),
 
-  galleryImages: z.array(z.string()),
+colors: z.array(z.string()),
+
+sizes: z.array(z.string()),
+
+fabric: z.array(z.string()),
+
+tags: z.array(z.string()),
+galleryImages: z.array(z.string()),
+
 
 
     

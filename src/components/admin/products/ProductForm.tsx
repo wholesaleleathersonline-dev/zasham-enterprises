@@ -72,6 +72,19 @@ async function loadProduct() {
         seoDescription: product.seo_description ?? "",
         isFeatured: product.is_featured,
         image: product.image ?? "",
+
+        features: product.features ?? [],
+
+colors: product.colors ?? [],
+
+sizes: product.sizes ?? [],
+
+fabric: product.fabric ?? [],
+
+tags: product.tags ?? [],
+
+
+
         galleryImages: gallery.map(
           (item) => item.image_url
         ),

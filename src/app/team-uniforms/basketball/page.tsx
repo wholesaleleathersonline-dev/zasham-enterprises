@@ -1,7 +1,8 @@
 "use client";
 
 import ProductCard from "../../../components/products/ProductCard";
-import { basketballProducts } from "../../../data/basketball";
+import { getProductsBySport } from "../../../services/website/product.service";
+import type { Product } from "../../../types/product";
 import CustomCursor from "../../../components/customcursor";
 import Breadcrumb from "../../../components/common/Breadcrumb";
 import { useState } from "react";
@@ -13,11 +14,12 @@ export default function BasketballPage() {
 
   const productsPerPage = 9;
 
-  const productsRef = useRef<HTMLElement>(null);
+  const productsRef = useRef<HTMLElement>(null);  
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const [search, setSearch] = useState("");
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const [selectedFilter, setSelectedFilter] = useState<
   "All" | "Youth" | "Adult" | "Reversible"
@@ -26,7 +28,7 @@ export default function BasketballPage() {
 const filteredProducts = useMemo(() => {
   const value = search.toLowerCase().trim();
 
-  let products = basketballProducts;
+let products = allProducts;
 
   // Search
   if (value) {
@@ -64,7 +66,7 @@ const filteredProducts = useMemo(() => {
   }
 
   return products;
-}, [search, selectedFilter]);
+}, [allProducts, search, selectedFilter]);
 
 
 const totalPages = Math.max(
@@ -78,7 +80,22 @@ const currentProducts = filteredProducts.slice(
   currentPage * productsPerPage
 );
  
+useEffect(() => {
+  async function loadProducts() {
+    try {
+      const products =
+        await getProductsBySport("Basketball");
 
+      setAllProducts(products);
+      setSelectedFilter("All");
+setCurrentPage(1);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  void loadProducts();
+}, []);
  
 
   useEffect(() => {

@@ -23,6 +23,11 @@ export async function createProduct(
       seo_title: data.seoTitle,
       seo_description: data.seoDescription,
       image: data.image,
+      features: data.features,
+colors: data.colors,
+sizes: data.sizes,
+fabric: data.fabric,
+tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
     })
@@ -91,6 +96,11 @@ export async function updateProduct(
       seo_title: data.seoTitle,
       seo_description: data.seoDescription,
       image: data.image,
+      features: data.features,
+colors: data.colors,
+sizes: data.sizes,
+fabric: data.fabric,
+tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
     })
@@ -185,7 +195,25 @@ export async function getProductById(
   }
 
   return {
-    product,
-    gallery,
-  };
+  product: {
+    ...product,
+
+    galleryImages:
+      gallery?.map(
+        (image) => image.image_url
+      ) ?? [],
+
+    features: product.features ?? [],
+
+    colors: product.colors ?? [],
+
+    sizes: product.sizes ?? [],
+
+    fabric: product.fabric ?? [],
+
+    tags: product.tags ?? [],
+  },
+
+  gallery,
+};
 }
