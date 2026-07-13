@@ -7,6 +7,7 @@ import Footer from "../components/layout/Footer";
 import CustomCursor from "../components/customcursor";
 import GlobalReach from "../components/home/GlobalReach";
 import FactorySection from "../components/home/FactorySection";
+import FeaturedProducts from "../components/home/featuredproducts";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <SportsCategories />
       <WhyChooseUs />
       <ManufacturingProcess />
+      <FeaturedProducts />
       <FactorySection />
       <GlobalReach />
       
