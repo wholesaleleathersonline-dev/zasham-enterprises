@@ -26,19 +26,22 @@ const slugify = (value: string) =>
     .replace(/-+/g, "-");
 
 const categoryTitles: Record<string, string> = {
-  "compression-wear": "Compression Wear",
-  "hoodies": "Hoodies",
-  "tracksuits": "Tracksuits",
-  "warm-up-suits": "Warm-Up Suits",
-  "t-shirts": "T-Shirts",
-  "polo-shirts": "Polo Shirts",
-  "jackets": "Jackets",
-  "shorts": "Shorts",
-  "joggers": "Joggers",
+  "backpacks": "Backpacks",
+  "duffle-bags": "Duffle Bags",
+  "caps": "Caps",
+  "socks": "Socks",
+  "arm-sleeves": "Arm Sleeves",
+  "leg-sleeves": "Leg Sleeves",
+  "headbands": "Headbands",
+  "gloves": "Gloves",
+  "sports-towels": "Sports Towels",
 };
 
 const categoryName =
+
   categoryTitles[category] ?? category;
+    const displayCategory = categoryName ?? "Accessories";
+
 
 
   const productsPerPage = 9;
@@ -113,7 +116,7 @@ useEffect(() => {
   async function loadProducts() {
     try {
     const products =
-  await getProductsBySport("Team Apparel");
+ await getProductsBySport("Team Accessories");
 
 const filtered = products.filter(
   (product) =>
@@ -129,7 +132,7 @@ setCurrentPage(1);
   }
 
   void loadProducts();
-}, [categoryName]);
+}, [category]);
  
 
   useEffect(() => {
@@ -162,7 +165,7 @@ setCurrentPage(1);
         <div className="mx-auto max-w-7xl px-6">
 
          <p className="uppercase tracking-[0.35em] text-[#D4AF37]">
-  Team Apparel
+  Team Accessories
 </p>
 
          <h1 className="mt-20 text-6xl font-black">
@@ -170,7 +173,7 @@ setCurrentPage(1);
 </h1>
 
           <p className="mt-6 max-w-3xl text-lg text-gray-400">
-          {`Premium custom ${categoryName.toLowerCase()} manufactured with professional sublimation printing, premium performance fabrics and worldwide shipping.`}
+     {`Premium custom ${displayCategory.toLowerCase()} manufactured with professional sublimation printing, premium performance fabrics and worldwide shipping.`}
           </p>
 
         </div>
@@ -186,8 +189,8 @@ setCurrentPage(1);
             href: "/",
           },
          {
-  label: "Team Apparel",
-  href: "/team-apparel",
+  label: "Team Accessories",
+  href: "/team-accessories",
 },
 {
   label: categoryName,
