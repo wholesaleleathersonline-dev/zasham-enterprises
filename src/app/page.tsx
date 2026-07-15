@@ -8,19 +8,40 @@ import CustomCursor from "../components/customcursor";
 import GlobalReach from "../components/home/GlobalReach";
 import FactorySection from "../components/home/FactorySection";
 import FeaturedProducts from "../components/home/featuredproducts";
+import Reveal from "../components/animation/Reveal";
 
 export default function Home() {
   return (
     <>
     <CustomCursor />
+
       <Header />
       <Hero />
+
+      <Reveal>
       <SportsCategories />
-      <WhyChooseUs />
-      <ManufacturingProcess />
-      <FeaturedProducts />
-      <FactorySection />
-      <GlobalReach />
+      </Reveal>
+
+      <Reveal>
+         <WhyChooseUs />
+      </Reveal>
+      <Reveal>
+         <ManufacturingProcess />
+      </Reveal>
+      <Reveal>
+          <FeaturedProducts />
+      </Reveal>
+      <Reveal>
+         <FactorySection />
+      </Reveal>
+      <Reveal>
+         <GlobalReach />
+      </Reveal>
+     
+     
+    
+     
+     
       
     </>
   );

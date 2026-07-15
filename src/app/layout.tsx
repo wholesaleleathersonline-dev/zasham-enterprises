@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "../components/customcursor";
-import PageWrapper from "../components/animation/PageWrapper";
 import LayoutWrapper from "../components/layout/LayoutWrapper";
+import PageTransition from "../components/common/PageTransition";
 
 
 
@@ -88,15 +88,15 @@ export default function RootLayout({
 
       <body className="min-h-full flex flex-col bg-[#0F0F0F]">
 
-  <CustomCursor />
-  <LayoutWrapper>
-  {children}
+ <CustomCursor />
+
+<LayoutWrapper>
+  <PageTransition>
+    {children}
+  </PageTransition>
 </LayoutWrapper>
   
  
-
-
-
 </body>
     </html>
   );

@@ -1,5 +1,9 @@
+
+
 import { supabase } from "../../lib/supabase/client";
 import { mapProduct } from "../../lib/mappers/product.mapper";
+import { getSportFromFolder } from "../../lib/routes/productRoutes";
+
 
 export async function getProductsBySport(
   sport: string
@@ -53,8 +57,10 @@ export async function getProductBySlug(
   sport: string,
   slug: string
 ) {
-  console.log("SPORT:", sport);
-  console.log("SLUG:", slug);
+  const actualSport = getSportFromFolder(sport);
+console.log("SPORT:", sport);
+console.log("ACTUAL SPORT:", actualSport);
+console.log("SLUG:", slug);
 
   const { data, error } = await supabase
     .from("products")
@@ -66,7 +72,7 @@ export async function getProductBySlug(
       )
     `)
     .eq("slug", slug)
-    .eq("sport", sport)
+    .eq("sport", actualSport)
     .eq("status", "active")
     .single();
 
