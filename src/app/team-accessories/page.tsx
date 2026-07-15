@@ -1,41 +1,41 @@
 import Link from "next/link";
 
-const apparelCategories = [
+const accessoryCategories = [
   {
-    title: "Compression Wear",
-    href: "/team-apparel/compression-wear",
+    title: "Backpacks",
+    href: "/accessories/backpacks",
   },
   {
-    title: "Hoodies",
-    href: "/team-apparel/hoodies",
+    title: "Duffle Bags",
+    href: "/accessories/duffle-bags",
   },
   {
-    title: "Tracksuits",
-    href: "/team-apparel/tracksuits",
+    title: "Caps",
+    href: "/accessories/caps",
   },
   {
-    title: "Warm-Up Suits",
-    href: "/team-apparel/warm-up-suits",
+    title: "Socks",
+    href: "/accessories/socks",
   },
   {
-    title: "T-Shirts",
-    href: "/team-apparel/t-shirts",
+    title: "Arm Sleeves",
+    href: "/accessories/arm-sleeves",
   },
   {
-    title: "Polo Shirts",
-    href: "/team-apparel/polo-shirts",
+    title: "Leg Sleeves",
+    href: "/accessories/leg-sleeves",
   },
   {
-    title: "Jackets",
-    href: "/team-apparel/jackets",
+    title: "Headbands",
+    href: "/accessories/headbands",
   },
   {
-    title: "Shorts",
-    href: "/team-apparel/shorts",
+    title: "Gloves",
+    href: "/accessories/gloves",
   },
   {
-    title: "Joggers",
-    href: "/team-apparel/joggers",
+    title: "Sports Towels",
+    href: "/accessories/sports-towels",
   },
 ];
 
@@ -52,13 +52,11 @@ export default function TeamApparelPage() {
           </p>
 
           <h1 className="mt-6 text-5xl font-black lg:text-6xl">
-            Team Apparel
+           Team Accessories
           </h1>
 
           <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-400">
-            Explore our premium custom team apparel manufactured with
-            professional sublimation printing, premium performance fabrics,
-            premium stitching and worldwide shipping.
+            Premium custom team accessories manufactured with premium materials and worldwide shipping.
           </p>
 
         </div>
@@ -70,7 +68,7 @@ export default function TeamApparelPage() {
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-            {apparelCategories.map((category) => (
+            {accessoryCategories.map((category) => (
               <Link
                 key={category.title}
                 href={category.href}

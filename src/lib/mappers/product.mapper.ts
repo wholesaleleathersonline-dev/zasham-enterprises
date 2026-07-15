@@ -1,4 +1,5 @@
 import type { Product } from "../../types/product";
+import { getProductRoute } from "../routes/productRoutes";
 
 export function mapProduct(product: any): Product {
   return {
@@ -44,9 +45,7 @@ export function mapProduct(product: any): Product {
     seoDescription:
       product.seo_description ?? "",
 
-    sportRoute: product.sport
-      .toLowerCase()
-      .replace(/\s+/g, "-"),
+ sportRoute: getProductRoute(product.sport).folder,
 
     ageGroup: product.age_group,
 

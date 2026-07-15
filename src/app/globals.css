@@ -104,3 +104,75 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.swiper-button-next,
+.swiper-button-prev{
+    width:58px;
+    height:58px;
+    border-radius:9999px;
+    background:rgba(17,17,17,.95);
+    border:1px solid rgba(212,175,55,.35);
+    backdrop-filter:blur(12px);
+    transition:.35s;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after{
+    font-size:18px!important;
+    font-weight:700;
+    color:#D4AF37;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover{
+    background:#D4AF37;
+    transform:scale(1.08);
+    box-shadow:0 0 35px rgba(212,175,55,.35);
+}
+
+.swiper-button-next:hover::after,
+.swiper-button-prev:hover::after{
+    color:#000;
+}
+
+.swiper-pagination-progressbar{
+    background:rgba(255,255,255,.08)!important;
+    height:6px!important;
+    border-radius:999px;
+}
+
+.swiper-pagination-progressbar-fill{
+    background:#D4AF37!important;
+}
+
+
+/* ===========================
+   FEATURED PRODUCTS SLIDER
+=========================== */
+
+.featured-swiper{
+  overflow: visible !important;
+}
+
+.featured-swiper .swiper-wrapper{
+  padding:12px 0 24px;
+}
+
+.featured-swiper .swiper-pagination{
+  position:relative;
+  margin-top:40px;
+}
+
+.featured-swiper .swiper-pagination-bullet{
+  width:10px;
+  height:10px;
+  background:#666;
+  opacity:1;
+  transition:.35s;
+}
+
+.featured-swiper .swiper-pagination-bullet-active{
+  width:36px;
+  border-radius:999px;
+  background:#D4AF37;
+}

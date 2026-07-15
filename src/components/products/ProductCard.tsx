@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Product } from "../../types/product";
+import { getProductRoute } from "../../lib/routes/productRoutes";
 
 interface ProductCardProps {
   product: Product;
@@ -13,9 +14,32 @@ export default function ProductCard({
 }: ProductCardProps): React.JSX.Element {
   const [imageError, setImageError] = useState(false);
 
+const route = getProductRoute(product.sport);
+  const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+ const categoryRoute = slugify(product.category);
+
+const productHref =
+  product.sport === "Team Apparel"
+    ? `/team-apparel/apparel/${product.slug}`
+    : product.sport === "Team Accessories"
+      ? `/team-accessories/accessories/${product.slug}`
+      : `/${route.section}/${route.folder}/${product.slug}`;
   return (
+
+    
+
+
+
+    
     <Link
-      href={`/team-uniforms/${product.sportRoute}/${product.slug}`}
+     href={productHref} 
       className="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#D4AF37]/20 bg-[#111111] transition-all duration-500 hover:-translate-y-2 hover:border-[#D4AF37] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]"
     >
       {/* Image */}

@@ -6,7 +6,7 @@ import { FaGift, FaTimes } from "react-icons/fa";
 import FormStatusModal from "./FormStatusModal";
 
 export default function WelcomeOfferModal() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [email, setEmail] = useState("");
 
@@ -15,6 +15,19 @@ export default function WelcomeOfferModal() {
   const [statusMessage, setStatusMessage] = useState("");
 
   useEffect(() => {
+
+const popupShown = sessionStorage.getItem(
+    "welcome-popup"
+  );
+
+  if (!popupShown) {
+    setIsOpen(true);
+  }
+
+
+
+
+
     document.body.style.overflow = isOpen ? "hidden" : "";
 
     const handleEsc = (event: KeyboardEvent) => {
@@ -32,8 +45,13 @@ export default function WelcomeOfferModal() {
   }, [isOpen]);
 
   const handleClose = () => {
-    setIsOpen(false);
-  };
+  sessionStorage.setItem(
+    "welcome-popup",
+    "shown"
+  );
+
+  setIsOpen(false);
+};
 
   const handleSubmit = async () => {
     if (!email.trim()) {
@@ -66,7 +84,10 @@ export default function WelcomeOfferModal() {
       );
 
       setStatusModalOpen(true);
-
+sessionStorage.setItem(
+  "welcome-popup",
+  "shown"
+);
       setEmail("");
     } catch (error) {
       console.error(error);
@@ -125,8 +146,7 @@ export default function WelcomeOfferModal() {
 
             <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-[#D4AF37]/10 blur-[120px]" />
 
-            <button
-              type="button"
+            <button 
               onClick={handleClose}
               className="absolute right-5 top-5 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-[#D4AF37]/20 bg-white/10 text-gray-300 transition-all duration-300 hover:border-[#D4AF37] hover:text-[#D4AF37]"
             >

@@ -4,14 +4,17 @@ import type { ProductFormData } from "../../lib/validations/product.schema";
 export async function createProduct(
   data: ProductFormData
 ): Promise<void> {
+  const uniqueSlug =
+  await generateUniqueSlug(data.slug);
   const {
     data: product,
     error: productError,
   } = await supabase
+  
     .from("products")
     .insert({
       name: data.name,
-      slug: data.slug,
+   slug: uniqueSlug,
       sport: data.sport,
       category: data.category,
       age_group: data.ageGroup,
@@ -80,11 +83,16 @@ export async function updateProduct(
   id: number,
   data: ProductFormData
 ): Promise<void> {
+  const uniqueSlug =
+  await generateUniqueSlug(
+    data.slug,
+    id
+  );
   const { error: productError } = await supabase
     .from("products")
     .update({
       name: data.name,
-      slug: data.slug,
+     slug: uniqueSlug,
       sport: data.sport,
       category: data.category,
       age_group: data.ageGroup,
@@ -216,4 +224,36 @@ export async function getProductById(
 
   gallery,
 };
+}
+
+async function generateUniqueSlug(
+  slug: string,
+  currentProductId?: number
+): Promise<string> {
+  let uniqueSlug = slug;
+  let counter = 2;
+
+  while (true) {
+    let query = supabase
+      .from("products")
+      .select("id")
+      .eq("slug", uniqueSlug);
+
+    if (currentProductId) {
+      query = query.neq("id", currentProductId);
+    }
+
+  const { data, error } = await query;
+
+if (error) {
+  throw error;
+}
+
+if (!data || data.length === 0) {
+  return uniqueSlug;
+}
+
+    uniqueSlug = `${slug}-${counter}`;
+    counter++;
+  }
 }

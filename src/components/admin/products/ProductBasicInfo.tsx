@@ -15,6 +15,8 @@ const sports = [
   "Rugby",
   "Cricket",
   "Ice Hockey",
+   "Team Apparel",
+  "Team Accessories",
 ];
 
 const sportCategories: Record<
@@ -90,6 +92,31 @@ const sportCategories: Record<
     "Hockey Socks",
     "Training Jersey",
   ],
+
+  "Team Apparel": [
+  "Compression Wear",
+  "Hoodies",
+  "Tracksuits",
+  "Warm-Up Suits",
+  "T-Shirts",
+  "Polo Shirts",
+  "Jackets",
+  "Shorts",
+  "Joggers",
+],
+
+"Team Accessories": [
+  "Backpacks",
+  "Duffle Bags",
+  "Caps",
+  "Socks",
+  "Arm Sleeves",
+  "Leg Sleeves",
+  "Headbands",
+  "Gloves",
+  "Sports Towels",
+],
+
 };
 
 const ageGroups = [
@@ -112,6 +139,7 @@ export default function ProductBasicInfo(): React.JSX.Element {
 
   const productName = watch("name");
   const selectedSport = watch("sport");
+  <p className="text-red-500">{selectedSport}</p>
 
 const availableCategories =
   sportCategories[selectedSport] ?? [];
