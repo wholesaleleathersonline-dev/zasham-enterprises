@@ -19,8 +19,8 @@ export const fadeUp: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.7,
-      ease: "easeOut",
+      duration: 0.65,
+      ease: [0.22, 1, 0.36, 1],
     },
   },
 };

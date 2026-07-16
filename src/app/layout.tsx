@@ -3,7 +3,7 @@ import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "../components/customcursor";
 import LayoutWrapper from "../components/layout/LayoutWrapper";
-import PageTransition from "../components/common/PageTransition";
+
 
 
 
@@ -91,9 +91,9 @@ export default function RootLayout({
  <CustomCursor />
 
 <LayoutWrapper>
-  <PageTransition>
+ 
     {children}
-  </PageTransition>
+ 
 </LayoutWrapper>
   
  

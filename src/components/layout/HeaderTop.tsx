@@ -138,21 +138,15 @@ const highlightMatch = (text: string, keyword: string) => {
       <div className="hidden lg:grid grid-cols-3 items-center py-5">
 
         {/* LEFT */}
-        <Link
+<Link
   href="/"
-  className="group flex flex-col w-fit"
+  className="group block w-fit"
 >
-  <h1 className="android-font text-[34px] leading-none uppercase text-[#D4AF37] transition duration-300 group-hover:text-[#E5C158]">
-    ZASHAM
-  </h1>
-
-  <h1 className="android-font text-[34px] leading-none uppercase text-[#D4AF37] transition duration-300 group-hover:text-[#E5C158]">
-    ENTERPRISES
-  </h1>
-
-  <span className="mt-2 text-[10px] uppercase tracking-[0.35em] text-[#D4AF37]/70 transition duration-300 group-hover:text-[#D4AF37]">
-    Custom Sportswear Manufacturer
-  </span>
+  <img
+    src="/Pictures/sitelogo.png"
+    alt="Zasham Enterprises"
+    className="h-auto w-[230px] transition-all duration-300 group-hover:scale-[1.02] sm:w-[260px] lg:w-[340px]"
+  />
 </Link>
 
         {/* CENTER */}

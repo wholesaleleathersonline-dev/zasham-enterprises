@@ -144,7 +144,18 @@ export default function ManufacturingProcess() {
     <img
       src={steps[active].image}
       alt={steps[active].title}
-     className="h-[320px] w-full object-cover object-center transition-all duration-700 group-hover:scale-105 sm:h-[450px] lg:h-[650px]"
+    className="
+h-[260px]
+w-full
+object-contain
+bg-[#111111]
+transition-all
+duration-700
+group-hover:scale-[1.02]
+sm:h-[420px]
+sm:object-cover
+lg:h-[650px]
+"
     />
 
     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>

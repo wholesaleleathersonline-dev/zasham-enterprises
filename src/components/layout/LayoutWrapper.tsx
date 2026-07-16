@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
 import WelcomeOfferModal from "../ui/WelcomeOfferModal";
+import ScrollToTop from "../animation/ScrollToTop";
 
 interface LayoutWrapperProps {
   children: ReactNode;
@@ -24,6 +25,7 @@ export default function LayoutWrapper({
 
   return (
     <>
+    <ScrollToTop />
       <WelcomeOfferModal />
 
       <Header />
