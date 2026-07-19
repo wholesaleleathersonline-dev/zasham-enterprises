@@ -2,12 +2,19 @@ export type InvoiceStatus = "Draft" | "Sent" | "Paid" | "Unpaid";
 
 export interface InvoiceItem {
   id?: string;
+
   productName: string;
+
+  description?: string;
+
   size: string;
+
   quantity: number;
+
   unitPrice: number;
+
   total: number;
-}
+} 
 
 export interface Invoice {
   id?: string;
@@ -39,4 +46,16 @@ export interface Invoice {
 
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface InvoiceListItem {
+  id: string;
+  invoice_number: string;
+  customer_name: string;
+  company: string;
+  invoice_date: string;
+  due_date: string;
+  total: number;
+  status: InvoiceStatus;
+  created_at: string;
 }

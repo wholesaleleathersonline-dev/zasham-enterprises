@@ -1,6 +1,6 @@
 
 "use client";
-import { createInvoice } from "../../services/invoice.service";
+import { createInvoice } from "../../../services/invoice.service";
 
 
 import { useState } from "react";
