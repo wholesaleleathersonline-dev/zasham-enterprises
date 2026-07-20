@@ -1,4 +1,5 @@
 import { supabase } from "../lib/supabase/client";
+import { getCustomerById, updateCustomer } from "./customer.service";
 import { Invoice, InvoiceListItem } from "../types/invoice";
 
 
@@ -10,6 +11,7 @@ export async function createInvoice(invoice: Invoice) {
       .from("invoices")
       .insert({
         invoice_number: invoiceNumber,
+        customer_id: invoice.customerId,
         customer_name: invoice.customerName,
         company: invoice.company,
         email: invoice.email,
@@ -49,8 +51,22 @@ export async function createInvoice(invoice: Invoice) {
 
       if (itemsError) throw itemsError;
     }
+console.log("Invoice customerId:", invoice.customerId);
+    if (invoice.customerId) {
+  const customer = await getCustomerById(invoice.customerId);
+  console.log("Customer:", customer);
 
-    return data;
+  await updateCustomer(invoice.customerId, {
+    ...customer,
+    totalInvoices: (customer.totalInvoices ?? 0) + 1,
+  });
+  console.log("Customer invoice count updated");
+}
+
+   return {
+  ...data,
+  invoice_number: invoiceNumber,
+};
   } catch (error) {
     console.error(error);
     throw error;
@@ -103,6 +119,7 @@ export async function updateInvoice(id: string, invoice: Invoice) {
     const { error } = await supabase
       .from("invoices")
       .update({
+        customer_id: invoice.customerId,
         customer_name: invoice.customerName,
         company: invoice.company,
         email: invoice.email,
@@ -191,4 +208,16 @@ export async function updateInvoiceStatus(
     .eq("id", id);
 
   if (error) throw error;
+}
+
+export async function getInvoicesByCustomer(customerId: string) {
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("*")
+    .eq("customer_id", customerId)
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  return (data ?? []) as InvoiceListItem[];
 }

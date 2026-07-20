@@ -1,9 +1,11 @@
   "use client";
 
   import { useState } from "react";
+  import { useRouter } from "next/navigation";
 import {
   createInvoice,
   updateInvoice,
+
 } from "../../../services/invoice.service";
   import html2canvas from "html2canvas";
   import { toJpeg } from "html-to-image";
@@ -14,8 +16,14 @@ import {
   import {
     getCustomers,
     CustomerRow,
+    
   } from "../../../services/customer.service";
   import { Customer } from "../../../types/customer";
+  import { useSearchParams } from "next/navigation";
+  import FormStatusModal from "../../ui/FormStatusModal";
+
+
+  
 
 
 
@@ -30,6 +38,7 @@ import {
 
   interface InvoiceState {
     invoiceNumber: string;
+      customerId?: string;
 
     customerName: string;
     company: string;
@@ -68,10 +77,23 @@ export default function InvoiceForm({
   const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const invoiceRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
+const [modalTitle, setModalTitle] = useState("");
+const [modalMessage, setModalMessage] = useState("");
+
+const showModal = (title: string, message: string) => {
+  setModalTitle(title);
+  setModalMessage(message);
+  setModalOpen(true);
+};
+
+const customerIdFromUrl = searchParams.get("customer");
 
    const defaultInvoice: InvoiceState = {
   invoiceNumber: "",
-
+customerId: "",
   customerName: "",
   company: "",
   email: "",
@@ -106,6 +128,47 @@ export default function InvoiceForm({
 const [invoice, setInvoice] = useState<InvoiceState>(
   initialData ?? defaultInvoice
 );
+
+useEffect(() => {
+  if (initialData) {
+    setInvoice(initialData);
+  }
+}, [initialData]);
+
+useEffect(() => {
+  async function loadCustomers() {
+    try {
+      const data = await getCustomers();
+
+      setCustomers(data);
+
+      if (customerIdFromUrl) {
+        const selected = data.find(
+          (c) => c.id === customerIdFromUrl
+        );
+
+        if (selected) {
+          setInvoice((prev) => ({
+            ...prev,
+            customerId: selected.id,
+            customerName: selected.customerName,
+            company: selected.company,
+            email: selected.email,
+            phone: selected.phone,
+            address: selected.address,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("LOAD CUSTOMERS ERROR:", error);
+    }
+  }
+
+  loadCustomers();
+}, [customerIdFromUrl]);
+
+
+
 
 
     const handleChange = (
@@ -203,34 +266,37 @@ const [invoice, setInvoice] = useState<InvoiceState>(
     contentRef: invoiceRef,
     documentTitle: invoice.invoiceNumber || "Invoice",
   });
-    const handleSaveInvoice = async () => {
-    
-    try { 
-      setLoading(true);
+const handleSaveInvoice = async () => {
+  try {
+    setLoading(true);
 
-      const payload = {
-        ...invoice,
-        invoiceNumber:
-          invoice.invoiceNumber || `INV-${Date.now()}`,
-        status: "Draft",
-      };
+    const payload = {
+      ...invoice,
+      status: "Draft",
+    };
 
-      if (isEdit && invoiceId) {
-  await updateInvoice(invoiceId, payload as any);
-} else {
-  await createInvoice(payload as any);
-}
+    console.log("PAYLOAD:", payload);
 
-      alert("Invoice saved successfully!");
+    if (isEdit && invoiceId) {
+      await updateInvoice(invoiceId, payload as any);
 
-    } catch (error) {
-      console.error("SAVE ERROR:", error);
-  alert(JSON.stringify(error, null, 2));
-      alert("Failed to save invoice.");
-    } finally {
-      setLoading(false);
+      showModal(
+  "Invoice Updated",
+  "Invoice has been updated successfully."
+);
+    } else {
+      const savedInvoice = await createInvoice(payload as any);
+
+      router.push(`/admin/invoices/${savedInvoice.id}`);
     }
-  };
+  } catch (error) {
+    console.error("SAVE ERROR:", error);
+    alert(JSON.stringify(error, null, 2));
+    alert("Failed to save invoice.");
+  } finally {
+    setLoading(false);
+  }
+};
 
 
   const downloadJPG = async () => {
@@ -260,6 +326,7 @@ const [invoice, setInvoice] = useState<InvoiceState>(
   };
 
       return (
+        <>
       <div className="mx-auto w-full max-w-[1800px] p-4 md:p-6 xl:p-8">
 
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-10">
@@ -291,14 +358,15 @@ const [invoice, setInvoice] = useState<InvoiceState>(
 
             if (!selected) return;
 
-            setInvoice((prev) => ({
-              ...prev,
-              customerName: selected.customerName,
-              company: selected.company,
-              email: selected.email,
-              phone: selected.phone,
-              address: selected.address,
-            }));
+setInvoice((prev) => ({
+  ...prev,
+  customerId: selected.id,
+  customerName: selected.customerName,
+  company: selected.company,
+  email: selected.email,
+  phone: selected.phone,
+  address: selected.address,
+}));
           }}
           className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-500"
         >
@@ -394,13 +462,13 @@ const [invoice, setInvoice] = useState<InvoiceState>(
         </label>
 
         <input
-          type="text"
-          name="invoiceNumber"
-          value={invoice.invoiceNumber}
-          onChange={handleChange}
-          placeholder="INV-000001"
-          className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-yellow-500"
-        />
+  type="text"
+  name="invoiceNumber"
+  value={invoice.invoiceNumber}
+  readOnly
+  placeholder="Auto Generated on Save"
+  className="w-full cursor-not-allowed rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-3 text-zinc-400"
+/>
       </div>
 
       {/* Invoice Date */}
@@ -647,7 +715,13 @@ const [invoice, setInvoice] = useState<InvoiceState>(
     disabled={loading}
     className="mt-6 w-full rounded-xl bg-yellow-500 py-3 font-bold text-black transition hover:bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed"
   >
-    {loading ? "Saving..." : "Save Invoice"}
+   {loading
+  ? isEdit
+    ? "Updating..."
+    : "Saving..."
+  : isEdit
+    ? "Update Invoice"
+    : "Save Invoice"}
   </button>
 
     </div>
@@ -700,6 +774,14 @@ const [invoice, setInvoice] = useState<InvoiceState>(
   </div>
 
       </div>
+
+      <FormStatusModal
+      isOpen={modalOpen}
+      title={modalTitle}
+      message={modalMessage}
+      onClose={() => setModalOpen(false)}
+    />
+    </>
 
       
     );

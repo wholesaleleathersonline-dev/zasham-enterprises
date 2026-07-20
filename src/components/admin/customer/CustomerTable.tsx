@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { Customer } from "../../../types/customer";
 
 interface CustomerTableProps {
@@ -104,17 +104,19 @@ export default function CustomerTable({
 
               <td className="px-5 py-4">
                 <div className="flex justify-center gap-2">
-                  <button
-                    className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-500"
-                  >
-                    View
-                  </button>
+                 <Link
+  href={`/admin/customers/${customer.id}`}
+  className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-500"
+>
+  View
+</Link>
 
-                  <button
-                    className="rounded-lg bg-yellow-500 px-3 py-2 text-sm font-medium text-black hover:bg-yellow-400"
-                  >
-                    Edit
-                  </button>
+                <Link
+  href={`/admin/customers/${customer.id}/edit`}
+  className="rounded-lg bg-yellow-500 px-3 py-2 text-sm font-medium text-black hover:bg-yellow-400"
+>
+  Edit
+</Link>
 
                   <button
                     onClick={() => customer.id && onDelete(customer.id)}
