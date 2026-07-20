@@ -5,7 +5,7 @@ import { adminNavigation } from "../../../lib/constants/adminNavigation";
 
 export default function Sidebar(): React.JSX.Element {
   return (
-    <aside className="flex h-screen w-72 flex-col border-r border-yellow-600/20 bg-[#0B0B0B]">
+    <aside className="hidden h-screen w-72 flex-col border-r border-yellow-600/20 bg-[#0B0B0B] lg:flex">
       {/* Logo */}
       <div className="border-b border-yellow-600/20 px-6 py-6">
         <h1 className="text-2xl font-bold tracking-wider text-yellow-500">

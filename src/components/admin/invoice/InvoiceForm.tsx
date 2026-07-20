@@ -644,7 +644,7 @@ setInvoice((prev) => ({
 
 
               {/*RightCode*/}
-              <div className="sticky top-24 rounded-2xl border border-yellow-500/20 bg-zinc-900 p-6 shadow-lg">
+              <div className="lg:sticky lg:top-24 rounded-2xl border border-yellow-500/20 bg-zinc-900 p-4 sm:p-6 shadow-lg">
 
     <h2 className="mb-6 text-2xl font-bold text-yellow-400">
       Invoice Summary
@@ -759,14 +759,16 @@ setInvoice((prev) => ({
 
       {/* RIGHT SECTION */}
   <div className="xl:col-span-6">
-  <div className="sticky top-6 rounded-2xl bg-zinc-900 p-2 md:p-4 shadow-2xl overflow-auto">
+  <div className="lg:sticky lg:top-6 rounded-2xl bg-zinc-900 p-2 md:p-4 shadow-2xl overflow-x-auto">
     <div
       ref={invoiceRef}
       className="flex justify-center"
     >
-      <div className="origin-top scale-[0.42] sm:scale-[0.60] md:scale-[0.80] lg:scale-100">
-        <InvoicePreview invoice={invoice} />
-      </div>
+     <div className="flex justify-center overflow-x-auto">
+  <div className="origin-top scale-[0.28] min-[380px]:scale-[0.34] sm:scale-[0.50] md:scale-[0.70] lg:scale-100">
+    <InvoicePreview invoice={invoice} />
+  </div>
+</div>
     </div>
   </div>
 </div>
