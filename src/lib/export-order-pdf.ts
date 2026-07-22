@@ -1,12 +1,11 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-export function exportOrderPDF(
+export async function exportOrderPDF(
   teamName: string,
   orderCode: string,
   players: any[]
 ) {
-
   const doc = new jsPDF({
     orientation: "landscape",
     unit: "mm",
@@ -15,6 +14,7 @@ export function exportOrderPDF(
 
 
   doc.setFontSize(20);
+
   doc.text(
     "ZASHAM ENTERPRISES",
     14,
@@ -67,13 +67,41 @@ export function exportOrderPDF(
 
     body: rows,
 
-    styles:{
-      fontSize:8
-    }
+    styles: {
+      fontSize: 8,
+    },
   });
 
 
+  const pdfBlob = doc.output("blob");
+
+
+  // Download PDF
   doc.save(
     `${teamName}-Order-Sheet.pdf`
   );
+
+
+  // Send Email
+  const formData = new FormData();
+
+  formData.append(
+    "file",
+    pdfBlob,
+    `${teamName}-Order-Sheet.pdf`
+  );
+
+  formData.append(
+    "teamName",
+    teamName
+  );
+
+
+  await fetch("/api/order-sheet/pdf", {
+    method: "POST",
+    body: formData,
+  });
+
+
+  return pdfBlob;
 }

@@ -241,10 +241,9 @@ export default function CaptainDashboardPage() {
               >
                 📋 Copy Player Link
               </button>
-
-              <button
-  onClick={() =>
-    exportOrderPDF(
+<button
+  onClick={async () =>
+    await exportOrderPDF(
       orderSheet.team_name,
       orderSheet.order_code,
       players
