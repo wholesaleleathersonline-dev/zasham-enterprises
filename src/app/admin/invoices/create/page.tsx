@@ -1,35 +1,37 @@
 "use client";
 
 import InvoiceForm from "../../../../components/admin/invoice/InvoiceForm";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function CreateInvoicePage() {
   return (
     <div className="space-y-6">
-  <div className="mx-auto mt-7 max-w-4xl rounded-xl border border-yellow-500/20 bg-zinc-900 px-5 py-2 shadow-lg">
-  <div className="flex items-center justify-between gap-3">
 
-    <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-500 text-lg">
-        📄
-      </div>
+      <div className="flex items-center justify-between">
+  <div>
+   <Link
+  href="/admin/dashboard"
+ className="group mb-6 inline-flex items-center gap-2 rounded-xl border-2 border-yellow-500/40 bg-white/5 px-5 py-2.5 text-sm font-semibold text-yellow-400 backdrop-blur-md transition-all duration-300 hover:border-yellow-400 hover:bg-yellow-500 hover:text-black hover:shadow-[0_0_30px_rgba(234,179,8,0.45)] active:scale-95"
+>
+  <FaArrowLeft
+    size={13}
+    className="transition-transform duration-300 group-hover:-translate-x-1"
+  />
 
-      <div>
-        <h1 className="flex items-center gap-2 text-xl font-bold text-white">
-          Create Invoice
+  <span>Back to Dashboard</span>
+</Link>
 
-          <span className="rounded-full bg-yellow-500/15 px-2 py-0.5 text-[11px] font-medium text-yellow-400">
-            Draft
-          </span>
-        </h1>
+    <h1 className="text-3xl font-bold text-white">
+      Create Invoice
+    </h1>
 
-        <p className="text-xs text-zinc-400">
-          Create, preview & export invoices
-        </p>
-      </div>
-    </div>
-
+    <p className="mt-1 text-sm text-zinc-400">
+      Create, preview and export professional invoices.
+    </p>
   </div>
 </div>
+
 
       <InvoiceForm />
     </div>

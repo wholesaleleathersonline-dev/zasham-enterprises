@@ -1,10 +1,10 @@
 import {
   FaTachometerAlt,
   FaBoxOpen,
-  FaTags,
-  FaImages,
+  FaFileInvoiceDollar,
+  FaUserPlus,
+  FaChartLine,
   FaCog,
-  FaSignOutAlt,
 } from "react-icons/fa";
 import { IconType } from "react-icons";
 
@@ -26,23 +26,23 @@ export const adminNavigation: AdminNavigationItem[] = [
     icon: FaBoxOpen,
   },
   {
-    name: "Categories",
-    href: "/admin/categories",
-    icon: FaTags,
+    name: "Create Invoice",
+    href: "/admin/invoices/create",
+    icon: FaFileInvoiceDollar,
   },
   {
-    name: "Media",
-    href: "/admin/media",
-    icon: FaImages,
+    name: "Add Customer",
+    href: "/admin/customers/create",
+    icon: FaUserPlus,
   },
   {
-    name: "Settings",
+    name: "Revenue Stats",
+    href: "/admin/revenue",
+    icon: FaChartLine,
+  },
+  {
+    name: "Admin Settings",
     href: "/admin/settings",
     icon: FaCog,
-  },
-  {
-    name: "Logout",
-    href: "/admin/logout",
-    icon: FaSignOutAlt,
   },
 ];

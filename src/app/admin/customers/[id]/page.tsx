@@ -21,22 +21,27 @@ export default function CustomerDetailsPage() {
 );
  
 
-  useEffect(() => {
-    async function loadCustomer() {
-      try {
-        const data = await getCustomerById(id);
-        setCustomer(data);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    }
+ useEffect(() => {
+  async function loadCustomer() {
+    try {
+      const [customerData, customerInvoices] = await Promise.all([
+        getCustomerById(id),
+        getInvoicesByCustomer(id),
+      ]);
 
-    if (id) {
-      loadCustomer();
+      setCustomer(customerData);
+      setInvoices(customerInvoices);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
-  }, [id]);
+  }
+
+  if (id) {
+    loadCustomer();
+  }
+}, [id]);
 
   if (loading) {
     return (

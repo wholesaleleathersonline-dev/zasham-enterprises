@@ -20,7 +20,7 @@ export default function MobileMenu({
 
   return (
     <div className="lg:hidden border-t border-[#D4AF37]/20 bg-[#111111]">
-      <div className="flex flex-col py-3">
+      <div className="flex h-full flex-col overflow-y-auto pt-20 py-3">
 
         {menuItems.map((item) => (
           <div key={item.title} className="border-b border-[#D4AF37]/10">
