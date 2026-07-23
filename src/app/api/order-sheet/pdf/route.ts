@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     const { error } = await resend.emails.send({
 
       from:
-        "Zasham Enterprises <onboarding@resend.dev>",
+        "Zasham Enterprises <info@zashamenterprises.com>",
 
       to:[
         "wholesaleleathersonline@gmail.com"
