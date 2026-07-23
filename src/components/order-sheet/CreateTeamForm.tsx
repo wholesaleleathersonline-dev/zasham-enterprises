@@ -22,6 +22,7 @@ const [modalType, setModalType] = useState<"success" | "error">("success");
 const [modalTitle, setModalTitle] = useState("");
 
 const [modalMessage, setModalMessage] = useState("");
+const [pendingOrder, setPendingOrder] = useState<any>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,25 +53,43 @@ const order = await createOrderSheet({
       const playerLink = `${window.location.origin}/order-sheet/${order.order_code}`;
 
 const captainLink = `${window.location.origin}/order-sheet/manage/${order.order_code}?token=${order.manage_token}`;
-
-await fetch("/api/inquiry", {
+const emailResponse = await fetch("/api/inquiry", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
   },
   body: JSON.stringify({
     inquiryType: "order-sheet",
-
     teamName: order.team_name,
     captainName: order.captain_name,
     captainEmail: order.captain_email,
-
     playerLink,
     captainLink,
   }),
 });
 
-      setCreatedOrder(order);
+const emailResult = await emailResponse.json();
+
+if (!emailResponse.ok || !emailResult.success) {
+  throw new Error(
+    emailResult.message ||
+    "Captain onboarding email could not be sent."
+  );
+}
+
+setModalType("success");
+setModalTitle("🎉 Team Created Successfully");
+setModalMessage(
+  "Your team has been created successfully.\n\nPlease check your email for Captain onboarding instructions and your Captain Dashboard access link."
+);
+
+setModalOpen(true);
+
+
+
+
+
+      setPendingOrder(order);
 
       setTeamName("");
       setCaptainName("");
@@ -326,12 +345,19 @@ async function copy(text: string, type: string) {
        Already have a team? Access My Teams
       </Link>
 
-      <OrderSheetStatusModal
+     <OrderSheetStatusModal
   isOpen={modalOpen}
   type={modalType}
   title={modalTitle}
   message={modalMessage}
-  onClose={() => setModalOpen(false)}
+  onClose={() => {
+    setModalOpen(false);
+
+    if (modalType === "success" && pendingOrder) {
+      setCreatedOrder(pendingOrder);
+      setPendingOrder(null);
+    }
+  }}
 />
     </div>
   );

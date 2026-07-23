@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 } = body;
 
     const { error } = await resend.emails.send({
-      from: "Zasham Enterprises <onboarding@resend.dev>",
+      from: "Zasham Enterprises <info@zashamenterprises.com>",
       to: [email],
       subject: `Invoice ${invoiceNumber}`,
     html: `

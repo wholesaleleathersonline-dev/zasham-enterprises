@@ -70,7 +70,7 @@ captainLink,
 } = body;
 
     const { error } = await resend.emails.send({
-      from: "Zasham Enterprises <onboarding@resend.dev>",
+      from: "Zasham Enterprises <info@zashamenterprises.com>",
     to:
   inquiryType === "order-sheet"
     ? [captainEmail]
@@ -78,7 +78,7 @@ captainLink,
       replyTo: email,
      subject:
   inquiryType === "order-sheet"
-    ? `Your ${teamName} Order Sheet is Ready`
+    ? `Captain Dashboard | ${teamName} | Zasham Enterprises`
     : inquiryType === "newsletter"
     ? "🎁 New Gift Popup Subscriber"
     : inquiryType === "contact"
