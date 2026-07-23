@@ -77,22 +77,17 @@ const [modalMessage, setModalMessage] = useState("");
     e.preventDefault();
 
 
-if (
-  !playerNumber ||
-  !playerName ||
-  !topSize ||
-  !bottomSize ||
-  !shortsStyle ||
-  !hood ||
-  (isFlagFootball && (!material || !topStyle))
-) {
-     setModalType("error");
-setModalTitle("Missing Information");
-setModalMessage("Please fill all required fields.");
-setModalOpen(true);
-return;
-      return;
-    }
+if (!playerNumber || !playerName) {
+  setModalType("error");
+  setModalTitle("Missing Information");
+  setModalMessage(
+    "Player Name and Jersey Number are required."
+  );
+  setModalOpen(true);
+  return;
+}
+   
+    
 
     try {
       setLoading(true);
@@ -190,7 +185,7 @@ setModalOpen(true);
 
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-300">
-            Top Size *
+            Top Size 
           </label>
 
           <select
@@ -213,7 +208,7 @@ setModalOpen(true);
 
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-300">
-            Bottom Size *
+            Bottom Size 
           </label>
 
           <select
@@ -234,7 +229,7 @@ setModalOpen(true);
           </select>
         </div>        <div>
           <label className="mb-2 block text-sm font-medium text-gray-300">
-            Shorts Style *
+            Shorts Style 
           </label>
 
           <select
@@ -259,7 +254,7 @@ setModalOpen(true);
 
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-300">
-            Hood *
+            Hood 
           </label>
 
           <select

@@ -61,18 +61,52 @@ const [joggerSize, setJoggerSize] = useState("");
     setSpecialRequest(player.special_request ?? "");
   }, [player]);
 
-  if (!isOpen || !player) return null;
 
-    async function handleSave(e: React.FormEvent) {
-    e.preventDefault();
+async function handleSave(e: React.FormEvent) {
+  e.preventDefault();
 
-    if (!playerNumber || !playerName || !topSize || !bottomSize) {
-      setModalType("error");
-      setModalTitle("Missing Information");
-      setModalMessage("Please fill all required fields.");
-      setModalOpen(true);
-      return;
-    }
+  if (!playerNumber || !playerName) {
+    setModalType("error");
+    setModalTitle("Missing Information");
+    setModalMessage(
+      "Player Name and Jersey Number are required."
+    );
+    setModalOpen(true);
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    await updatePlayer(player.id, {
+      player_number: playerNumber,
+      player_name: playerName,
+      top_size: topSize,
+      bottom_size: bottomSize,
+      shorts_style: shortsStyle,
+      hood,
+      special_request: specialRequest,
+      material,
+      top_style: topStyle,
+      jogger_size: joggerSize,
+    });
+
+    setModalType("success");
+    setModalTitle("Player Updated");
+    setModalMessage("Player information updated successfully.");
+    setModalOpen(true);
+  } catch (error: any) {
+    console.error(error);
+
+    setModalType("error");
+    setModalTitle("Update Failed");
+    setModalMessage(error.message || "Something went wrong.");
+    setModalOpen(true);
+  } finally {
+    setLoading(false);
+  }
+
+
 
     try {
       setLoading(true);
