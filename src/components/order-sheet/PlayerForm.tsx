@@ -7,6 +7,12 @@ import { SIZES } from "../../constants/sizes";
 import { SHORTS_STYLES } from "../../constants/shortsStyles";
 import { HOOD_OPTIONS } from "../../constants/hoodOptions";
 import OrderSheetStatusModal from "./OrderSheetStatusModal";
+import {
+  FLAG_FOOTBALL_MATERIALS,
+  FLAG_FOOTBALL_TOP_STYLES,
+  FLAG_FOOTBALL_SHORTS,
+  JOGGER_SIZES,
+} from "../../constants/flagfootball";
 
 interface Props {
 
@@ -56,6 +62,10 @@ export default function PlayerForm({
   const [hood, setHood] = useState("");
   const [specialRequest, setSpecialRequest] = useState("");
 const [modalOpen, setModalOpen] = useState(false);
+const isFlagFootball = orderSheet.category === "Flag Football";
+const [material, setMaterial] = useState("");
+const [topStyle, setTopStyle] = useState("");
+const [joggerSize, setJoggerSize] = useState("");
 
 const [modalType, setModalType] = useState<"success" | "error">("success");
 
@@ -67,15 +77,15 @@ const [modalMessage, setModalMessage] = useState("");
     e.preventDefault();
 
 
-
-    if (
-      !playerNumber ||
-      !playerName ||
-      !topSize ||
-      !bottomSize ||
-      !shortsStyle ||
-      !hood
-    ) {
+if (
+  !playerNumber ||
+  !playerName ||
+  !topSize ||
+  !bottomSize ||
+  !shortsStyle ||
+  !hood ||
+  (isFlagFootball && (!material || !topStyle))
+) {
      setModalType("error");
 setModalTitle("Missing Information");
 setModalMessage("Please fill all required fields.");
@@ -87,16 +97,21 @@ return;
     try {
       setLoading(true);
 
-      await createPlayer({
-        order_sheet_id: orderSheet.id,
-        player_number: playerNumber,
-        player_name: playerName,
-        top_size: topSize,
-        bottom_size: bottomSize,
-        shorts_style: shortsStyle,
-        hood,
-        special_request: specialRequest,
-      });
+     await createPlayer({
+  order_sheet_id: orderSheet.id,
+  player_number: playerNumber,
+  player_name: playerName,
+  top_size: topSize,
+  bottom_size: bottomSize,
+  shorts_style: shortsStyle,
+  hood,
+
+  material: isFlagFootball ? material : undefined,
+  top_style: isFlagFootball ? topStyle : undefined,
+  jogger_size: isFlagFootball ? joggerSize : undefined,
+
+  special_request: specialRequest,
+});
 
       setPlayerNumber("");
       setPlayerName("");
@@ -228,15 +243,17 @@ setModalOpen(true);
             className="w-full rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white outline-none transition focus:border-yellow-500"
           >
             <option value="">Select Style</option>
-
-            {SHORTS_STYLES.map((style) => (
-              <option
-                key={style}
-                value={style}
-              >
-                {style}
-              </option>
-            ))}
+{(isFlagFootball
+  ? FLAG_FOOTBALL_SHORTS
+  : SHORTS_STYLES
+).map((style) => (
+  <option
+    key={style}
+    value={style}
+  >
+    {style}
+  </option>
+))}
           </select>
         </div>
 
@@ -262,6 +279,87 @@ setModalOpen(true);
             ))}
           </select>
         </div>
+
+
+        {isFlagFootball && (
+  <>
+   
+
+   
+  </>
+)}
+
+{isFlagFootball && (
+  <>
+    {/* Material */}
+    <div>
+      <label className="mb-2 block text-sm font-medium text-gray-300">
+        Material *
+      </label>
+
+      <select
+        value={material}
+        onChange={(e) => setMaterial(e.target.value)}
+        className="w-full rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white outline-none transition focus:border-yellow-500"
+      >
+        <option value="">Select Material</option>
+
+        {FLAG_FOOTBALL_MATERIALS.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Top Style */}
+    <div>
+      <label className="mb-2 block text-sm font-medium text-gray-300">
+        Top Style *
+      </label>
+
+      <select
+        value={topStyle}
+        onChange={(e) => setTopStyle(e.target.value)}
+        className="w-full rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white outline-none transition focus:border-yellow-500"
+      >
+        <option value="">Select Top Style</option>
+
+        {FLAG_FOOTBALL_TOP_STYLES.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Jogger Size */}
+    <div>
+      <label className="mb-2 block text-sm font-medium text-gray-300">
+        Uniform Jogger Pants Size
+      </label>
+
+      <select
+        value={joggerSize}
+        onChange={(e) => setJoggerSize(e.target.value)}
+        className="w-full rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white outline-none transition focus:border-yellow-500"
+      >
+        <option value="">Not Required</option>
+
+        {JOGGER_SIZES.map((size) => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </select>
+    </div>
+  </>
+)}
+
+
+
+
+
 
         <div className="md:col-span-2">
           <label className="mb-2 block text-sm font-medium text-gray-300">

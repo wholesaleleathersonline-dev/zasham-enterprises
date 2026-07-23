@@ -4,6 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import EditPlayerModal from "../../../../components/order-sheet/EditPlayerModal";
 import DeletePlayerModal from "../../../../components/order-sheet/DeletePlayerModal";
+import OrderSheetStatusModal from "../../../../components/order-sheet/OrderSheetStatusModal";
+import { useRouter } from "next/navigation";
+
+
+import DeleteOrderSheetModal from "../../../../components/order-sheet/DeleteOrderSheetModal";
+
+import { deleteOrderSheet } from "../../../../services/order-sheet.service";
 import {
   lockOrderSheet,
   unlockOrderSheet,
@@ -21,6 +28,7 @@ import PlayersList from "../../../../components/order-sheet/PlayersList";
 import { exportOrderPDF } from "../../../../lib/export-order-pdf";
 
 export default function CaptainDashboardPage() {
+  const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
 
@@ -35,6 +43,14 @@ export default function CaptainDashboardPage() {
   const [editingPlayer, setEditingPlayer] = useState<any>(null);
   const [deletingPlayer, setDeletingPlayer] = useState<any>(null);
   const [locking, setLocking] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+const [modalType, setModalType] = useState<"success" | "error">("success");
+
+const [modalTitle, setModalTitle] = useState("");
+
+const [modalMessage, setModalMessage] = useState("");
 
 
   useEffect(() => {
@@ -77,11 +93,54 @@ export default function CaptainDashboardPage() {
 
     await loadData();
 
+    setModalType("success");
+
+setModalTitle("Success");
+
+setModalMessage(
+  orderSheet.is_locked
+    ? "Order has been unlocked successfully."
+    : "Order has been locked successfully."
+);
+
+setModalOpen(true);
+
+ } catch (error) {
+  console.error(error);
+
+  setModalType("error");
+  setModalTitle("Update Failed");
+  setModalMessage("Failed to update order status.");
+  setModalOpen(true);
+} finally {
+  setLocking(false);
+}
+}
+
+async function handleDeleteOrderSheet() {
+  if (!orderSheet) return;
+
+  try {
+    await deleteOrderSheet(orderSheet.id);
+
+    setDeleteModalOpen(false);
+
+    setModalType("success");
+    setModalTitle("Team Deleted");
+    setModalMessage(
+      "Your team and all player records have been deleted successfully."
+    );
+    setModalOpen(true);
+
   } catch (error) {
     console.error(error);
-    alert("Failed to update order status.");
-  } finally {
-    setLocking(false);
+
+    setDeleteModalOpen(false);
+
+    setModalType("error");
+    setModalTitle("Delete Failed");
+    setModalMessage("Unable to delete this team. Please try again.");
+    setModalOpen(true);
   }
 }
     if (loading) {
@@ -236,19 +295,52 @@ export default function CaptainDashboardPage() {
               </p>
 
               <button
-                onClick={() => navigator.clipboard.writeText(playerLink)}
+                onClick={async () => {
+  try {
+    await navigator.clipboard.writeText(playerLink);
+
+    setModalType("success");
+    setModalTitle("Link Copied");
+    setModalMessage("Player form link has been copied to your clipboard.");
+    setModalOpen(true);
+  } catch {
+    setModalType("error");
+    setModalTitle("Copy Failed");
+    setModalMessage("Unable to copy the player link.");
+    setModalOpen(true);
+  }
+}}
                 className="mt-5 w-full rounded-xl bg-yellow-500 py-3 font-semibold text-black transition hover:bg-yellow-400"
               >
                 📋 Copy Player Link
               </button>
 <button
-  onClick={async () =>
+ onClick={async () => {
+  try {
     await exportOrderPDF(
       orderSheet.team_name,
       orderSheet.order_code,
+      orderSheet.category,
       players
-    )
+    );
+
+    setModalType("success");
+    setModalTitle("Order Submitted");
+    setModalMessage(
+      "Order sheet has been generated and submitted successfully."
+    );
+    setModalOpen(true);
+  } catch (error) {
+    console.error(error);
+
+    setModalType("error");
+    setModalTitle("Submission Failed");
+    setModalMessage(
+      "Failed to generate or submit the order sheet."
+    );
+    setModalOpen(true);
   }
+}}
   className="mt-5 w-full rounded-xl bg-yellow-500 py-3 font-semibold text-black hover:bg-yellow-400"
 >
   📄 Submit Order Sheet
@@ -263,6 +355,12 @@ export default function CaptainDashboardPage() {
               <p className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-400">
                 Order Status
               </p>
+             <button
+  onClick={() => setDeleteModalOpen(true)}
+  className="mt-4 w-full rounded-xl border border-red-500 bg-red-600 py-3 font-semibold text-white transition hover:bg-red-500"
+>
+  🗑 Delete Team
+</button>
 
               <div className="mb-5">
                 {orderSheet.is_locked ? (
@@ -309,6 +407,7 @@ export default function CaptainDashboardPage() {
 <EditPlayerModal
   player={editingPlayer}
   isOpen={!!editingPlayer}
+  category={orderSheet.category}
   onClose={() => setEditingPlayer(null)}
   onSuccess={() => {
     setEditingPlayer(null);
@@ -325,7 +424,29 @@ export default function CaptainDashboardPage() {
   }}
 />
 
+<DeleteOrderSheetModal
+  isOpen={deleteModalOpen}
+  teamName={orderSheet.team_name}
+  onClose={() => setDeleteModalOpen(false)}
+  onConfirm={handleDeleteOrderSheet}
+/>
+
       </div>
+
+     <OrderSheetStatusModal
+  isOpen={modalOpen}
+  type={modalType}
+  title={modalTitle}
+  message={modalMessage}
+  onClose={() => {
+    setModalOpen(false);
+
+    if (modalTitle === "Team Deleted") {
+      router.push("/order-sheet/recover");
+      router.refresh();
+    }
+  }}
+/>
     </main>
   );
 }

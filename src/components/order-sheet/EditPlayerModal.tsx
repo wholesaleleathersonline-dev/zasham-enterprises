@@ -7,10 +7,17 @@ import OrderSheetStatusModal from "./OrderSheetStatusModal";
 import { SIZES } from "../../constants/sizes";
 import { SHORTS_STYLES } from "../../constants/shortsStyles";
 import { HOOD_OPTIONS } from "../../constants/hoodOptions";
+import {
+  FLAG_FOOTBALL_MATERIALS,
+  FLAG_FOOTBALL_TOP_STYLES,
+  FLAG_FOOTBALL_SHORTS,
+  JOGGER_SIZES,
+} from "../../constants/flagfootball";
 
 interface Props {
   isOpen: boolean;
   player: any;
+  category: string;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -18,6 +25,7 @@ interface Props {
 export default function EditPlayerModal({
   isOpen,
   player,
+  category,
   onClose,
   onSuccess,
 }: Props) {
@@ -29,6 +37,7 @@ export default function EditPlayerModal({
   const [bottomSize, setBottomSize] = useState("");
   const [shortsStyle, setShortsStyle] = useState("");
   const [hood, setHood] = useState("");
+  const isFlagFootball = category === "Flag Football";
   const [specialRequest, setSpecialRequest] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,6 +45,9 @@ export default function EditPlayerModal({
     useState<"success" | "error">("success");
   const [modalTitle, setModalTitle] = useState("");
   const [modalMessage, setModalMessage] = useState("");
+  const [material, setMaterial] = useState("");
+const [topStyle, setTopStyle] = useState("");
+const [joggerSize, setJoggerSize] = useState("");
 
   useEffect(() => {
     if (!player) return;
@@ -73,6 +85,9 @@ export default function EditPlayerModal({
         shorts_style: shortsStyle,
         hood,
         special_request: specialRequest,
+        material,
+top_style: topStyle,
+jogger_size: joggerSize,
       });
 
       setModalType("success");
@@ -147,15 +162,20 @@ export default function EditPlayerModal({
               ))}
             </select>
 
-            <select
-              value={shortsStyle}
-              onChange={(e) => setShortsStyle(e.target.value)}
-              className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white"
-            >
-              {SHORTS_STYLES.map((style) => (
-                <option key={style}>{style}</option>
-              ))}
-            </select>
+           <select
+  value={shortsStyle}
+  onChange={(e) => setShortsStyle(e.target.value)}
+  className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white"
+>
+  {(isFlagFootball
+    ? FLAG_FOOTBALL_SHORTS
+    : SHORTS_STYLES
+  ).map((style) => (
+    <option key={style} value={style}>
+      {style}
+    </option>
+  ))}
+</select>
 
             <select
               value={hood}
@@ -166,6 +186,48 @@ export default function EditPlayerModal({
                 <option key={item}>{item}</option>
               ))}
             </select>
+
+            <select
+  value={material}
+  onChange={(e) => setMaterial(e.target.value)}
+  className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white"
+>
+  <option value="">Material</option>
+
+  {FLAG_FOOTBALL_MATERIALS.map((item) => (
+    <option key={item} value={item}>
+      {item}
+    </option>
+  ))}
+</select>
+
+<select
+  value={topStyle}
+  onChange={(e) => setTopStyle(e.target.value)}
+  className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white"
+>
+  <option value="">Top Style</option>
+
+  {FLAG_FOOTBALL_TOP_STYLES.map((item) => (
+    <option key={item} value={item}>
+      {item}
+    </option>
+  ))}
+</select>
+
+<select
+  value={joggerSize}
+  onChange={(e) => setJoggerSize(e.target.value)}
+  className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 text-white"
+>
+  <option value="">Jogger Size</option>
+
+  {JOGGER_SIZES.map((item) => (
+    <option key={item} value={item}>
+      {item}
+    </option>
+  ))}
+</select>
 
             <textarea
               value={specialRequest}

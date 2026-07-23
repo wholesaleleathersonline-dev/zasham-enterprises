@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { deletePlayer } from "../../services/player.service";
+import OrderSheetStatusModal from "./OrderSheetStatusModal";
 
 interface Props {
   player: any;
@@ -19,31 +20,40 @@ export default function DeletePlayerModal({
 }: Props) {
 
   const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+const [modalType, setModalType] = useState<"success" | "error">("success");
+
+const [modalTitle, setModalTitle] = useState("");
+
+const [modalMessage, setModalMessage] = useState("");
 
   if (!isOpen || !player) return null;
 
 
-  async function handleDelete() {
+ async function handleDelete() {
+  try {
+    setLoading(true);
 
-    try {
-      setLoading(true);
+    await deletePlayer(player.id);
 
-      await deletePlayer(player.id);
+    setModalType("success");
+    setModalTitle("Player Deleted");
+    setModalMessage("Player has been removed successfully.");
+    setModalOpen(true);
 
-      onSuccess();
+  } catch (error) {
+    console.error(error);
 
-    } catch (error) {
+    setModalType("error");
+    setModalTitle("Delete Failed");
+    setModalMessage("Failed to delete player.");
+    setModalOpen(true);
 
-      console.error(error);
-
-      alert("Failed to delete player.");
-
-    } finally {
-
-      setLoading(false);
-
-    }
+  } finally {
+    setLoading(false);
   }
+}
 
 
   return (
@@ -96,6 +106,22 @@ export default function DeletePlayerModal({
         </div>
 
       </div>
+
+<OrderSheetStatusModal
+  isOpen={modalOpen}
+  type={modalType}
+  title={modalTitle}
+  message={modalMessage}
+  onClose={() => {
+  setModalOpen(false);
+
+  if (modalType === "success") {
+    onClose();
+    onSuccess();
+    }
+  }}
+/>
+
 
     </div>
   );

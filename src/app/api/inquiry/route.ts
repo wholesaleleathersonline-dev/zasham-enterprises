@@ -62,71 +62,70 @@ const resend = new Resend(apiKey);
 
   notes,
   newsletterEmail,
+  teamName,
+captainName,
+captainEmail,
+playerLink,
+captainLink,
 } = body;
 
     const { error } = await resend.emails.send({
       from: "Zasham Enterprises <onboarding@resend.dev>",
-      to: ["wholesaleleathersonline@gmail.com"],
+    to:
+  inquiryType === "order-sheet"
+    ? [captainEmail]
+    : ["wholesaleleathersonline@gmail.com"],
       replyTo: email,
-      subject:
-  inquiryType === "newsletter"
+     subject:
+  inquiryType === "order-sheet"
+    ? `Your ${teamName} Order Sheet is Ready`
+    : inquiryType === "newsletter"
     ? "🎁 New Gift Popup Subscriber"
     : inquiryType === "contact"
     ? `New Contact Inquiry - ${customerName}`
     : `New Wholesale Inquiry - ${product}`,
-      html:
-  inquiryType === "contact"
+ html:
+  inquiryType === "order-sheet"
     ? `
-<div style="font-family:Arial,sans-serif;padding:30px;background:#f7f7f7">
-  <div style="max-width:700px;margin:auto;background:white;padding:30px;border-radius:10px">
+<div style="font-family:Arial,sans-serif;background:#f4f4f4;padding:40px">
+  <div style="max-width:700px;margin:auto;background:#fff;padding:40px;border-radius:12px">
 
-    <h2 style="color:#D4AF37;">
-      New Contact Inquiry
-    </h2>
+    <h1 style="color:#D4AF37;margin-top:0">
+      Your Order Sheet is Ready 🎉
+    </h1>
 
-    <table style="width:100%;border-collapse:collapse">
+    <p>Hi <strong>${captainName}</strong>,</p>
 
-      <tr>
-        <td><strong>Customer Name</strong></td>
-        <td>${customerName}</td>
-      </tr>
+    <p>
+      Your team <strong>${teamName}</strong> has been created successfully.
+    </p>
 
-      <tr>
-        <td><strong>Company</strong></td>
-        <td>${organization || "-"}</td>
-      </tr>
+    <hr style="margin:30px 0;border:none;border-top:1px solid #ddd">
 
-      <tr>
-        <td><strong>Uniform Category</strong></td>
-        <td>${uniformCategory}</td>
-      </tr>
+    <h3>Player Order Form</h3>
 
-      <tr>
-        <td><strong>Quantity</strong></td>
-        <td>${quantity}</td>
-      </tr>
+    <p>
+      <a href="${playerLink}">
+        ${playerLink}
+      </a>
+    </p>
 
-      <tr>
-        <td><strong>Country</strong></td>
-        <td>${country}</td>
-      </tr>
+    <h3>Captain Dashboard</h3>
 
-      <tr>
-        <td><strong>Contact Number</strong></td>
-        <td>${contactNumber}</td>
-      </tr>
+    <p>
+      <a href="${captainLink}">
+        ${captainLink}
+      </a>
+    </p>
 
-      <tr>
-        <td><strong>Email</strong></td>
-        <td>${email}</td>
-      </tr>
+    <p style="margin-top:30px">
+      Please save this email for future access.
+    </p>
 
-      <tr>
-        <td><strong>Message</strong></td>
-        <td>${message || "-"}</td>
-      </tr>
-
-    </table>
+    <p>
+      Regards,<br>
+      <strong>Zasham Enterprises</strong>
+    </p>
 
   </div>
 </div>

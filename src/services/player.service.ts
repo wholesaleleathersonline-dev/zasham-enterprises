@@ -44,15 +44,19 @@ export async function getPlayers(orderSheetId: string) {
 
 export async function updatePlayer(
   id: string,
-  data: {
-    player_name: string;
-    player_number: string;
-    top_size: string;
-    bottom_size: string;
-    shorts_style: string;
-    hood: string;
-    special_request: string;
-  }
+ data: {
+  player_name: string;
+  player_number: string;
+  top_size: string;
+  bottom_size: string;
+  shorts_style: string;
+  hood: string;
+  special_request: string;
+
+  material?: string;
+  top_style?: string;
+  jogger_size?: string;
+}
 ) {
   const { data: updatedPlayer, error } = await supabase
     .from("order_sheet_players")

@@ -16,9 +16,9 @@ export default function WelcomeOfferModal() {
 
   useEffect(() => {
 
-const popupShown = sessionStorage.getItem(
-    "welcome-popup"
-  );
+const popupShown = localStorage.getItem(
+  "welcome-popup"
+);
 
   if (!popupShown) {
     setIsOpen(true);
@@ -45,10 +45,10 @@ const popupShown = sessionStorage.getItem(
   }, [isOpen]);
 
   const handleClose = () => {
-  sessionStorage.setItem(
-    "welcome-popup",
-    "shown"
-  );
+localStorage.setItem(
+  "welcome-popup",
+  "shown"
+);
 
   setIsOpen(false);
 };
@@ -84,7 +84,7 @@ const popupShown = sessionStorage.getItem(
       );
 
       setStatusModalOpen(true);
-sessionStorage.setItem(
+localStorage.setItem(
   "welcome-popup",
   "shown"
 );
