@@ -12,15 +12,14 @@
 
     const { data: orderSheet, error } = await supabase
       .from("order_sheets")
-      .insert({
-    team_name: data.team_name,
-    captain_name: data.captain_name,
-    captain_email: data.captain_email,
-    category: data.category,
-    order_code,
-    manage_token,
-
-  })
+     .insert({
+  team_name: data.team_name,
+  captain_name: data.captain_name,
+  captain_email: data.captain_email.trim().toLowerCase(),
+  category: data.category,
+  order_code,
+  manage_token,
+})
       .select()
       .single();
 
@@ -108,28 +107,39 @@
 export async function getCaptainTeams(
   captainEmail: string
 ) {
-  const { data, error } = await supabase
+  const { data, error, count } = await supabase
     .from("order_sheets")
-    .select(`
-      id,
-      team_name,
-      category,
-      order_code,
-      manage_token,
-      is_locked,
-      created_at,
-      order_sheet_players(count)
-    `)
-    .eq("captain_email", captainEmail)
+    .select(
+      `
+        id,
+        team_name,
+        category,
+        order_code,
+        manage_token,
+        is_locked,
+        created_at,
+        order_sheet_players(count)
+      `,
+      {
+        count: "exact",
+      }
+    )
+    .ilike("captain_email", captainEmail)
     .order("created_at", {
       ascending: false,
     });
 
-  if (error) throw error;
+  console.log("Captain Email:", captainEmail);
+  console.log("Total Teams Found:", count);
+  console.log("Teams Data:", data);
+
+  if (error) {
+    console.error("Supabase Error:", error);
+    throw error;
+  }
 
   return data;
 }
-
 export async function deleteOrderSheet(id: string) {
   // Delete all players first
   const { error: playerError } = await supabase
