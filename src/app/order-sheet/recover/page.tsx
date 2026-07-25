@@ -27,16 +27,16 @@ const [modalTitle, setModalTitle] = useState("");
 const [modalMessage, setModalMessage] = useState("");
 const [deletingTeam, setDeletingTeam] = useState<any>(null);
 
-   async function handleSubmit(e: React.FormEvent) {
+async function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
 
-if (!captainEmail.trim()) {
-  setModalType("error");
-  setModalTitle("Email Required");
-  setModalMessage("Please enter your captain email.");
-  setModalOpen(true);
-  return;
-}
+  if (!captainEmail.trim()) {
+    setModalType("error");
+    setModalTitle("Email Required");
+    setModalMessage("Please enter your captain email.");
+    setModalOpen(true);
+    return;
+  }
 
   try {
     setLoading(true);
@@ -45,29 +45,33 @@ if (!captainEmail.trim()) {
       captainEmail.trim().toLowerCase()
     );
 
+    console.log("Recovered Teams:", data);
+
     setTeams(data || []);
     setSearched(true);
-    if (data.length > 0) {
-  setModalType("success");
-  setModalTitle("Teams Found");
-  setModalMessage(
-    `${data.length} team${data.length > 1 ? "s" : ""} found for your account.`
-  );
-  setModalOpen(true);
-}
 
- } catch (error: any) {
-  console.error(error);
+    if (data && data.length > 0) {
+      setModalType("success");
+      setModalTitle("Teams Found");
+      setModalMessage(
+        `${data.length} team${data.length > 1 ? "s" : ""} found for your account.`
+      );
+      setModalOpen(true);
+    }
+
+  } catch (error: any) {
+    console.error("Recover Error:", error);
 
     setTeams([]);
     setSearched(true);
 
     setModalType("error");
-setModalTitle("Search Failed");
-setModalMessage(
-  "Unable to find your teams. Please check your email and try again."
-);
-setModalOpen(true);
+    setModalTitle("Search Failed");
+    setModalMessage(
+      "Unable to find your teams. Please check your email and try again."
+    );
+    setModalOpen(true);
+
   } finally {
     setLoading(false);
   }
