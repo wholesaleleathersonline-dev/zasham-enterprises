@@ -61,6 +61,7 @@ const [joggerSize, setJoggerSize] = useState("");
     setSpecialRequest(player.special_request ?? "");
   }, [player]);
 
+  if (!isOpen || !player) return null;
 
 async function handleSave(e: React.FormEvent) {
   e.preventDefault();
@@ -102,11 +103,7 @@ async function handleSave(e: React.FormEvent) {
     setModalTitle("Update Failed");
     setModalMessage(error.message || "Something went wrong.");
     setModalOpen(true);
-  } finally {
-    setLoading(false);
-  }
-
-
+  } 
 
     try {
       setLoading(true);
