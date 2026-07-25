@@ -117,7 +117,8 @@ export async function getCaptainTeams(
       order_code,
       manage_token,
       is_locked,
-      created_at
+      created_at,
+      order_sheet_players(count)
     `)
     .eq("captain_email", captainEmail)
     .order("created_at", {

@@ -191,7 +191,7 @@ async function handleDeleteTeam() {
   <div>
     <p className="text-gray-500">Players</p>
     <p className="font-medium text-white">
-      0
+     {team.order_sheet_players?.[0]?.count ?? 0}
     </p>
   </div>
 
