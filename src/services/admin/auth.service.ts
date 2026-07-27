@@ -10,6 +10,16 @@ const { data: authData, error } =
     password: data.password,
   });
 
+console.log("Login Error:", error);
+console.log("Login Session:", authData.session);
+console.log("Login User:", authData.user);
+
+alert(JSON.stringify({
+  error: error?.message,
+  hasSession: !!authData.session,
+  hasUser: !!authData.user,
+}));
+
 console.log("Login Session:", authData.session);
 console.log("Login User:", authData.user);
 
