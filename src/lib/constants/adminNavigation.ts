@@ -25,16 +25,16 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/products",
     icon: FaBoxOpen,
   },
-  {
-    name: "Create Invoice",
-    href: "/admin/invoices/create",
-    icon: FaFileInvoiceDollar,
-  },
-  {
-    name: "Add Customer",
-    href: "/admin/customers/create",
-    icon: FaUserPlus,
-  },
+ {
+  name: "Invoices",
+  href: "/admin/invoices",
+  icon: FaFileInvoiceDollar,
+},
+ {
+  name: "Customers",
+  href: "/admin/customers",
+  icon: FaUserPlus,
+},
   {
     name: "Revenue Stats",
     href: "/admin/revenue",

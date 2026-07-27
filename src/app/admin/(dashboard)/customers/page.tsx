@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useCustomers } from "../../../hooks/useCustomers";
-import CustomerTable from "../../../components/admin/customer/CustomerTable";
+import { useCustomers } from "../../../../hooks/useCustomers";
+import CustomerTable from "../../../../components/admin/customer/CustomerTable";
 
 export default function CustomersPage() {
   const {

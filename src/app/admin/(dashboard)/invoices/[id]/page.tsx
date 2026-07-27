@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-import InvoicePreview from "../../../../components/admin/invoice/InvoicePreview";
-import { getInvoiceById } from "../../../../services/invoice.service";
-import { Invoice } from "../../../../types/invoice";
+import InvoicePreview from "../../../../../components/admin/invoice/InvoicePreview";
+import { getInvoiceById } from "../../../../../services/invoice.service";
+import { Invoice } from "../../../../../types/invoice";
 import Link from "next/link";
 
 export default function InvoiceDetailPage() {

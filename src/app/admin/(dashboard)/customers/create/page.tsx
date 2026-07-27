@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-import CustomerForm from "../../../../components/admin/customer/CustomerForm";
+import CustomerForm from "../../../../../components/admin/customer/CustomerForm";
 
 export default function CreateCustomerPage() {
   return (

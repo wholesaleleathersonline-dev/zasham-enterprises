@@ -31,7 +31,7 @@ export default function InvoiceTable({
 };
   if (loading) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
+      <div className="rounded-xl border border-yellow-500/20 bg-[#1A1A1A] p-6 text-center text-white">
         Loading invoices...
       </div>
     );
@@ -39,23 +39,23 @@ export default function InvoiceTable({
 
   if (invoices.length === 0) {
     return (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 text-center">
+      <div className="rounded-xl border border-yellow-500/20 bg-[#1A1A1A] p-6 text-center text-white">
         No invoices found.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-zinc-900">
+    <div className="overflow-x-auto rounded-xl border border-yellow-500/20 bg-[#1A1A1A]">
       <table className="min-w-full">
-        <thead className="border-b border-zinc-800 bg-zinc-950">
+        <thead className="border-b border-yellow-500/20 bg-[#161616]">
           <tr>
-            <th className="px-4 py-3 text-left">Invoice</th>
-            <th className="px-4 py-3 text-left">Customer</th>
-            <th className="px-4 py-3 text-left">Company</th>
-            <th className="px-4 py-3 text-left">Date</th>
-            <th className="px-4 py-3 text-left">Total</th>
-            <th className="px-4 py-3 text-left">Status</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400 ">Invoice</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400">Customer</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400">Company</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400">Date</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400">Total</th>
+            <th className="px-4 py-4 text-left text-sm font-semibold text-yellow-400">Status</th>
             <th className="px-4 py-3 text-right">Actions</th>
           </tr>
         </thead>
@@ -66,15 +66,15 @@ export default function InvoiceTable({
               key={invoice.id}
               className="border-b border-zinc-800 hover:bg-zinc-800/40"
             >
-              <td className="px-4 py-3">{invoice.invoice_number}</td>
+              <td className="px-4 py-3 text-white" >{invoice.invoice_number}</td>
 
-              <td className="px-4 py-3">{invoice.customer_name}</td>
+              <td className="px-4 py-3 text-white">{invoice.customer_name}</td>
 
-              <td className="px-4 py-3">{invoice.company}</td>
+              <td className="px-4 py-3 text-white">{invoice.company}</td>
 
-              <td className="px-4 py-3">{invoice.invoice_date}</td>
+              <td className="px-4 py-3 text-white">{invoice.invoice_date}</td>
 
-              <td className="px-4 py-3">
+              <td className="px-4 py-3 text-white">
                 ${invoice.total.toFixed(2)}
               </td>
 

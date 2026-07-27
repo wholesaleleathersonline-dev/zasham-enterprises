@@ -1,6 +1,6 @@
 "use client";
 
-import InvoiceForm from "../../../../components/admin/invoice/InvoiceForm";
+import InvoiceForm from "../../../../../components/admin/invoice/InvoiceForm";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 

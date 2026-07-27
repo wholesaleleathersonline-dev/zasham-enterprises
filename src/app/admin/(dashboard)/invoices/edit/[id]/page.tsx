@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-import InvoiceForm from "../../../../../components/admin/invoice/InvoiceForm";
-import { getInvoiceById } from "../../../../../services/invoice.service";
+import InvoiceForm from "../../../../../../components/admin/invoice/InvoiceForm";
+import { getInvoiceById } from "../../../../../../services/invoice.service";
 
 export default function EditInvoicePage() {
   const params = useParams();

@@ -24,9 +24,11 @@
           <Topbar />
 
           {/* Page Content */}
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#141414] p-4 sm:p-6">
-            {children}
-          </main>
+       <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#141414] px-6 py-6 sm:px-8 sm:py-8 xl:px-12 xl:py-10">
+  <div className="mx-auto w-full max-w-[1600px]">
+    {children}
+  </div>
+</main>
         </div>
       </div>
     );
