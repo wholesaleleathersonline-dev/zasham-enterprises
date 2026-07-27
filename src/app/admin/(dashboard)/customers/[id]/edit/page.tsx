@@ -2,9 +2,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
-import CustomerForm from "../../../../../components/admin/customer/CustomerForm";
-import { getCustomerById } from "../../../../../services/customer.service";
-import { Customer } from "../../../../../types/customer";
+import CustomerForm from "../../../../../../components/admin/customer/CustomerForm";
+import { getCustomerById } from "../../../../../../services/customer.service";
+import { Customer } from "../../../../../../types/customer";
 
 export default function EditCustomerPage() {
   const { id } = useParams<{ id: string }>();
