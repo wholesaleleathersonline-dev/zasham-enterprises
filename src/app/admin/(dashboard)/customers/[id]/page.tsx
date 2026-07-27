@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
-import { getCustomerById } from "../../../../services/customer.service";
-import { getInvoicesByCustomer } from "../../../../services/invoice.service";
-import { InvoiceListItem } from "../../../../types/invoice";
-import { Customer } from "../../../../types/customer";  
+import { getCustomerById } from "../../../../../services/customer.service";
+import { getInvoicesByCustomer } from "../../../../../services/invoice.service";
+import { InvoiceListItem } from "../../../../../types/invoice";
+import { Customer } from "../../../../../types/customer";  
 
 
 export default function CustomerDetailsPage() {
