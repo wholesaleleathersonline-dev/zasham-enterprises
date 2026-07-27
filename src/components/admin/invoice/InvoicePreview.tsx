@@ -68,7 +68,7 @@ export default function InvoicePreview({
     </p>
 
     <p className="text-gray-600">
-      www.zasham-enterprises.vercel.app
+      www.zashamenterprises.com
     </p>
   </div>
 
