@@ -3,7 +3,7 @@ import Link from "next/link";
 const sports = [
   {
     name: "Basketball",
-    image: "/Pictures/basketabll.png",
+    image: "/Pictures/Basketball.png",
     href: "/team-uniforms/basketball",
   },
   {

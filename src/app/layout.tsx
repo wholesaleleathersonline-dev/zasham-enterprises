@@ -29,10 +29,12 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL("https://zashamenterprises.com"),
 
+
   title: {
     default: "Zasham Enterprises | Custom Sportswear Manufacturer",
     template: "%s | Zasham Enterprises",
   },
+
 
   description:
     "Zasham Enterprises is a premium custom sportswear manufacturer specializing in basketball, football, baseball, soccer, volleyball, rugby, cricket and team uniforms with worldwide shipping.",
