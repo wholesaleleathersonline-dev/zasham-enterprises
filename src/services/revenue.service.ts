@@ -35,9 +35,13 @@ const revenue =
     ? Number(invoice.revenue)
     : sale - expense;
 
-    totalSales += sale;
-    totalExpenses += expense;
-    totalRevenue += revenue;
+   const status = (invoice.status ?? "").toLowerCase();
+
+if (status === "paid") {
+  totalSales += sale;
+  totalExpenses += expense;
+  totalRevenue += revenue;
+}
 
     if (!invoice.invoiceDate) return;
 
@@ -54,7 +58,7 @@ const revenue =
       todayRevenue += revenue;
     }
 
-    switch ((invoice.status ?? "").toLowerCase()) {
+    switch (status) {
       case "paid":
         paidInvoices++;
         break;
