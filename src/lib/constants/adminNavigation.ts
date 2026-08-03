@@ -5,6 +5,7 @@ import {
   FaUserPlus,
   FaChartLine,
   FaCog,
+  FaRuler,
 } from "react-icons/fa";
 import { IconType } from "react-icons";
 
@@ -25,6 +26,7 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/products",
     icon: FaBoxOpen,
   },
+
  {
   name: "Invoices",
   href: "/admin/invoices",
@@ -40,6 +42,13 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/revenue",
     icon: FaChartLine,
   },
+
+  {
+  name: "Size Charts",
+  href: "/admin/size-chart",
+  icon: FaRuler,
+},
+
   {
     name: "Admin Settings",
     href: "/admin/settings",
