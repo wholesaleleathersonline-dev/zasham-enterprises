@@ -15,19 +15,23 @@ export default function DownloadJpgButton({
     if (!element) return;
 
     try {
-      const dataUrl = await toJpeg(element, {
-        quality: 1,
-        pixelRatio: 3,
-        cacheBust: true,
-        backgroundColor: "#0B0B0B",
+     const dataUrl = await toJpeg(element, {
+  quality: 1,
+  pixelRatio: 3,
+  cacheBust: true,
+  backgroundColor: "#0B0B0B",
 
-        style: {
-          transform: "scale(1)",
-          transformOrigin: "top left",
-          width: "794px",
-          margin: "0",
-        },
-      });
+  width: element.scrollWidth,
+  height: element.scrollHeight,
+
+  canvasWidth: element.scrollWidth,
+  canvasHeight: element.scrollHeight,
+
+  style: {
+    transform: "none",
+    margin: "0",
+  },
+});
 
       const link = document.createElement("a");
       link.download = `${fileName}.jpg`;
