@@ -177,3 +177,92 @@ html {
   border-radius:999px;
   background:#D4AF37;
 }
+
+@page {
+  size: A4 portrait;
+  margin: 8mm;
+}
+
+@media print {
+
+  html,
+  body {
+    width: 210mm;
+    height: 297mm;
+    background: white !important;
+    zoom: 100%;
+  }
+
+  #revenue-report {
+    width: 100% !important;
+    min-height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  table,
+  tr,
+  td,
+  th {
+    page-break-inside: avoid;
+  }
+
+  section,
+  div {
+    break-inside: avoid;
+  }
+}
+
+
+/* ================= PRINT ================= */
+
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@media print {
+
+  html,
+  body {
+    background: white !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #revenue-report,
+  #revenue-report * {
+    visibility: visible;
+  }
+
+  #revenue-report{
+    width:190mm !important;
+    height:auto !important;
+    min-height:unset !important;
+
+    margin:0 auto !important;
+    padding:8mm !important;
+
+    overflow:hidden !important;
+
+    box-shadow:none !important;
+}
+  button {
+    display: none !important;
+  }
+
+}

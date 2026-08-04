@@ -90,19 +90,26 @@ if (status === "paid") {
 export async function getRevenueInvoices() {
   const { data, error } = await supabase
     .from("invoices")
-    .select(`
-      id,
-      invoice_number,
-      customer_name,
-      invoice_date,
-      total,
-      revenue,
-      status,
-      fabric_cost,
-      sublimation_cost,
-      shipping_cost,
-      total_cost
-    `)
+   .select(`
+  id,
+  invoice_number,
+  customer_name,
+  invoice_date,
+  total,
+  revenue,
+  status,
+
+  fabric_cost,
+  sublimation_cost,
+  stitching_cost,
+  shipping_cost,
+  total_cost,
+
+  jersey_qty,
+  short_qty,
+  total_pieces,
+  cost_per_piece
+`)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -130,21 +137,50 @@ export async function saveRevenue(
   data: {
     fabric_cost: number;
     sublimation_cost: number;
+    stitching_cost: number;
     shipping_cost: number;
+
+    jersey_qty: number;
+    short_qty: number;
+    total_pieces: number;
+    cost_per_piece: number;
+
     total_cost: number;
     revenue: number;
   }
 ) {
   const { error } = await supabase
     .from("invoices")
-    .update({
-      fabric_cost: data.fabric_cost,
-      sublimation_cost: data.sublimation_cost,
-      shipping_cost: data.shipping_cost,
-      total_cost: data.total_cost,
-      revenue: data.revenue,
-    })
+  .update({
+  fabric_cost: data.fabric_cost,
+  sublimation_cost: data.sublimation_cost,
+  stitching_cost: data.stitching_cost,
+  shipping_cost: data.shipping_cost,
+
+  jersey_qty: data.jersey_qty,
+  short_qty: data.short_qty,
+  total_pieces: data.total_pieces,
+  cost_per_piece: data.cost_per_piece,
+
+  total_cost: data.total_cost,
+  revenue: data.revenue,
+})
     .eq("id", invoiceId);
 
   if (error) throw error;
+}
+
+export async function getRevenueById(id: string) {
+  const { data, error } = await supabase
+    .from("invoices")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
 }

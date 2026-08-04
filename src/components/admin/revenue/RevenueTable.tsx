@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getRevenueInvoices } from "../../../services/revenue.service";
 import CalculateRevenueModal from "./CalculateRevenueModal";
+import Link from "next/link";
 
 
 export default function RevenueTable() {
@@ -86,11 +87,30 @@ const [openModal, setOpenModal] = useState(false);
                 </div>
               </td>
 
-              <td className="px-6 py-5">
-                <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-                  {invoice.status}
-                </span>
-              </td>
+             <td className="px-6 py-5">
+  <div className="flex items-center gap-2">
+
+    <button
+      onClick={() => {
+        setSelectedInvoice(invoice);
+        setOpenModal(true);
+      }}
+      className="w-24 rounded-lg bg-yellow-500 py-2 text-center text-xs font-semibold text-black hover:bg-yellow-400"
+    >
+      {invoice.revenue && Number(invoice.revenue) > 0
+        ? "Edit"
+        : "Calculate"}
+    </button>
+
+    <Link
+      href={`/admin/revenue/${invoice.id}`}
+      className="w-24 rounded-lg bg-zinc-700 py-2 text-center text-xs font-semibold text-white hover:bg-zinc-600"
+    >
+      View
+    </Link>
+
+  </div>
+</td>
 
               <td className="px-6 py-5">
                 <button

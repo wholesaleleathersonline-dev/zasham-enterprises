@@ -18,15 +18,21 @@ export default function CalculateRevenueModal({
 }: CalculateRevenueModalProps) {
   const [fabricCost, setFabricCost] = useState(0);
   const [sublimationCost, setSublimationCost] = useState(0);
+  const [stitchingCost, setStitchingCost] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
+  const [jerseyQty, setJerseyQty] = useState(0);
+const [shortQty, setShortQty] = useState(0);  
 
   const [totalCost, setTotalCost] = useState(0);
   const [revenue, setRevenue] = useState(0);
 
-  const [usdRate, setUsdRate] = useState(285);
+  const [usdRate, setUsdRate] = useState(278);
 const [invoicePkr, setInvoicePkr] = useState(0);
 const [revenuePkr, setRevenuePkr] = useState(0);
 const [revenueUsd, setRevenueUsd] = useState(0);
+const [totalPieces, setTotalPieces] = useState(0);
+const [costPerPiece, setCostPerPiece] = useState(0);
+const [revenuePerPiece, setRevenuePerPiece] = useState(0);
 const [showSuccess, setShowSuccess] = useState(false);
 
 
@@ -50,52 +56,109 @@ useEffect(() => {
   loadRate();
 }, [invoice]);
 
-  useEffect(() => {
-    const total =
-      fabricCost +
-      sublimationCost +
-      shippingCost;
+useEffect(() => {
+  if (!invoice) return;
 
-    setTotalCost(total);
+  setFabricCost(Number(invoice.fabric_cost ?? 0));
+  setSublimationCost(Number(invoice.sublimation_cost ?? 0));
+  setStitchingCost(Number(invoice.stitching_cost ?? 0));
+  setShippingCost(Number(invoice.shipping_cost ?? 0));
 
-    if (invoice) {
-      const invoiceAmountPkr =
-  Number(invoice.total) * usdRate;
+  setJerseyQty(Number(invoice.jersey_qty ?? 0));
+  setShortQty(Number(invoice.short_qty ?? 0));
 
-const total =
-  fabricCost +
-  sublimationCost +
-  shippingCost;
+  setTotalPieces(Number(invoice.total_pieces ?? 0));
+  setCostPerPiece(Number(invoice.cost_per_piece ?? 0));
 
-const revenuePkrValue =
-  invoiceAmountPkr - total;
+}, [invoice]);
 
-const revenueUsdValue =
-  revenuePkrValue / usdRate;
+useEffect(() => {
+  if (!invoice) return;
 
-setTotalCost(total);
-setRevenuePkr(revenuePkrValue);
-setRevenueUsd(revenueUsdValue);
-    }
-  }, [
-    fabricCost,
-    sublimationCost,
-    shippingCost,
-    invoice,
-  ]);
+  const total =
+    fabricCost +
+    sublimationCost +
+    stitchingCost +
+    shippingCost;
+
+  const invoiceAmountPkr =
+    Number(invoice.total) * usdRate;
+
+  const revenuePkrValue =
+    invoiceAmountPkr - total;
+
+  const revenueUsdValue =
+    revenuePkrValue / usdRate;
+
+  const pieces =
+    jerseyQty + shortQty;
+
+  const costPerPieceValue =
+    pieces > 0
+      ? total / pieces
+      : 0;
+
+  const revenuePerPieceValue =
+    pieces > 0
+      ? revenueUsdValue / pieces
+      : 0;
+
+  setTotalCost(total);
+
+  setRevenuePkr(revenuePkrValue);
+  setRevenueUsd(revenueUsdValue);
+
+  setTotalPieces(pieces);
+
+  setCostPerPiece(costPerPieceValue);
+
+  setRevenuePerPiece(revenuePerPieceValue);
+
+}, [
+  fabricCost,
+  sublimationCost,
+  stitchingCost,
+  shippingCost,
+  jerseyQty,
+  shortQty,
+  usdRate,
+  invoice,
+]);
+
+
+
 
 const handleSave = async () => {
   try {
+    const pieces = jerseyQty + shortQty;
+
+    const total =
+      fabricCost +
+      sublimationCost +
+      stitchingCost +
+      shippingCost;
+
+    const costPerPieceValue =
+      pieces > 0 ? total / pieces : 0;
+
     console.log("Revenue USD:", revenueUsd);
-console.log("Total Cost:", totalCost);
-console.log("Invoice Total USD:", invoice.total);
-await saveRevenue(invoice.id, {
-  fabric_cost: fabricCost,
-  sublimation_cost: sublimationCost,
-  shipping_cost: shippingCost,
-  total_cost: totalCost,
-  revenue: revenueUsd,
-});
+    console.log("Total Cost:", total);
+    console.log("Cost Per Piece:", costPerPieceValue);
+
+    await saveRevenue(invoice.id, {
+      fabric_cost: fabricCost,
+      sublimation_cost: sublimationCost,
+      stitching_cost: stitchingCost,
+      shipping_cost: shippingCost,
+
+      jersey_qty: jerseyQty,
+      short_qty: shortQty,
+      total_pieces: pieces,
+      cost_per_piece: costPerPieceValue,
+
+      total_cost: total,
+      revenue: revenueUsd,
+    });
 
     setShowSuccess(true);
 
@@ -182,6 +245,21 @@ await saveRevenue(invoice.id, {
           </div>
 
           <div>
+  <label className="mb-2 block text-sm text-zinc-300">
+    Stitching Cost
+  </label>
+
+  <input
+    type="number"
+    value={stitchingCost}
+    onChange={(e) =>
+      setStitchingCost(Number(e.target.value))
+    }
+    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
+  />
+</div>
+
+          <div>
             <label className="mb-2 block text-sm text-zinc-300">
               Shipping Cost
             </label>
@@ -195,6 +273,32 @@ await saveRevenue(invoice.id, {
               className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
             />
           </div>
+
+          <div>
+  <label className="mb-2 block text-sm text-zinc-300">
+    Jersey Quantity
+  </label>
+
+  <input
+    type="number"
+    value={jerseyQty}
+    onChange={(e) => setJerseyQty(Number(e.target.value))}
+    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
+  />
+</div>
+
+<div>
+  <label className="mb-2 block text-sm text-zinc-300">
+    Short Quantity
+  </label>
+
+  <input
+    type="number"
+    value={shortQty}
+    onChange={(e) => setShortQty(Number(e.target.value))}
+    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white"
+  />
+</div>
 
         </div>
 
@@ -223,6 +327,47 @@ await saveRevenue(invoice.id, {
       ${revenueUsd.toFixed(2)}
     </span>
   </div>
+
+
+  <div className="mt-3 flex justify-between">
+  <span>Total Pieces</span>
+
+  <span className="font-bold">
+    {totalPieces}
+  </span>
+</div>
+
+<div className="mt-3 flex justify-between">
+  <span>Cost / Piece</span>
+
+  <span className="font-bold text-blue-600">
+    Rs {costPerPiece.toFixed(2)}
+  </span>
+</div>
+
+  <div className="mt-3 flex justify-between">
+  <span>Total Pieces</span>
+
+  <span className="font-bold text-blue-400">
+    {totalPieces}
+  </span>
+</div>
+
+<div className="mt-3 flex justify-between">
+  <span>Cost / Piece</span>
+
+  <span className="font-bold text-orange-400">
+    Rs {costPerPiece.toFixed(2)}
+  </span>
+</div>
+
+<div className="mt-3 flex justify-between">
+  <span>Revenue / Piece</span>
+
+  <span className="font-bold text-green-400">
+    ${revenuePerPiece.toFixed(2)}
+  </span>
+</div>
 
 </div>
 
