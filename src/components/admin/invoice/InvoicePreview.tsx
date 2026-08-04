@@ -41,17 +41,21 @@ export default function InvoicePreview({
       return (
     <div
       id="invoice-preview"
-      className="mx-auto w-[794px] min-h-[1123px] bg-white p-12 text-black shadow-2xl"
+      className="mx-auto bg-white text-black shadow-2xl print:shadow-none"
+style={{
+  width: "190mm",
+  padding: "8mm",
+}}
     >
       {/* Header */}
-<div className="flex items-start justify-between border-b-4 border-yellow-500 pb-8">
+<div className="flex items-start justify-between border-b-2 border-yellow-500 pb-4">
 
   <div>
 <Image
-  src="/logo/ze-logo.png"
+  src="/logo/logo2.png"
   alt="Zasham Enterprises"
-  width={220}
-  height={80}
+  width={180}
+  height={65}
   priority
 />
 
@@ -74,7 +78,7 @@ export default function InvoicePreview({
 
   <div className="text-right">
 
-    <h2 className="text-4xl font-bold text-yellow-600">
+    <h2 className="text-3xl font-bold text-yellow-600">
       INVOICE
     </h2>
 
@@ -100,9 +104,9 @@ export default function InvoicePreview({
 
 {/* Customer */}    
 
-<div className="mt-10">
+<div className="mt-6">
 
-  <h3 className="mb-4 text-xl font-bold text-yellow-600">
+  <h3 className="mb-2 text-lg font-bold text-yellow-600">
     Bill To
   </h3>
 
@@ -122,7 +126,7 @@ export default function InvoicePreview({
 
       {/* Products */}
 
-      <div className="mt-10">
+      <div className="mt-6">
 
         <table className="w-full border-collapse">
 
@@ -130,23 +134,23 @@ export default function InvoicePreview({
 
             <tr className="bg-yellow-500 text-black">
 
-              <th className="border border-gray-300 p-3 text-left">
+              <th className="border border-gray-300 p-2 text-left">
                 Product
               </th>
 
-              <th className="border border-gray-300 p-3 text-center">
+              <th className="border border-gray-300 p-2 text-center">
                 Size
               </th>
 
-              <th className="border border-gray-300 p-3 text-center">
+              <th className="border border-gray-300 p-2 text-center">
                 Qty
               </th>
 
-              <th className="border border-gray-300 p-3 text-right">
+              <th className="border border-gray-300 p-2 text-right">
                 Unit Price
               </th>
 
-              <th className="border border-gray-300 p-3 text-right">
+              <th className="border border-gray-300 p-2 text-right">
                 Total
               </th>
 
@@ -160,23 +164,23 @@ export default function InvoicePreview({
 
               <tr key={index}>
 
-                <td className="border border-gray-300 p-3">
+                <td className="border border-gray-300 p-2">
                   {item.productName}
                 </td>
 
-                <td className="border border-gray-300 p-3 text-center">
+                <td className="border border-gray-300 p-2 text-center">
                   {item.size}
                 </td>
 
-                <td className="border border-gray-300 p-3 text-center">
+                <td className="border border-gray-300 p-2 text-center">
                   {item.quantity}
                 </td>
 
-                <td className="border border-gray-300 p-3 text-right">
+                <td className="border border-gray-300 p-2 text-right">
                   {invoice.currency} {item.unitPrice.toFixed(2)}
                 </td>
 
-                <td className="border border-gray-300 p-3 text-right font-semibold">
+                <td className="border border-gray-300 p-2 text-right font-semibold">
                   {invoice.currency} {item.total.toFixed(2)}
                 </td>
 
@@ -192,9 +196,9 @@ export default function InvoicePreview({
 
       {/* Totals */}
 
-      <div className="mt-10 flex justify-end">
+      <div className="mt-6 flex justify-end">
 
-        <div className="w-80 space-y-3">
+        <div text-2xl>
 
           <div className="flex justify-between">
             <span>Subtotal</span>
@@ -217,10 +221,10 @@ export default function InvoicePreview({
             </span>
           </div>
 
-          <div className="flex justify-between border-t-2 border-yellow-500 pt-3 text-2xl font-bold">
+          <div className="flex items-center justify-between gap-6 border-t-2 border-yellow-500 pt-3 text-xl font-bold">
 
-            <span>Grand Total</span>
-
+            <span>Grand Total </span>
+              <p> </p>
             <span>
               {invoice.currency} {invoice.total.toFixed(2)}
             </span>
@@ -233,7 +237,7 @@ export default function InvoicePreview({
 
       {/* Payment Terms */}
 
-      <div className="mt-12">
+      <div className="mt-6">
 
         <h3 className="font-bold text-yellow-600">
           Payment Terms
@@ -247,7 +251,7 @@ export default function InvoicePreview({
 
       {/* Notes */}
 
-      <div className="mt-8">
+      <div className="mt-6">
 
         <h3 className="font-bold text-yellow-600">
           Notes

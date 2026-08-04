@@ -10,7 +10,6 @@ import {
   import html2canvas from "html2canvas";
   import { toJpeg } from "html-to-image";
   import { useRef } from "react";
-  import { useReactToPrint } from "react-to-print";
   import InvoicePreview from "./InvoicePreview";
   import { useEffect } from "react";
   import {
@@ -21,6 +20,8 @@ import {
   import { Customer } from "../../../types/customer";
   import { useSearchParams } from "next/navigation";
   import FormStatusModal from "../../ui/FormStatusModal";
+
+  import InvoicePrint from "./InvoicePrint";
 
 
   
@@ -76,7 +77,7 @@ export default function InvoiceForm({
 }: InvoiceFormProps) {
   const [loading, setLoading] = useState(false);
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const invoiceRef = useRef<HTMLDivElement>(null);
+  
   const searchParams = useSearchParams();
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
@@ -184,6 +185,52 @@ useEffect(() => {
       }));
     };
 
+  const downloadPDF = async () => {
+  const element = document.getElementById("invoice-preview");
+
+  if (!element) {
+    alert("Invoice preview not found");
+    return;
+  }
+
+  try {
+    // Clone node
+    const clone = element.cloneNode(true) as HTMLElement;
+
+    clone.style.position = "fixed";
+    clone.style.left = "-99999px";
+    clone.style.top = "0";
+    clone.style.transform = "none";
+    clone.style.background = "#ffffff";
+
+    document.body.appendChild(clone);
+
+    const canvas = await html2canvas(clone, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      foreignObjectRendering: false,
+    });
+
+    document.body.removeChild(clone);
+
+    const { default: jsPDF } = await import("jspdf");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdfWidth = 210;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+
+    pdf.save(`${invoice.invoiceNumber || "invoice"}.pdf`);
+  } catch (err) {
+    console.error("PDF ERROR:", err);
+  }
+};
+
     const handleNumberChange = (
       e: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -262,10 +309,7 @@ useEffect(() => {
       }));
     };
 
-      const handlePrint = useReactToPrint({
-    contentRef: invoiceRef,
-    documentTitle: invoice.invoiceNumber || "Invoice",
-  });
+
 const handleSaveInvoice = async () => {
   try {
     setLoading(true);
@@ -726,13 +770,7 @@ setInvoice((prev) => ({
 
     </div>
 
-  <button
-    type="button"
-    onClick={handlePrint}
-    className="mt-3 w-full rounded-xl bg-blue-600 py-3 font-bold text-white hover:bg-blue-500"
-  >
-    Print / Save PDF
-  </button>
+  
 
   <button
     type="button"
@@ -742,13 +780,7 @@ setInvoice((prev) => ({
     Download JPG
   </button>
 
-  <div
-    ref={invoiceRef}
-    className="hidden rounded-2xl border border-yellow-500/20 bg-zinc-900 p-4 shadow-lg lg:block"
-  >
 
-    
-  </div>
 
   </div>
 
@@ -760,16 +792,10 @@ setInvoice((prev) => ({
       {/* RIGHT SECTION */}
   <div className="xl:col-span-6">
   <div className="lg:sticky lg:top-6 rounded-2xl bg-zinc-900 p-2 md:p-4 shadow-2xl overflow-x-auto">
-    <div
-      ref={invoiceRef}
-      className="flex justify-center"
-    >
-     <div className="flex justify-center overflow-x-auto">
-  <div className="origin-top scale-[0.28] min-[380px]:scale-[0.34] sm:scale-[0.50] md:scale-[0.70] lg:scale-100">
-    <InvoicePreview invoice={invoice} />
-  </div>
-</div>
-    </div>
+   
+
+<InvoicePrint invoice={invoice} />
+
   </div>
 </div>
       

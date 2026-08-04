@@ -238,25 +238,24 @@ html {
     visibility: hidden;
   }
 
-  #revenue-report,
-  #revenue-report * {
-    visibility: visible;
-  }
-
-  #revenue-report{
-    width:190mm !important;
-    height:auto !important;
-    min-height:unset !important;
-
-    margin:0 auto !important;
-    padding:8mm !important;
-
-    overflow:hidden !important;
-
-    box-shadow:none !important;
+#revenue-report,
+#revenue-report *,
+#invoice-preview,
+#invoice-preview * {
+  visibility: visible;
 }
-  button {
-    display: none !important;
-  }
 
+#revenue-report,
+#invoice-preview{
+  width:190mm !important;
+  height:auto !important;
+  min-height:unset !important;
+
+  margin:0 auto !important;
+  padding:8mm !important;
+
+  overflow:hidden !important;
+
+  box-shadow:none !important;
+}
 }
