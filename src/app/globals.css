@@ -187,41 +187,35 @@ html {
 
   html,
   body {
-    width: 210mm;
-    height: 297mm;
-    background: white !important;
-    zoom: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #revenue-report,
+  #revenue-report * {
+    visibility: visible;
   }
 
   #revenue-report {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100% !important;
-    min-height: auto !important;
-
     margin: 0 !important;
-    padding: 0 !important;
-
+    padding: 6mm !important;
     box-shadow: none !important;
-    border: none !important;
+    page-break-after: avoid !important;
+    break-after: avoid-page !important;
   }
 
-  .print-hidden {
-    display: none !important;
-  }
-
-  img {
-    max-width: 100%;
-  }
-
-  table,
-  tr,
-  td,
-  th {
-    page-break-inside: avoid;
-  }
-
-  section,
-  div {
-    break-inside: avoid;
+  @page {
+    size: A4;
+    margin: 0;
   }
 }
 

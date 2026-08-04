@@ -17,7 +17,7 @@ export default function RevenueView({
   className="mx-auto bg-white text-black shadow-2xl"
   style={{
     width: "190mm",
-    padding: "8mm",
+   padding: "6mm",
 }}
 >
 
@@ -26,49 +26,62 @@ export default function RevenueView({
 
 {/* ================= HEADER ================= */}
 
-<div className="flex items-start justify-between border-b-2 border-yellow-500 pb-4">
+<div className="flex items-start justify-between border-b-2 border-[#E5A812] pb-2">
 
-  <div className="flex items-center gap-4">
+  <div className="flex items-center gap-2">
 
     <Image
-      src="/logo/ze-logo.png"
+      src="/logo/logo2.png"
       alt="Zasham Enterprises"
-      width={150}
-      height={55}
+      width={135}
+      height={50}
       priority
     />
 
     <div>
+<h2
+  className="text-base font-bold tracking-wide"
+  style={{ color: "#E5A812" }}
+>
+  ZASHAM ENTERPRISES
+</h2>
+      <p
+  className="text-xs font-medium"
+ style={{ color: "#E5A812" }}
+>
+  Custom Sportswear Manufacturer
+</p>
 
-      <h2 className="text-xl font-bold tracking-wide">
-        ZASHAM ENTERPRISES
-      </h2>
+    <p
+  className="text-xs"
+ style={{ color: "#E5A812" }}
+>
+  Sialkot, Pakistan
+</p>
 
-      <p className="text-xs text-gray-600">
-        Custom Sportswear Manufacturer
-      </p>
-
-      <p className="text-xs text-gray-600">
-        Sialkot, Pakistan
-      </p>
-
-      <p className="text-xs text-gray-600">
-        info@zashamenterprises.com
-      </p>
-
-      <p className="text-xs text-gray-600">
-        www.zashamenterprises.com
-      </p>
-
+     <p
+  className="text-xs"
+  style={{ color: "#E5A812" }}
+>
+  info@zashamenterprises.com
+</p>    
+<p
+  className="text-xs font-medium"
+  style={{ color: "#E5A812" }}
+>
+  www.zashamenterprises.com
+</p>
     </div>
 
   </div>
 
   <div className="text-right">
-
-    <h1 className="text-3xl font-bold text-yellow-600">
-      REVENUE REPORT
-    </h1>
+<h1
+  className="text-2xl font-extrabold tracking-wide"
+ style={{ color: "#E5A812" }}
+>
+  REVENUE REPORT
+</h1>
 
     <div className="mt-2 space-y-1 text-xs">
 
@@ -98,13 +111,13 @@ export default function RevenueView({
 
 {/* ================= CUSTOMER + INVOICE ================= */}
 
-<div className="mt-5 grid grid-cols-2 gap-4">
+<div className="mt-3 grid grid-cols-2 gap-2">
 
   {/* Customer */}
 
-  <div className="rounded-lg border border-gray-300 p-4">
+  <div className="p-2">
 
-    <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+    <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-base font-bold text-black">
       Customer Information
     </h2>
 
@@ -166,9 +179,9 @@ export default function RevenueView({
 
   {/* Invoice */}
 
-  <div className="rounded-lg border border-gray-300 p-4">
+  <div className="p-2">
 
-    <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+    <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
       Invoice Information
     </h2>
 
@@ -203,10 +216,12 @@ export default function RevenueView({
         <span className="font-semibold">
           Status
         </span>
-
-        <span className="rounded bg-yellow-100 px-2 py-0.5 font-semibold text-yellow-700">
-          {revenue.status}
-        </span>
+<span
+  className="text-lg font-bold uppercase tracking-wide"
+  style={{ color: "#E5A812" }}
+>
+  {revenue.status}
+</span>
 
       </div>
 
@@ -216,7 +231,7 @@ export default function RevenueView({
           Invoice USD
         </span>
 
-        <span className="font-bold text-green-700">
+        <span className="font-bold font-bold text-black">
           ${Number(revenue.total ?? 0).toFixed(2)}
         </span>
 
@@ -228,7 +243,7 @@ export default function RevenueView({
           Invoice PKR
         </span>
 
-        <span className="font-bold text-green-700">
+        <span className="font-bold font-bold text-black">
          Rs {(Number(revenue.total ?? 0) * 278).toLocaleString()}
         </span>
 
@@ -245,13 +260,13 @@ export default function RevenueView({
 
 {/* ================= MANUFACTURING + PRODUCTION ================= */}
 
-<div className="mt-4 grid grid-cols-2 gap-4">
+<div className="mt-4 grid grid-cols-2 gap-2">
 
   {/* Manufacturing */}
 
-  <div className="rounded-lg border border-gray-300 p-4">
+  <div className="p-2">
 
-    <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+    <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
       Manufacturing Cost
     </h2>
 
@@ -277,7 +292,7 @@ export default function RevenueView({
         <span>Rs {Number(revenue.shipping_cost ?? 0).toLocaleString()}</span>
       </div>
 
-      <div className="mt-3 flex justify-between border-t pt-2 text-base font-bold text-red-600">
+      <div className="mt-3 flex justify-between border-t pt-2 text-base font-bold font-bold text-[#E5A812]">
         <span>Total Cost</span>
         <span>Rs {Number(revenue.total_cost ?? 0).toLocaleString()}</span>
       </div>
@@ -290,9 +305,9 @@ export default function RevenueView({
 
   {/* Production */}
 
-  <div className="rounded-lg border border-gray-300 p-4">
+  <div className="p-2">
 
-    <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+    <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
       Production Details
     </h2>
 
@@ -317,14 +332,14 @@ export default function RevenueView({
 
      <div className="flex justify-between">
   <span>Cost / Piece</span>
-  <span className="font-semibold text-red-600">
+  <span className="font-semibold font-bold text-[#E5A812]">
     Rs {Number(revenue.cost_per_piece ?? 0).toFixed(2)}
   </span>
 </div>
 
 <div className="flex justify-between">
   <span>Revenue / Piece</span>
-  <span className="font-semibold text-green-700">
+  <span className="font-semibold font-bold text-black">
     $
     {Number(revenue.total_pieces ?? 0) > 0
       ? (
@@ -347,31 +362,43 @@ export default function RevenueView({
 
 {/* ================= REVENUE SUMMARY ================= */}
 
-<div className="mt-4 rounded-lg border border-gray-300 p-4">
+<div className="mt-4 p-2">
 
-  <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+  <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
     Revenue Summary
   </h2>
 
-  <div className="grid grid-cols-3 gap-4">
+  <div className="grid grid-cols-3 gap-2">
 
-    <div className="rounded bg-green-50 p-3 text-center">
-      <p className="text-xs text-gray-600">Revenue (USD)</p>
-      <p className="mt-1 text-lg font-bold text-green-700">
+    <div className="text-center">
+      <p className="text-xs text-gray-600">
+        Revenue (USD)
+      </p>
+
+      <p className="mt-1 text-lg font-bold font-bold text-black">
         ${Number(revenue.revenue ?? 0).toFixed(2)}
       </p>
     </div>
 
-    <div className="rounded bg-red-50 p-3 text-center">
-      <p className="text-xs text-gray-600">Manufacturing</p>
-      <p className="mt-1 text-lg font-bold text-red-600">
+    <div className="text-center">
+      <p className="text-xs text-gray-600">
+        Manufacturing
+      </p>
+
+      <p className="mt-1 text-lg font-bold font-bold text-[#E5A812]">
         Rs {Number(revenue.total_cost ?? 0).toLocaleString()}
       </p>
     </div>
 
-    <div className="rounded bg-yellow-50 p-3 text-center">
-      <p className="text-xs text-gray-600">Pieces</p>
-      <p className="mt-1 text-lg font-bold text-yellow-700">
+    <div className="text-center">
+      <p className="text-xs text-gray-600">
+        Pieces
+      </p>
+
+      <p
+        className="mt-1 text-lg font-bold"
+        style={{ color: "#000000" }}
+      >
         {Number(revenue.total_pieces ?? 0)}
       </p>
     </div>
@@ -386,19 +413,21 @@ export default function RevenueView({
 
 
 
-
 {/* ================= ORDER APPROVAL ================= */}
 
-<div className="mt-4 rounded-lg border border-gray-300 p-4">
+<div className="mt-4 p-2">
 
-  <h2 className="mb-3 border-b border-yellow-500 pb-1 text-lg font-bold text-yellow-600">
+  <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
     Order Approval
   </h2>
 
-  <div className="grid grid-cols-3 gap-4 text-sm">
+  <div className="grid grid-cols-3 gap-6 text-sm">
 
     <div>
-      <p className="mb-5 font-semibold text-gray-600">
+      <p
+        className="mb-5 font-semibold"
+        style={{ color: "#000000" }}
+      >
         Order Status
       </p>
 
@@ -406,7 +435,10 @@ export default function RevenueView({
     </div>
 
     <div>
-      <p className="mb-5 font-semibold text-gray-600">
+      <p
+        className="mb-5 font-semibold"
+        style={{ color: "#000000" }}
+      >
         CEO Signature
       </p>
 
@@ -414,7 +446,10 @@ export default function RevenueView({
     </div>
 
     <div>
-      <p className="mb-5 font-semibold text-gray-600">
+      <p
+        className="mb-5 font-semibold"
+        style={{ color: "#000000" }}
+      >
         Company Stamp
       </p>
 
@@ -426,10 +461,9 @@ export default function RevenueView({
 </div>
 
 
-
 {/* ================= FOOTER ================= */}
 
-<div className="mt-4 border-t border-yellow-500 pt-3">
+<div className="mt-4 border-t border-[#E5A812] pt-3">
 
   <div className="flex items-center justify-between text-xs text-gray-600">
 
@@ -449,7 +483,7 @@ export default function RevenueView({
 
     <div className="text-right">
 
-      <p className="font-bold text-yellow-600">
+      <p className="font-bold text-black">
         ZASHAM ENTERPRISES
       </p>
 
