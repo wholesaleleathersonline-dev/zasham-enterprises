@@ -30,7 +30,10 @@ export default function DesktopNavigation({
 
     return (
         <nav className="hidden border-t border-[#D4AF37]/10 lg:block">
-            <div className="flex items-center justify-center gap-6 xl:gap-7 2xl:gap-8 py-5">
+            <div className="flex items-center py-5">
+
+                  <div className="mx-auto flex items-center gap-3 lg:gap-4 xl:gap-7 2xl:gap-8">
+
                 {menuItems.map((item) => {
                     const isActive =
                         item.title === "Team Uniforms"
@@ -53,7 +56,7 @@ export default function DesktopNavigation({
                         >
                             <Link
   href={item.href || "#"}
-  className={`${sora.className} group relative flex shrink-0 items-center gap-1.5 whitespace-nowrap uppercase text-[13.5px] xl:text-[14px] font-semibold tracking-[0.04em] transition-all duration-300 ${
+  className={`${sora.className} group relative flex shrink-0 items-center gap-1.5 whitespace-nowrap uppercase text-[12px] lg:text-[13px] xl:text-[14px] font-semibold tracking-[0.04em] transition-all duration-300 ${
     isActive
       ? "text-[#D4AF37]"
       : "text-white hover:text-[#D4AF37]"
@@ -89,9 +92,11 @@ export default function DesktopNavigation({
                     );
                 })}
 
+                </div>
+
                 <button
     onClick={() => setIsQuoteModalOpen(true)}
-   className={`${sora.className} ml-5 shrink-0 rounded-full bg-[#D4AF37] px-5 xl:px-6 py-3 text-xs font-semibold uppercase tracking-[0.10em] text-black transition duration-300 hover:scale-105`}
+  className={`${sora.className} ml-6 shrink-0 rounded-full bg-[#D4AF37] px-3 lg:px-4 xl:px-6 py-2.5 xl:py-3 text-[11px] lg:text-xs font-semibold uppercase tracking-[0.08em] text-black transition duration-300 hover:scale-105`}
 >
     Get a Free Quote
 </button>

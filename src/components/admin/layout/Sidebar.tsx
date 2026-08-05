@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { adminNavigation } from "../../../lib/constants/adminNavigation";
 
+
 export default function Sidebar(): React.JSX.Element {
   const pathname = usePathname();
 

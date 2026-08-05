@@ -41,3 +41,27 @@ export async function deleteImage(imageUrl: string): Promise<void> {
     throw new Error(error.message);
   }
 }
+
+export async function uploadHeroBanner(
+  file: File
+): Promise<string> {
+  const fileExt = file.name.split(".").pop();
+
+  const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExt}`;
+
+  const { error } = await supabase.storage
+    .from("hero-banner")
+    .upload(fileName, file);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from("hero-banner")
+    .getPublicUrl(fileName);
+
+  return publicUrl;
+}

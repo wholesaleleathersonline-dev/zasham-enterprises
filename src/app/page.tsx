@@ -9,14 +9,18 @@ import GlobalReach from "../components/home/GlobalReach";
 import FactorySection from "../components/home/FactorySection";
 import FeaturedProducts from "../components/home/featuredproducts";
 import Reveal from "../components/animation/Reveal";
+import { getHeroBanner } from "../services/admin/heroBanner.service";
 
-export default function Home() {
+
+export default async function Home() {
+  const heroBanner = await getHeroBanner();
   return (
     <>
     <CustomCursor />
 
       <Header />
-      <Hero />
+      <Hero image={heroBanner?.image ?? ""} />
+
 
       <Reveal>
       <SportsCategories />

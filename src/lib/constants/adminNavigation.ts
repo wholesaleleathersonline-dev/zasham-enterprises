@@ -8,6 +8,7 @@ import {
   FaRuler,
 } from "react-icons/fa";
 import { IconType } from "react-icons";
+import { FaImage } from "react-icons/fa";
 
 export interface AdminNavigationItem {
   name: string;
@@ -42,6 +43,11 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/revenue",
     icon: FaChartLine,
   },
+  {
+  name: "Hero Banner",
+  href: "/admin/hero-banner",
+  icon: FaImage,
+},
 
   {
   name: "Size Charts",
