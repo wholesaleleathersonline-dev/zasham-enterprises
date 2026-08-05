@@ -65,3 +65,27 @@ export async function uploadHeroBanner(
 
   return publicUrl;
 }
+
+export async function uploadSportsCategoryImage(
+  file: File
+): Promise<string> {
+  const fileExt = file.name.split(".").pop();
+
+  const fileName = `${Date.now()}-${crypto.randomUUID()}.${fileExt}`;
+
+  const { error } = await supabase.storage
+    .from("sports-categories")
+    .upload(fileName, file);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const {
+    data: { publicUrl },
+  } = supabase.storage
+    .from("sports-categories")
+    .getPublicUrl(fileName);
+
+  return publicUrl;
+}

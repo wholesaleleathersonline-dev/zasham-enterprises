@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { IconType } from "react-icons";
 import { FaImage } from "react-icons/fa";
+import { FaImages } from "react-icons/fa";
 
 export interface AdminNavigationItem {
   name: string;
@@ -47,6 +48,11 @@ export const adminNavigation: AdminNavigationItem[] = [
   name: "Hero Banner",
   href: "/admin/hero-banner",
   icon: FaImage,
+},
+{
+  name: "Sports Categories",
+  href: "/admin/sports-categories",
+  icon: FaImages,
 },
 
   {
