@@ -33,6 +33,8 @@ fabric: data.fabric,
 tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
+      show_in_price_list: data.showInPriceList,
+price_list_order: data.priceListOrder,
     })
     .select("id")
     .single();
@@ -111,6 +113,8 @@ fabric: data.fabric,
 tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
+      show_in_price_list: data.showInPriceList,
+price_list_order: data.priceListOrder,
     })
     .eq("id", id);
 
@@ -220,6 +224,9 @@ export async function getProductById(
     fabric: product.fabric ?? [],
 
     tags: product.tags ?? [],
+    showInPriceList: product.show_in_price_list,
+priceListOrder: product.price_list_order,
+priceLabel: product.price_label ?? "",  
   },
 
   gallery,
@@ -256,4 +263,19 @@ if (!data || data.length === 0) {
     uniqueSlug = `${slug}-${counter}`;
     counter++;
   }
+}
+
+export async function getPricingProducts() {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("status", "active")
+    .eq("show_in_price_list", true)
+    .order("price_list_order", { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data ?? [];
 }

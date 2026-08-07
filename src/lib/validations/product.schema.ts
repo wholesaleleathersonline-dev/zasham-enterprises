@@ -1,18 +1,21 @@
 import { z } from "zod";
 
-
-
 export const productSchema = z.object({
-
   sport: z.string().min(1, "Sport is required."),
 
-ageGroup: z.string().optional(),
+  ageGroup: z.string().optional(),
 
-uniformType: z.string().optional(),
+  uniformType: z.string().optional(),
 
-isFeatured: z.boolean(),
+  isFeatured: z.boolean(),
 
+  showInPriceList: z.boolean(),
 
+  priceListOrder: z
+    .number({
+      error: "Display order is required.",
+    })
+    .min(0),
 
   name: z
     .string()
@@ -33,6 +36,15 @@ isFeatured: z.boolean(),
       error: "Price is required.",
     })
     .min(0, "Price cannot be negative."),
+
+  // Optional text shown instead of numeric price
+  // Example:
+  // "Starting From $25"
+  // "Contact For Quote"
+  priceLabel: z
+    .string()
+    .trim()
+    .optional(),
 
   moq: z
     .number({
@@ -62,24 +74,22 @@ isFeatured: z.boolean(),
     .trim()
     .optional(),
 
-    image: z
-  .string()
-  .trim()
-  .optional(),
- features: z.array(z.string()),
+  image: z
+    .string()
+    .trim()
+    .optional(),
 
-colors: z.array(z.string()),
+  features: z.array(z.string()),
 
-sizes: z.array(z.string()),
+  colors: z.array(z.string()),
 
-fabric: z.array(z.string()),
+  sizes: z.array(z.string()),
 
-tags: z.array(z.string()),
-galleryImages: z.array(z.string()),
+  fabric: z.array(z.string()),
 
+  tags: z.array(z.string()),
 
-
-    
+  galleryImages: z.array(z.string()),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

@@ -7,6 +7,7 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 import { useState } from "react";
+import Link from "next/link";
 
 
 const fadeUp: Variants = {
@@ -222,6 +223,35 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           </p>
 
         </motion.div>
+
+        <motion.div
+  variants={fadeUp}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true }}
+  className="mb-14 flex justify-center"
+>
+  <Link
+    href="/pricing"
+    className="group inline-flex items-center gap-3 rounded-full border border-[#C8A44D]/40 bg-[#C8A44D] px-8 py-4 text-base font-semibold text-black transition-all duration-300 hover:-translate-y-1 hover:bg-[#d8b45d] hover:shadow-[0_0_40px_rgba(200,164,77,.45)]"
+  >
+    <span>Get Pricing</span>
+
+    <svg
+      className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M5 12h14m-7-7 7 7-7 7"
+      />
+    </svg>
+  </Link>
+</motion.div>
 
         {/* Main Grid */}
 

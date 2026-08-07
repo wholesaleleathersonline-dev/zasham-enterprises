@@ -16,6 +16,7 @@ export interface AdminNavigationItem {
   href: string;
   icon: IconType;
 }
+import { FaDollarSign } from "react-icons/fa";
 
 export const adminNavigation: AdminNavigationItem[] = [
   {
@@ -53,12 +54,18 @@ export const adminNavigation: AdminNavigationItem[] = [
   name: "Sports Categories",
   href: "/admin/sports-categories",
   icon: FaImages,
-},
+},  
 
   {
   name: "Size Charts",
   href: "/admin/size-chart",
   icon: FaRuler,
+},
+
+{
+  name: "Price List",
+  href: "/admin/price-list",
+  icon: FaDollarSign,
 },
 
   {
