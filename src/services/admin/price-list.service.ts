@@ -11,6 +11,8 @@ export interface PriceListItem {
 }
 
 export async function getPriceList() {
+
+  
   const { data, error } = await supabase
     .from("price_list")
     .select("*")
