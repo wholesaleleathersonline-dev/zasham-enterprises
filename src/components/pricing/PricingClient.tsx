@@ -29,7 +29,7 @@ export default function PricingClient({
 
   return (
     <>
-      <div className="mx-auto mt-16 mb-8 flex max-w-7xl justify-end px-6">
+      <div className="mx-auto mt-60 mb-8 flex max-w-7xl justify-end px-6">
         <button
           onClick={handleDownload}
           disabled={loading}
