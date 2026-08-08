@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getPriceList } from "../../services/admin/price-list.service";
 import PricingClient from "../../components/pricing/PricingClient";
 
