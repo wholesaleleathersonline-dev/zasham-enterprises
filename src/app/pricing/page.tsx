@@ -4,17 +4,18 @@ import PricingClient from "../../components/pricing/PricingClient";
 export default async function PricingPage() {
   const items = await getPriceList();
 
-  const teamUniforms = items.filter(
-    (item) => item.section === "Team Uniforms"
-  );
+ const teamUniforms = items.filter(
+  (item) => item.section?.trim().toLowerCase() === "team uniforms"
+);
 
-  const teamApparel = items.filter(
-    (item) => item.section === "Team Apparel"
-  );
+const teamApparel = items.filter(
+  (item) => item.section?.trim().toLowerCase() === "team apparel"
+);
 
-  const teamAccessories = items.filter(
-    (item) => item.section === "Team Accessories"
-  );
+const teamAccessories = items.filter(
+  (item) =>
+    item.section?.trim().toLowerCase() === "team accessories"
+);
 
 return (
   <PricingClient items={items}>
@@ -68,21 +69,21 @@ function Section({
 
       <div className="overflow-hidden rounded-3xl border border-[#C8A44D]/20">
 
-        <table className="w-full">
+        <table className="w-full table-fixed">
 
           <thead className="bg-[#C8A44D] text-black">
 
             <tr>
 
-              <th className="px-6 py-4 text-left">
+               <th className="w-[60%] px-6 py-4 text-left">
                 Product
               </th>
 
-              <th className="px-6 py-4 text-center">
+              <th className="w-[20%] px-6 py-4 text-center">
                 MOQ
               </th>
 
-              <th className="px-6 py-4 text-right">
+              <th className="w-[20%] px-6 py-4 text-right">
                 Price
               </th>
 
