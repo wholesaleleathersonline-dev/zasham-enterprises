@@ -10,6 +10,7 @@ import {
 import { IconType } from "react-icons";
 import { FaImage } from "react-icons/fa";
 import { FaImages } from "react-icons/fa";
+import { FaMagic } from "react-icons/fa";
 
 export interface AdminNavigationItem {
   name: string;
@@ -66,6 +67,12 @@ export const adminNavigation: AdminNavigationItem[] = [
   name: "Price List",
   href: "/admin/price-list",
   icon: FaDollarSign,
+},
+
+{
+  name: "AI Texture Studio",
+  href: "/admin/ai-texture",
+  icon: FaMagic,
 },
 
   {
