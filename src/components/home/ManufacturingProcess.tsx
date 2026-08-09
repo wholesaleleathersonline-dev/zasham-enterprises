@@ -84,7 +84,7 @@ export default function ManufacturingProcess() {
 
   {/* Active Gold Line */}
   <div
-    className="absolute left-0 top-10 hidden h-[4px] bg-[#D4AF37] transition-all duration-700 lg:block"
+    className="absolute left-0 top-10 hidden h-[4px] bg-[#D4AF37] transition-all duration-200 lg:block"
     style={{
       width: `${(active / (steps.length - 1)) * 100}%`,
     }}
