@@ -24,9 +24,9 @@ export default async function Home() {
       <Hero image={heroBanner?.image ?? ""} />
 
 
-      <Reveal>
+   
       <SportsCategories />
-      </Reveal>
+
 
       <Reveal>
          <WhyChooseUs />
