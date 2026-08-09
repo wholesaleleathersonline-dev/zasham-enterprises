@@ -16,8 +16,11 @@ async function handleUpload(id: string, file: File) {
 
     await uploadSportImage(id, file);
 
-    const data = await getSportsCategories();
-    setSports(data);
+const data = await getSportsCategories();
+
+console.log("SPORT CATEGORIES AFTER UPLOAD:", data);
+
+setSports(data);
   } finally {
     setUploadingId(null);
   }
