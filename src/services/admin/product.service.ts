@@ -33,9 +33,7 @@ fabric: data.fabric,
 tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
-      show_in_price_list: data.showInPriceList,
-price_list_order: data.priceListOrder,
-    })
+       })
     .select("id")
     .single();
 
@@ -113,8 +111,7 @@ fabric: data.fabric,
 tags: data.tags,
       is_featured: data.isFeatured,
       status: data.status,
-      show_in_price_list: data.showInPriceList,
-price_list_order: data.priceListOrder,
+      
     })
     .eq("id", id);
 
