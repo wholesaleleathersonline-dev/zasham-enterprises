@@ -9,13 +9,9 @@ export const productSchema = z.object({
 
   isFeatured: z.boolean(),
 
-  showInPriceList: z.boolean(),
 
-  priceListOrder: z
-    .number({
-      error: "Display order is required.",
-    })
-    .min(0),
+
+ 
 
   name: z
     .string()

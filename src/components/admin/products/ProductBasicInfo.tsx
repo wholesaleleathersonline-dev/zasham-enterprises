@@ -415,41 +415,6 @@ const availableCategories =
           )}
         </div>
 
-        <div className="rounded-lg border border-yellow-500/20 bg-[#111111] p-4 space-y-4">
-
-  <div className="flex items-center justify-between">
-    <div>
-      <h3 className="text-white font-medium">
-        Show in Price List
-      </h3>
-
-      <p className="text-xs text-gray-400">
-        Display this product on the public pricing page.
-      </p>
-    </div>
-
-    <input
-      type="checkbox"
-      {...register("showInPriceList")}
-      className="h-5 w-5 accent-yellow-500"
-    />
-  </div>
-
-  <div>
-    <label className="block text-sm text-gray-300 mb-2">
-      Display Order
-    </label>
-
-    <input
-      type="number"
-      {...register("priceListOrder", {
-        valueAsNumber: true,
-      })}
-      className="h-10 w-full rounded-lg border border-yellow-500/20 bg-[#111111] px-3 text-white"
-    />
-  </div>
-
-</div>
 
         {/* Featured */}
 
@@ -471,41 +436,7 @@ const availableCategories =
           />
         </div>
 
-        <div className="mt-4 rounded-lg border border-yellow-500/20 bg-[#111111] p-4">
-
-  <div className="flex items-center justify-between">
-    <div>
-      <h3 className="text-white font-medium">
-        Show in Price List
-      </h3>
-
-      <p className="text-xs text-gray-400">
-        Display this product on the Pricing page.
-      </p>
-    </div>
-
-    <input
-      type="checkbox"
-      {...register("showInPriceList")}
-      className="h-5 w-5 accent-yellow-500"
-    />
-  </div>
-
-  <div className="mt-4">
-    <label className="mb-2 block text-sm text-gray-300">
-      Display Order
-    </label>
-
-    <input
-      type="number"
-      {...register("priceListOrder", {
-        valueAsNumber: true,
-      })}
-      className="h-10 w-full rounded-lg border border-yellow-500/20 bg-[#111111] px-3 text-white outline-none focus:border-yellow-500"
-    />
-  </div>
-
-</div>
+  
 
       </div>
     </section>
