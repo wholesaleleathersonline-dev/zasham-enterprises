@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { PDFParse } from "pdf-parse";
+import { extractText, getDocumentProxy } from "unpdf";
 
 export const runtime = "nodejs";
 
@@ -31,8 +31,6 @@ const cleanPlayerName = (value: string) => {
 };
 
 export async function POST(request: Request) {
-  let parser: PDFParse | null = null;
-
   try {
     const formData = await request.formData();
     const file = formData.get("file");
@@ -51,7 +49,10 @@ export async function POST(request: Request) {
       );
     }
 
-    if (file.type !== "application/pdf") {
+    if (
+      file.type !== "application/pdf" &&
+      !file.name.toLowerCase().endsWith(".pdf")
+    ) {
       return NextResponse.json(
         {
           success: false,
@@ -65,26 +66,61 @@ export async function POST(request: Request) {
     // READ PDF
     // ---------------------------------------
 
-    const buffer = Buffer.from(
+    const buffer = new Uint8Array(
       await file.arrayBuffer()
     );
 
-    parser = new PDFParse({
-      data: buffer,
-    });
+    console.log(
+      "========== STICKER PDF =========="
+    );
 
-    const result = await parser.getText();
+    console.log(
+      "FILE:",
+      file.name
+    );
 
-    const text = result.text
+    console.log(
+      "SIZE:",
+      buffer.length
+    );
+
+    // ---------------------------------------
+    // OPEN PDF
+    // ---------------------------------------
+
+    const pdf =
+      await getDocumentProxy(buffer);
+
+    console.log(
+      "PDF PAGES:",
+      pdf.numPages
+    );
+
+    // ---------------------------------------
+    // EXTRACT TEXT
+    // ---------------------------------------
+
+    const extracted =
+      await extractText(pdf, {
+        mergePages: true,
+      });
+
+    const text = extracted.text
       .replace(/\r/g, "")
       .trim();
 
-    console.log("========== PDF TEXT ==========");
+    console.log(
+      "========== PDF TEXT =========="
+    );
+
     console.log(text);
-    console.log("==============================");
+
+    console.log(
+      "=============================="
+    );
 
     // ---------------------------------------
-    // TEAM NAME
+    // TEAM
     // ---------------------------------------
 
     const teamMatch = text.match(
@@ -120,11 +156,11 @@ export async function POST(request: Request) {
       .filter(Boolean);
 
     // ---------------------------------------
-    // FIND PLAYER TABLE HEADER
+    // FIND TABLE HEADER
     // ---------------------------------------
 
-    const headerIndex = lines.findIndex(
-      (line) => {
+    const headerIndex =
+      lines.findIndex((line) => {
         const normalized =
           normalizeHeader(line);
 
@@ -133,8 +169,7 @@ export async function POST(request: Request) {
           normalized.includes("top") &&
           normalized.includes("bottom")
         );
-      }
-    );
+      });
 
     console.log(
       "HEADER INDEX:",
@@ -190,10 +225,14 @@ export async function POST(request: Request) {
     );
 
     // ---------------------------------------
-    // PARSE PLAYERS
+    // PLAYERS
     // ---------------------------------------
 
     const players: Player[] = [];
+
+    // ---------------------------------------
+    // PARSE ROWS
+    // ---------------------------------------
 
     for (
       let i = headerIndex + 1;
@@ -202,10 +241,7 @@ export async function POST(request: Request) {
     ) {
       const line = lines[i];
 
-      // -------------------------------------
-      // STOP AT OTHER SECTIONS
-      // -------------------------------------
-
+      // Stop at totals / notes
       if (
         /^total\b/i.test(line) ||
         /^subtotal\b/i.test(line) ||
@@ -215,15 +251,8 @@ export async function POST(request: Request) {
       }
 
       // -------------------------------------
-      // MATCH ROW
+      // ROW MATCH
       // -------------------------------------
-
-      /*
-       * Expected:
-       *
-       * 1 25 HAMID -- YXL S --
-       * 4 7 M ESSA -- XS YL --
-       */
 
       const rowMatch = line.match(
         /^(\d+)\s+(\S+)(?:\s+(.*))?$/
@@ -249,7 +278,7 @@ export async function POST(request: Request) {
 
       if (!remaining) {
         console.log(
-          "ROW HAS NO DATA:",
+          "ROW EMPTY:",
           line
         );
 
@@ -278,7 +307,7 @@ export async function POST(request: Request) {
           sizeIndexes.length === 0
         ) {
           console.log(
-            "STANDARD ROW SKIPPED - NO SIZE:",
+            "STANDARD ROW SKIPPED:",
             line
           );
 
@@ -308,7 +337,7 @@ export async function POST(request: Request) {
 
         if (!playerName) {
           console.log(
-            "STANDARD ROW SKIPPED - NO PLAYER:",
+            "STANDARD EMPTY NAME:",
             line
           );
 
@@ -345,21 +374,18 @@ export async function POST(request: Request) {
       );
 
       /*
-       * IMPORTANT:
+       * IMPORTANT
        *
-       * Do NOT use the first size.
+       * We use the LAST TWO valid sizes.
        *
        * Example:
        *
        * 7 M ESSA -- XS YL --
        *
-       * "M" is technically a valid size,
-       * but it is part of the player name.
+       * M is part of the player name.
        *
-       * Therefore:
-       *
-       * LAST valid size = Bottom
-       * SECOND-LAST valid size = Top
+       * XS = TOP
+       * YL = BOTTOM
        */
 
       const sizeIndexes: number[] = [];
@@ -376,10 +402,6 @@ export async function POST(request: Request) {
         "SIZE INDEXES:",
         sizeIndexes
       );
-
-      // -------------------------------------
-      // NEED AT LEAST TOP + BOTTOM
-      // -------------------------------------
 
       if (
         sizeIndexes.length < 2
@@ -416,17 +438,6 @@ export async function POST(request: Request) {
       // PLAYER NAME
       // -------------------------------------
 
-      /*
-       * Everything before Top size is
-       * player information.
-       *
-       * Remove placeholders:
-       *
-       * --
-       * -
-       * DriFit
-       */
-
       const nameTokens =
         tokens
           .slice(0, topIndex)
@@ -459,7 +470,7 @@ export async function POST(request: Request) {
       }
 
       // -------------------------------------
-      // CREATE PLAYER
+      // SAVE PLAYER
       // -------------------------------------
 
       const player: Player = {
@@ -478,7 +489,7 @@ export async function POST(request: Request) {
     }
 
     // ---------------------------------------
-    // FINAL DEBUG
+    // FINAL LOG
     // ---------------------------------------
 
     console.log(
@@ -532,16 +543,5 @@ export async function POST(request: Request) {
       },
       { status: 500 }
     );
-  } finally {
-    if (parser) {
-      try {
-        await parser.destroy();
-      } catch (error) {
-        console.error(
-          "PDF parser destroy error:",
-          error
-        );
-      }
-    }
   }
 }
