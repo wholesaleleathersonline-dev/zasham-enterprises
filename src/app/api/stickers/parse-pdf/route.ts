@@ -30,6 +30,58 @@ const cleanPlayerName = (value: string) => {
     .trim();
 };
 
+// ---------------------------------------
+// CLEAN PLAYER NAME
+// ---------------------------------------
+
+const extractCleanPlayerName = (
+  tokens: string[],
+  topIndex: number
+) => {
+  const attributes = new Set([
+    "drifit",
+    "compression",
+    "shorts",
+    "short",
+    "sleeve",
+    "sleeves",
+    "full",
+    "material",
+    "style",
+
+    "nosleeve",
+    "shortsleeve",
+    "fullsleeve",
+    "fullsleeves",
+    "compressionshorts",
+  ]);
+
+  const nameTokens: string[] = [];
+
+  for (let i = 0; i < topIndex; i++) {
+    const token = tokens[i].trim();
+
+    const normalized = token
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "");
+
+    // Attribute starts here.
+    if (
+      token === "-" ||
+      token === "--" ||
+      attributes.has(normalized)
+    ) {
+      break;
+    }
+
+    nameTokens.push(token);
+  }
+
+  return cleanPlayerName(
+    nameTokens.join(" ")
+  );
+};
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -70,54 +122,33 @@ export async function POST(request: Request) {
       await file.arrayBuffer()
     );
 
-    console.log(
-      "========== STICKER PDF =========="
-    );
-
-    console.log(
-      "FILE:",
-      file.name
-    );
-
-    console.log(
-      "SIZE:",
-      buffer.length
-    );
+    console.log("========== STICKER PDF ==========");
+    console.log("FILE:", file.name);
+    console.log("SIZE:", buffer.length);
 
     // ---------------------------------------
     // OPEN PDF
     // ---------------------------------------
 
-    const pdf =
-      await getDocumentProxy(buffer);
+    const pdf = await getDocumentProxy(buffer);
 
-    console.log(
-      "PDF PAGES:",
-      pdf.numPages
-    );
+    console.log("PDF PAGES:", pdf.numPages);
 
     // ---------------------------------------
     // EXTRACT TEXT
     // ---------------------------------------
 
-    const extracted =
-      await extractText(pdf, {
-        mergePages: true,
-      });
+    const extracted = await extractText(pdf, {
+      mergePages: true,
+    });
 
     const text = extracted.text
       .replace(/\r/g, "")
       .trim();
 
-    console.log(
-      "========== PDF TEXT =========="
-    );
-
+    console.log("========== PDF TEXT ==========");
     console.log(text);
-
-    console.log(
-      "=============================="
-    );
+    console.log("==============================");
 
     // ---------------------------------------
     // TEAM
@@ -159,8 +190,8 @@ export async function POST(request: Request) {
     // FIND TABLE HEADER
     // ---------------------------------------
 
-    const headerIndex =
-      lines.findIndex((line) => {
+    const headerIndex = lines.findIndex(
+      (line) => {
         const normalized =
           normalizeHeader(line);
 
@@ -169,7 +200,8 @@ export async function POST(request: Request) {
           normalized.includes("top") &&
           normalized.includes("bottom")
         );
-      });
+      }
+    );
 
     console.log(
       "HEADER INDEX:",
@@ -205,14 +237,10 @@ export async function POST(request: Request) {
       normalizeHeader(headerLine);
 
     const hasMaterial =
-      normalizedHeader.includes(
-        "material"
-      );
+      normalizedHeader.includes("material");
 
     const hasTopStyle =
-      normalizedHeader.includes(
-        "topstyle"
-      );
+      normalizedHeader.includes("topstyle");
 
     const format =
       hasMaterial || hasTopStyle
@@ -329,10 +357,9 @@ export async function POST(request: Request) {
             : "";
 
         const playerName =
-          cleanPlayerName(
-            tokens
-              .slice(0, topIndex)
-              .join(" ")
+          extractCleanPlayerName(
+            tokens,
+            topIndex
           );
 
         if (!playerName) {
@@ -373,20 +400,9 @@ export async function POST(request: Request) {
         tokens
       );
 
-      /*
-       * IMPORTANT
-       *
-       * We use the LAST TWO valid sizes.
-       *
-       * Example:
-       *
-       * 7 M ESSA -- XS YL --
-       *
-       * M is part of the player name.
-       *
-       * XS = TOP
-       * YL = BOTTOM
-       */
+      // -------------------------------------
+      // FIND ALL SIZE VALUES
+      // -------------------------------------
 
       const sizeIndexes: number[] = [];
 
@@ -438,20 +454,80 @@ export async function POST(request: Request) {
       // PLAYER NAME
       // -------------------------------------
 
+      /*
+       * We find the first known attribute.
+       *
+       * Examples:
+       *
+       * HAMID DriFit No Sleeve M L
+       * -> HAMID
+       *
+       * HAMID Compression Shorts M L
+       * -> HAMID
+       *
+       * ALI Compression Shorts L 8
+       * -> ALI
+       *
+       * M ESSA -- XS YL --
+       * -> M ESSA
+       *
+       * SSGT TAZ DriFit No Sleeve M M
+       * -> SSGT TAZ
+       */
+
+      const attributeWords = new Set([
+        "drifit",
+        "compression",
+        "shorts",
+        "short",
+        "sleeve",
+        "sleeves",
+        "full",
+        "material",
+        "style",
+
+        "nosleeve",
+        "shortsleeve",
+        "fullsleeve",
+        "fullsleeves",
+        "compressionshorts",
+      ]);
+
+      let nameEndIndex = topIndex;
+
+      for (
+        let j = 0;
+        j < topIndex;
+        j++
+      ) {
+        const token = tokens[j]
+          .trim();
+
+        const normalized = token
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+
+        if (
+          token === "-" ||
+          token === "--" ||
+          attributeWords.has(normalized)
+        ) {
+          nameEndIndex = j;
+          break;
+        }
+      }
+
       const nameTokens =
         tokens
-          .slice(0, topIndex)
+          .slice(0, nameEndIndex)
           .filter((token) => {
             const value =
-              token
-                .trim()
-                .toLowerCase();
+              token.trim();
 
             return (
               value !== "" &&
               value !== "--" &&
-              value !== "-" &&
-              value !== "drifit"
+              value !== "-"
             );
           });
 

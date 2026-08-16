@@ -7,6 +7,10 @@ type RouteContext = {
   }>;
 };
 
+// ==========================================
+// GET — Sticker Order Detail
+// ==========================================
+
 export async function GET(
   request: Request,
   context: RouteContext
@@ -42,7 +46,10 @@ export async function GET(
         .single();
 
     if (orderError || !order) {
-      console.error("Order fetch error:", orderError);
+      console.error(
+        "Order fetch error:",
+        orderError
+      );
 
       return NextResponse.json(
         {
@@ -54,20 +61,22 @@ export async function GET(
     }
 
     // Get players
-    const { data: players, error: playersError } =
-      await supabase
-        .from("sticker_order_players")
-        .select(`
-          id,
-          player_number,
-          player_name,
-          top_size,
-          bottom_size
-        `)
-        .eq("order_id", id)
-        .order("created_at", {
-          ascending: true,
-        });
+    const {
+      data: players,
+      error: playersError,
+    } = await supabase
+      .from("sticker_order_players")
+      .select(`
+        id,
+        player_number,
+        player_name,
+        top_size,
+        bottom_size
+      `)
+      .eq("order_id", id)
+      .order("created_at", {
+        ascending: true,
+      });
 
     if (playersError) {
       console.error(
@@ -95,13 +104,19 @@ export async function GET(
         totalPlayers: order.total_players,
         createdAt: order.created_at,
 
-        players: (players || []).map((player) => ({
-          id: player.id,
-          number: player.player_number || "",
-          playerName: player.player_name || "",
-          topSize: player.top_size || "",
-          bottomSize: player.bottom_size || "",
-        })),
+        players: (players || []).map(
+          (player) => ({
+            id: player.id,
+            number:
+              player.player_number || "",
+            playerName:
+              player.player_name || "",
+            topSize:
+              player.top_size || "",
+            bottomSize:
+              player.bottom_size || "",
+          })
+        ),
       },
     });
   } catch (error) {
@@ -117,6 +132,148 @@ export async function GET(
           error instanceof Error
             ? error.message
             : "Failed to load sticker order.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// ==========================================
+// DELETE — Sticker Order
+// ==========================================
+
+export async function DELETE(
+  request: Request,
+  context: RouteContext
+) {
+  try {
+    const { id } = await context.params;
+
+    if (!id) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Order ID is required.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const supabase = await createClient();
+
+    // ----------------------------------------
+    // Check order exists
+    // ----------------------------------------
+
+    const {
+      data: order,
+      error: orderCheckError,
+    } = await supabase
+      .from("sticker_orders")
+      .select("id, order_code")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (orderCheckError) {
+      console.error(
+        "Order check error:",
+        orderCheckError
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to check sticker order.",
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!order) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Sticker order not found.",
+        },
+        { status: 404 }
+      );
+    }
+
+    // ----------------------------------------
+    // Delete players first
+    // ----------------------------------------
+
+    const {
+      error: playersDeleteError,
+    } = await supabase
+      .from("sticker_order_players")
+      .delete()
+      .eq("order_id", id);
+
+    if (playersDeleteError) {
+      console.error(
+        "Players delete error:",
+        playersDeleteError
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Failed to delete sticker players.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // ----------------------------------------
+    // Delete order
+    // ----------------------------------------
+
+    const {
+      error: orderDeleteError,
+    } = await supabase
+      .from("sticker_orders")
+      .delete()
+      .eq("id", id);
+
+    if (orderDeleteError) {
+      console.error(
+        "Order delete error:",
+        orderDeleteError
+      );
+
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Failed to delete sticker order.",
+        },
+        { status: 500 }
+      );
+    }
+
+    // ----------------------------------------
+    // Success
+    // ----------------------------------------
+
+    return NextResponse.json({
+      success: true,
+      message: `Order ${order.order_code} deleted successfully.`,
+    });
+  } catch (error) {
+    console.error(
+      "Sticker order delete API error:",
+      error
+    );
+
+    return NextResponse.json(
+      {
+        success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Something went wrong while deleting the order.",
       },
       { status: 500 }
     );
