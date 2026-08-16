@@ -8,7 +8,10 @@ const nextConfig: NextConfig = {
         hostname: "zbxrkbtynxklfhgboecg.supabase.co",
       },
     ],
+
+    
   },
+   serverExternalPackages: ["pdf-parse"],
 };
 
 export default nextConfig;

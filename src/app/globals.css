@@ -259,3 +259,118 @@ html {
   box-shadow:none !important;
 }
 }
+
+/* =========================================
+   A4 STICKER SHEET
+   A4 Landscape = 297mm × 210mm
+   Sticker = 3.5in × 2.5in
+   ========================================= */
+.a4-sticker-page {
+  width: 297mm;
+  height: 210mm;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 88.9mm);
+  grid-template-rows: repeat(3, 63.5mm);
+
+  column-gap: 3mm;
+  row-gap: 3mm;
+
+  justify-content: center;
+  align-content: center;
+
+  margin: 0 auto;
+
+  background: white;
+}
+
+.a4-sticker-slot {
+  width: 88.9mm;
+  height: 63.5mm;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .sticker-print-root {
+    width: 297mm !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sticker-print-page {
+    width: 297mm !important;
+    height: 210mm !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .sticker-print-page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .a4-sticker-page {
+    width: 297mm !important;
+    height: 210mm !important;
+
+    display: grid !important;
+
+    grid-template-columns: repeat(3, 88.9mm) !important;
+    grid-template-rows: repeat(3, 63.5mm) !important;
+
+    column-gap: 3mm !important;
+    row-gap: 3mm !important;
+
+    justify-content: center !important;
+    align-content: center !important;
+
+    margin: 0 !important;
+
+    background: white !important;
+    box-shadow: none !important;
+  }
+
+  .a4-sticker-slot {
+    width: 88.9mm !important;
+    height: 63.5mm !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
+
+.print-sticker {
+  display: none;
+}
+
+@media print {
+  .screen-sticker {
+    display: none !important;
+  }
+
+  .print-sticker {
+    display: block !important;
+  }
+}

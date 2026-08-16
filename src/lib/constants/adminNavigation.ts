@@ -6,18 +6,21 @@ import {
   FaChartLine,
   FaCog,
   FaRuler,
+  FaImage,
+  FaImages,
+  FaMagic,
+  FaDollarSign,
+  FaTags,
+  FaClipboardList,
 } from "react-icons/fa";
+
 import { IconType } from "react-icons";
-import { FaImage } from "react-icons/fa";
-import { FaImages } from "react-icons/fa";
-import { FaMagic } from "react-icons/fa";
 
 export interface AdminNavigationItem {
   name: string;
   href: string;
   icon: IconType;
 }
-import { FaDollarSign } from "react-icons/fa";
 
 export const adminNavigation: AdminNavigationItem[] = [
   {
@@ -25,55 +28,76 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/dashboard",
     icon: FaTachometerAlt,
   },
+
   {
     name: "Products",
     href: "/admin/products",
     icon: FaBoxOpen,
   },
 
- {
-  name: "Invoices",
-  href: "/admin/invoices",
-  icon: FaFileInvoiceDollar,
-},
- {
-  name: "Customers",
-  href: "/admin/customers",
-  icon: FaUserPlus,
-},
+  {
+    name: "Invoices",
+    href: "/admin/invoices",
+    icon: FaFileInvoiceDollar,
+  },
+
+  {
+    name: "Customers",
+    href: "/admin/customers",
+    icon: FaUserPlus,
+  },
+
   {
     name: "Revenue Stats",
     href: "/admin/revenue",
     icon: FaChartLine,
   },
-  {
-  name: "Hero Banner",
-  href: "/admin/hero-banner",
-  icon: FaImage,
-},
-{
-  name: "Sports Categories",
-  href: "/admin/sports-categories",
-  icon: FaImages,
-},  
 
   {
-  name: "Size Charts",
-  href: "/admin/size-chart",
-  icon: FaRuler,
-},
+    name: "Hero Banner",
+    href: "/admin/hero-banner",
+    icon: FaImage,
+  },
 
-{
-  name: "Price List",
-  href: "/admin/price-list",
-  icon: FaDollarSign,
-},
+  {
+    name: "Sports Categories",
+    href: "/admin/sports-categories",
+    icon: FaImages,
+  },
 
-{
-  name: "AI Texture Studio",
-  href: "/admin/ai-texture",
-  icon: FaMagic,
-},
+  {
+    name: "Size Charts",
+    href: "/admin/size-chart",
+    icon: FaRuler,
+  },
+
+  {
+    name: "Price List",
+    href: "/admin/price-list",
+    icon: FaDollarSign,
+  },
+
+  {
+    name: "AI Texture Studio",
+    href: "/admin/ai-texture",
+    icon: FaMagic,
+  },
+
+  // ---------------------------------------
+  // STICKERS
+  // ---------------------------------------
+
+  {
+    name: "Sticker Generator",
+    href: "/admin/stickers",
+    icon: FaTags,
+  },
+
+  {
+    name: "Sticker Orders",
+    href: "/admin/sticker-orders",
+    icon: FaClipboardList,
+  },
 
   {
     name: "Admin Settings",
