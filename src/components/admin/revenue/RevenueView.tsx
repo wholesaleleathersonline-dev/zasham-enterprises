@@ -16,8 +16,10 @@ export default function RevenueView({
   id="revenue-report"
   className="mx-auto bg-white text-black shadow-2xl"
   style={{
-    width: "190mm",
-   padding: "6mm",
+    width: "210mm",
+     minHeight: "280mm",
+     marginTop:"8mm",
+   padding: "7mm",
 }}
 >
 
@@ -111,7 +113,7 @@ export default function RevenueView({
 
 {/* ================= CUSTOMER + INVOICE ================= */}
 
-<div className="mt-3 grid grid-cols-2 gap-2">
+<div className="mt-4 grid grid-cols-2 gap-4">
 
   {/* Customer */}
 
@@ -260,7 +262,7 @@ export default function RevenueView({
 
 {/* ================= MANUFACTURING + PRODUCTION ================= */}
 
-<div className="mt-4 grid grid-cols-2 gap-2">
+<div className="mt-6 grid grid-cols-2 gap-4">
 
   {/* Manufacturing */}
 
@@ -362,7 +364,7 @@ export default function RevenueView({
 
 {/* ================= REVENUE SUMMARY ================= */}
 
-<div className="mt-4 p-2">
+<div className="mt-6 p-2">
 
   <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
     Revenue Summary
@@ -415,7 +417,7 @@ export default function RevenueView({
 
 {/* ================= ORDER APPROVAL ================= */}
 
-<div className="mt-4 p-2">
+<div className="mt-6 p-2">
 
   <h2 className="mb-3 border-b border-[#E5A812] pb-1 text-lg font-bold text-black">
     Order Approval
@@ -425,7 +427,7 @@ export default function RevenueView({
 
     <div>
       <p
-        className="mb-5 font-semibold"
+        className="mb-20  font-semibold"
         style={{ color: "#000000" }}
       >
         Order Status
@@ -436,7 +438,7 @@ export default function RevenueView({
 
     <div>
       <p
-        className="mb-5 font-semibold"
+        className="mb-20 font-semibold"
         style={{ color: "#000000" }}
       >
         CEO Signature
@@ -447,7 +449,7 @@ export default function RevenueView({
 
     <div>
       <p
-        className="mb-5 font-semibold"
+        className="mb-20 font-semibold"
         style={{ color: "#000000" }}
       >
         Company Stamp
@@ -463,11 +465,11 @@ export default function RevenueView({
 
 {/* ================= FOOTER ================= */}
 
-<div className="mt-4 border-t border-[#E5A812] pt-3">
+<div className="mt-20 border-t border-[#E5A812] pt-3">
 
-  <div className="flex items-center justify-between text-xs text-gray-600">
+  <div className=" mt-10 flex items-center justify-between text-xs text-gray-600">
 
-    <div>
+    <div >
 
       <p>
         Generated :
