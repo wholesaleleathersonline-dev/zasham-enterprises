@@ -14,9 +14,11 @@ export async function exportOrderPDF(
   });
 
   doc.setFontSize(20);
+  doc.setTextColor(0, 0, 0);
   doc.text("ZASHAM ENTERPRISES", 14, 15);
 
   doc.setFontSize(12);
+  doc.setTextColor(0, 0, 0);
   doc.text(`Team: ${teamName}`, 14, 25);
   doc.text(`Order Code: ${orderCode}`, 14, 32);
 
@@ -86,12 +88,36 @@ export async function exportOrderPDF(
     styles: {
       fontSize: 7,
       cellPadding: 2,
+
+      // PURE BLACK TEXT
+      textColor: [0, 0, 0],
+
+      // PURE BLACK BORDERS
+      lineColor: [0, 0, 0],
+      lineWidth: 0.3,
     },
 
     headStyles: {
+      // Keep your gold header
       fillColor: [212, 175, 55],
+
+      // BLACK TEXT
       textColor: [0, 0, 0],
+
       fontStyle: "bold",
+
+      // BLACK HEADER BORDERS
+      lineColor: [0, 0, 0],
+      lineWidth: 0.3,
+    },
+
+    bodyStyles: {
+      // BLACK TEXT
+      textColor: [0, 0, 0],
+
+      // BLACK BODY BORDERS
+      lineColor: [0, 0, 0],
+      lineWidth: 0.3,
     },
   });
 
