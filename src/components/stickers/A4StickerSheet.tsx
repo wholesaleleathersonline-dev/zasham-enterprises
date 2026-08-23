@@ -61,7 +61,7 @@ const TOP_MARGIN =
 const LEFT_LOGO_SIZE = 16.65;
 
 const LEFT_LOGO_TOP = 0;
-const LEFT_LOGO_LEFT = 2;
+const LEFT_LOGO_LEFT = 4;
 
 // ======================================================
 // TEAM NAME
@@ -512,8 +512,8 @@ export default function A4StickerSheet({
 
               position: absolute;
 
-              top: 0mm;
-              left: 0mm;
+              top: 2mm;
+              left: 2mm;
 
               width: 16.65mm;
               height: 16.65mm;
