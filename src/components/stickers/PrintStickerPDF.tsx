@@ -1,142 +1,320 @@
+"use client";
+
 type PrintStickerPDFProps = {
   teamName: string;
+  playerNumber: string;
   playerName: string;
   topSize: string;
   bottomSize: string;
+  joggerSize: string;
+  jerseyStyle: string;
+  material: string;
+  hood: string;
 };
 
 export default function PrintStickerPDF({
   teamName,
+  playerNumber,
   playerName,
   topSize,
   bottomSize,
+  joggerSize,
+  jerseyStyle,
+  material,
+  hood,
 }: PrintStickerPDFProps) {
+  const name = playerName?.trim() || "PLAYER NAME";
+
+  const nameFontSize =
+    name.length > 28
+      ? "12px"
+      : name.length > 24
+        ? "13px"
+        : name.length > 20
+          ? "14px"
+          : name.length > 16
+            ? "15px"
+            : "17px";
+
+  const detailText: React.CSSProperties = {
+    fontFamily: "Arial, Helvetica, sans-serif",
+    fontSize: "10px",
+    lineHeight: 1.15,
+    fontWeight: 400,
+    fontStyle: "italic",
+    color: "#000000",
+  };
+
   return (
     <div
       style={{
-        width: "88.9mm",
-        height: "63.5mm",
-        background: "#E5A812",
-        color: "#000",
+        position: "relative",
+        width: "82mm",
+        height: "58mm",
         boxSizing: "border-box",
-        padding: "3mm 5mm",
+        overflow: "hidden",
+
+        backgroundColor: "#ffffff",
+        color: "#000000",
+
+        border: "2.5px solid #000000",
+
+        padding: "2mm 2.5mm",
+
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         textAlign: "center",
-        overflow: "hidden",
-        borderRadius: "2mm",
+
+        fontFamily:
+          'Georgia, "Times New Roman", serif',
       }}
     >
-      {/* Logo */}
+      {/* WATERMARK */}
       <div
         style={{
-          width: "12mm",
-          height: "12mm",
-          marginBottom: "1.5mm",
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: "100%",
+          height: "100%",
+
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+
+          pointerEvents: "none",
+          zIndex: 0,
         }}
       >
         <img
           src="/logo/logo2.png"
-          alt="Zasham Enterprises"
+          alt=""
           style={{
-            width: "12mm",
-            height: "12mm",
-            objectFit: "contain",
             display: "block",
+
+            width: "40mm",
+            height: "40mm",
+
+            objectFit: "contain",
+            objectPosition: "center",
+
+            opacity: 0.075,
+
+            maxWidth: "40mm",
+            maxHeight: "40mm",
           }}
         />
       </div>
 
-      {/* Team */}
+      {/* CONTENT */}
       <div
         style={{
-          marginTop: "1.5mm",
-          fontSize: "15px",
-          lineHeight: 1.1,
-          fontWeight: 600,
-          textTransform: "uppercase",
-        }}
-      >
-        {teamName || "TEAM NAME"}
-      </div>
+          position: "relative",
+          zIndex: 1,
 
-      {/* Player */}
-      <div
-        style={{
-          marginTop: "1.5mm",
-          fontSize: "20px",
-          lineHeight: 1.1,
-          fontWeight: 900,
-          textTransform: "uppercase",
-          maxWidth: "100%",
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          textOverflow: "ellipsis",
-        }}
-      >
-        {playerName}
-      </div>
-
-      {/* Sizes */}
-      <div
-        style={{
-          marginTop: "3mm",
-          display: "flex",
-          gap: "2mm",
-        }}
-      >
-        <div
-          style={{
-            border: "1px solid #000",
-            borderRadius: "1mm",
-            padding: "1mm 2.5mm",
-            fontSize: "12px",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}
-        >
-          TOP: {topSize || "-"}
-        </div>
-
-        <div
-          style={{
-            border: "1px solid #000",
-            borderRadius: "1mm",
-            padding: "1mm 2.5mm",
-            fontSize: "12px",
-            fontWeight: 600,
-            whiteSpace: "nowrap",
-          }}
-        >
-          BOTTOM: {bottomSize || "-"}
-        </div>
-      </div>
-
-      {/* Contact */}
-      <div
-        style={{
-          marginTop: "auto",
-          fontSize: "10px",
-          lineHeight: 1.6,
-          fontWeight: 500,
           width: "100%",
+          height: "100%",
+
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+
+          textAlign: "center",
         }}
       >
-        <div>
-          Instagram: @zashamenterprises&nbsp;|&nbsp;&nbsp;
-          Facebook: Zasham Sportswear
+        {/* TEAM NAME */}
+        <div
+          style={{
+            width: "100%",
+
+            fontSize: "13px",
+            lineHeight: 1,
+
+            fontWeight: 400,
+            fontStyle: "italic",
+
+            letterSpacing: "0.3px",
+
+            textTransform: "uppercase",
+
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {teamName?.trim() || "TEAM NAME"}
         </div>
 
-        <div style={{ marginTop: "0.5mm" }}>
-          info@zashamenterprises.com
+        {/* PLAYER NUMBER */}
+        <div
+          style={{
+            marginTop: "1mm",
+
+            fontSize: "17px",
+            lineHeight: 1,
+
+            fontWeight: 400,
+            fontStyle: "italic",
+
+            letterSpacing: "0.5px",
+          }}
+        >
+          #{playerNumber?.trim() || "-"}
         </div>
 
-        <div>
-          www.zashamenterprises.com
+        {/* PLAYER NAME */}
+        <div
+          style={{
+            width: "100%",
+
+            marginTop: "1mm",
+
+            fontSize: nameFontSize,
+            lineHeight: 1.05,
+
+            fontWeight: 400,
+            fontStyle: "italic",
+
+            letterSpacing: "0.4px",
+
+            textTransform: "uppercase",
+
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+
+            padding: "0 1mm",
+          }}
+        >
+          {name}
+        </div>
+
+        {/* SIZES */}
+        <div
+          style={{
+            width: "100%",
+
+            marginTop: "2mm",
+
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+
+            gap: "1mm",
+          }}
+        >
+          {[
+            ["TOP", topSize],
+            ["BOTTOM", bottomSize],
+            ["JOGGER", joggerSize],
+          ].map(([label, value]) => (
+            <div
+              key={label}
+              style={{
+                border: "1.2px solid #000000",
+                borderRadius: "0.7mm",
+
+                padding: "0.9mm 1.7mm",
+
+                fontFamily:
+                  'Arial, Helvetica, sans-serif',
+
+                fontSize: "9.5px",
+                lineHeight: 1,
+
+                fontWeight: 400,
+                fontStyle: "italic",
+
+                color: "#000000",
+
+                whiteSpace: "nowrap",
+              }}
+            >
+              {label}:{" "}
+              <span style={{ fontWeight: 500 }}>
+                {value?.trim() || "-"}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* EXTRA DETAILS */}
+        <div
+          style={{
+            width: "100%",
+
+            marginTop: "1.8mm",
+
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+
+            gap: "0.7mm",
+
+            ...detailText,
+          }}
+        >
+          <div>
+            JERSEY STYLE:{" "}
+            <span style={{ fontWeight: 500 }}>
+              {jerseyStyle?.trim() || "-"}
+            </span>
+          </div>
+
+          <div>
+            MATERIAL:{" "}
+            <span style={{ fontWeight: 500 }}>
+              {material?.trim() || "-"}
+            </span>
+          </div>
+
+          <div>
+            HOOD:{" "}
+            <span style={{ fontWeight: 500 }}>
+              {hood?.trim() || "-"}
+            </span>
+          </div>
+        </div>
+
+        {/* CONTACT */}
+        <div
+          style={{
+            width: "100%",
+
+            marginTop: "auto",
+
+            paddingTop: "1mm",
+
+            fontFamily:
+              "Arial, Helvetica, sans-serif",
+
+            fontSize: "7.5px",
+            lineHeight: 1.15,
+
+            fontWeight: 400,
+            fontStyle: "italic",
+
+            color: "#000000",
+
+            textAlign: "center",
+
+            flexShrink: 0,
+          }}
+        >
+          <div>
+            Instagram: @zashamenterprises
+            {" | "}
+            Facebook: Zasham Sportswear
+          </div>
+
+          <div style={{ marginTop: "0.4mm" }}>
+            info@zashamenterprises.com
+          </div>
+
+          <div style={{ marginTop: "0.4mm" }}>
+            www.zashamenterprises.com
+          </div>
         </div>
       </div>
     </div>

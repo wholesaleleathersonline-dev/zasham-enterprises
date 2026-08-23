@@ -1,381 +1,518 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import StickerPreview from "./StickerPreview";
 import StickerDataPreview from "./StickerDataPreview";
 import A4StickerSheet from "./A4StickerSheet";
 
 type Player = {
+  id?: string | number;
   number: string;
   playerName: string;
   topSize: string;
   bottomSize: string;
+  joggerSize: string;
+  jerseyStyle: string;
+  material: string;
+  hood: string;
 };
 
-type ParsedResult = {
-  fileName: string;
-  teamName: string;
+type OrderResult = {
   orderCode: string;
-  players: Player[];
+  teamName: string;
+  fileName?: string | null;
   totalPlayers: number;
+  createdAt?: string;
+  players: Player[];
+};
+
+type ApiResponse = {
+  success: boolean;
+  order?: OrderResult;
+  error?: string;
 };
 
 export default function StickerUploader() {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [orderCode, setOrderCode] = useState("");
 
-  const [file, setFile] = useState<File | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isParsing, setIsParsing] = useState(false);
-  const [error, setError] = useState("");
-  const [result, setResult] = useState<ParsedResult | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-const [saveMessage, setSaveMessage] = useState("");
-const [saveError, setSaveError] = useState("");
+  const [result, setResult] =
+    useState<OrderResult | null>(null);
 
-  const handleFile = (selectedFile: File | undefined) => {
-    if (!selectedFile) return;
+  const [isLoading, setIsLoading] =
+    useState(false);
 
-    setError("");
-    setResult(null);
+  const [error, setError] =
+    useState("");
 
-    if (selectedFile.type !== "application/pdf") {
-      setError("Please upload a PDF file.");
+  // ==========================================
+  // FETCH ORDER BY ORDER CODE
+  // ==========================================
+
+  const fetchOrder = async () => {
+    const code = orderCode.trim();
+
+    if (!code) {
+      setError("Please enter an order code.");
       return;
     }
 
-    setFile(selectedFile);
-  };
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragging(false);
-
-    handleFile(event.dataTransfer.files?.[0]);
-  };
-
-  const removeFile = () => {
-    setFile(null);
-    setResult(null);
-    setError("");
-
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-  };
-
-  const generateStickers = async () => {
-    if (!file) return;
-
     try {
-      setIsParsing(true);
+      setIsLoading(true);
       setError("");
       setResult(null);
 
-      const formData = new FormData();
+const response = await fetch(
+  `/api/stickers/order-sheet/${encodeURIComponent(
+    code
+  )}`,
+  {
+    method: "GET",
+    cache: "no-store",
+  }
+);
+      const data =
+        (await response.json()) as ApiResponse;
 
-      formData.append("file", file);
-
-      const response = await fetch("/api/stickers/parse-pdf", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Failed to parse PDF.");
+      if (
+        !response.ok ||
+        !data.success ||
+        !data.order
+      ) {
+        throw new Error(
+          data.error ||
+            "Sticker order not found."
+        );
       }
 
-      setResult(data);
+      setResult(data.order);
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Fetch sticker order error:",
+        error
+      );
 
       setError(
         error instanceof Error
           ? error.message
-          : "Something went wrong while reading the PDF."
+          : "Failed to fetch sticker order."
       );
     } finally {
-      setIsParsing(false);
+      setIsLoading(false);
     }
   };
 
-  const saveOrder = async () => {
-  if (!result) return;
+  // ==========================================
+  // ENTER KEY
+  // ==========================================
 
-  try {
-    setIsSaving(true);
-    setSaveMessage("");
-    setSaveError("");
-
-    const response = await fetch("/api/stickers/save-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        orderCode: result.orderCode,
-        teamName: result.teamName,
-        fileName: result.fileName,
-        players: result.players,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.success) {
-      throw new Error(
-        data.error || "Failed to save sticker order."
-      );
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      fetchOrder();
     }
+  };
 
-    setSaveMessage(
-      `Order ${data.orderCode} saved successfully with ${data.totalPlayers} players.`
-    );
-  } catch (error) {
-    console.error(error);
+  // ==========================================
+  // CLEAR
+  // ==========================================
 
-    setSaveError(
-      error instanceof Error
-        ? error.message
-        : "Something went wrong while saving the order."
-    );
-  } finally {
-    setIsSaving(false);
-  }
-};
+  const clearOrder = () => {
+    setOrderCode("");
+    setResult(null);
+    setError("");
+  };
 
-return (
-  <div className="w-full max-w-none space-y-6">
-      {/* Upload Area */}
+  return (
+    <div className="w-full max-w-none space-y-6">
+
+      {/* ======================================
+          ORDER CODE SEARCH
+      ====================================== */}
+
       <div
-        onDragOver={(event) => {
-          event.preventDefault();
-          setIsDragging(true);
-        }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={handleDrop}
-        onClick={() => inputRef.current?.click()}
-        className={`cursor-pointer rounded-2xl border border-dashed p-10 text-center transition-all duration-200 ${
-          isDragging
-            ? "border-yellow-500 bg-yellow-500/10"
-            : "border-white/15 bg-white/[0.03] hover:border-yellow-500/50 hover:bg-white/[0.05]"
-        }`}
+        className="
+          rounded-2xl
+          border
+          border-white/10
+          bg-white/[0.03]
+          p-6
+        "
       >
-        <input
-          ref={inputRef}
-          type="file"
-          accept="application/pdf"
-          className="hidden"
-          onChange={(event) =>
-            handleFile(event.target.files?.[0])
-          }
-        />
-
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full border border-yellow-500/20 bg-yellow-500/10">
-          <svg
-            className="h-7 w-7 text-yellow-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        <div className="mb-5">
+          <p
+            className="
+              text-xs
+              font-medium
+              uppercase
+              tracking-[0.18em]
+              text-yellow-500
+            "
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M12 16V4m0 0L8 8m4-4 4 4M5 20h14"
-            />
-          </svg>
+            Sticker Generator
+          </p>
+
+          <h2
+            className="
+              mt-1
+              text-xl
+              font-semibold
+              text-white
+            "
+          >
+            Generate From Order Code
+          </h2>
+
+          <p
+            className="
+              mt-2
+              text-sm
+              text-white/40
+            "
+          >
+            Enter the order code to fetch
+            the complete order and all
+            players from the database.
+          </p>
         </div>
 
-        <h3 className="text-lg font-semibold text-white">
-          Upload Order Sheet PDF
-        </h3>
-
-        <p className="mt-2 text-sm text-white/45">
-          Drag & drop your PDF here or click to browse
-        </p>
-
-        <p className="mt-3 text-xs text-white/30">
-          PDF files only
-        </p>
-      </div>
-
-      {/* Selected File */}
-      {file && (
-        <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] p-4">
-          <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-xs font-bold text-red-400">
-              PDF
-            </div>
-
-            <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-white">
-                {file.name}
-              </p>
-
-              <p className="mt-1 text-xs text-white/40">
-                {(file.size / 1024 / 1024).toFixed(2)} MB
-              </p>
-            </div>
-          </div>
+        <div
+          className="
+            flex
+            flex-col
+            gap-3
+            sm:flex-row
+          "
+        >
+          <input
+            type="text"
+            value={orderCode}
+            onChange={(event) =>
+              setOrderCode(event.target.value)
+            }
+            onKeyDown={handleKeyDown}
+            placeholder="Enter Order Code"
+            className="
+              h-12
+              min-w-0
+              flex-1
+              rounded-xl
+              border
+              border-white/10
+              bg-black/30
+              px-4
+              text-sm
+              uppercase
+              text-white
+              outline-none
+              placeholder:text-white/25
+              focus:border-yellow-500/50
+            "
+          />
 
           <button
             type="button"
-            onClick={(event) => {
-              event.stopPropagation();
-              removeFile();
-            }}
-            className="ml-4 rounded-lg px-3 py-2 text-xs text-red-400 transition hover:bg-red-500/10"
+            onClick={fetchOrder}
+            disabled={isLoading}
+            className="
+              h-12
+              rounded-xl
+              bg-yellow-500
+              px-7
+              text-sm
+              font-semibold
+              text-black
+              transition
+              hover:bg-yellow-400
+              disabled:cursor-not-allowed
+              disabled:opacity-40
+            "
           >
-            Remove
+            {isLoading
+              ? "Fetching..."
+              : "Fetch Order"}
           </button>
         </div>
-      )}
+      </div>
 
-      {/* Error */}
+      {/* ======================================
+          ERROR
+      ====================================== */}
+
       {error && (
-        <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div
+          className="
+            rounded-xl
+            border
+            border-red-500/20
+            bg-red-500/10
+            px-4
+            py-3
+            text-sm
+            text-red-400
+          "
+        >
           {error}
         </div>
       )}
 
-      {/* Generate */}
-      <button
-        type="button"
-        onClick={generateStickers}
-        disabled={!file || isParsing}
-        className="w-full rounded-xl bg-yellow-500 px-5 py-3.5 text-sm font-semibold text-black transition hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-30"
-      >
-        {isParsing ? "Reading PDF..." : "Generate Stickers"}
-      </button>
+      {/* ======================================
+          ORDER RESULT
+      ====================================== */}
 
-      {/* Parsed Result */}
-     {result && (
-  <div className="space-y-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/[0.03] p-5">
+      {result && (
+        <div className="space-y-6">
 
-    {/* Success Header */}
-    <div className="flex items-center justify-between">
-      <div>
-        <p className="text-xs uppercase tracking-[0.18em] text-yellow-500">
-          PDF Parsed Successfully
-        </p>
+          {/* ==================================
+              ORDER HEADER
+          ================================== */}
 
-        <h3 className="mt-1 text-xl font-semibold text-white">
-          {result.teamName || "Unknown Team"}
-        </h3>
-      </div>
+          <div
+            className="
+              rounded-2xl
+              border
+              border-yellow-500/20
+              bg-yellow-500/[0.03]
+              p-5
+            "
+          >
+            <div
+              className="
+                flex
+                flex-col
+                gap-4
+                lg:flex-row
+                lg:items-center
+                lg:justify-between
+              "
+            >
+              <div>
+                <p
+                  className="
+                    text-xs
+                    uppercase
+                    tracking-[0.18em]
+                    text-yellow-500
+                  "
+                >
+                  Order Found
+                </p>
 
-      <div className="rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-right">
-        <p className="text-[10px] uppercase text-white/35">
-          Players
-        </p>
+                <h3
+                  className="
+                    mt-1
+                    text-2xl
+                    font-semibold
+                    uppercase
+                    text-white
+                  "
+                >
+                  {result.teamName ||
+                    "Unknown Team"}
+                </h3>
 
-        <p className="text-lg font-semibold text-white">
-          {result.totalPlayers}
-        </p>
-      </div>
-    </div>
+                <p
+                  className="
+                    mt-2
+                    text-sm
+                    text-white/40
+                  "
+                >
+                  Order Code:{" "}
+                  <span className="font-semibold text-white/70">
+                    {result.orderCode}
+                  </span>
+                </p>
+              </div>
 
-    {/* Extracted Data */}
-    <StickerDataPreview
-      teamName={result.teamName}
-      orderCode={result.orderCode}
-      players={result.players}
-    />
+              <div className="flex items-center gap-3">
 
-    {/* Save Order */}
-<div className="rounded-xl border border-yellow-500/20 bg-yellow-500/[0.04] p-4">
+                <div
+                  className="
+                    rounded-xl
+                    border
+                    border-white/10
+                    bg-white/[0.04]
+                    px-5
+                    py-3
+                    text-center
+                  "
+                >
+                  <p
+                    className="
+                      text-[10px]
+                      uppercase
+                      tracking-wider
+                      text-white/35
+                    "
+                  >
+                    Players
+                  </p>
 
-  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <p
+                    className="
+                      mt-1
+                      text-2xl
+                      font-semibold
+                      text-white
+                    "
+                  >
+                    {result.players.length}
+                  </p>
+                </div>
 
-    <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-yellow-500">
-        Order Database
-      </p>
+                <button
+                  type="button"
+                  onClick={clearOrder}
+                  className="
+                    rounded-xl
+                    border
+                    border-white/10
+                    px-4
+                    py-3
+                    text-sm
+                    text-white/50
+                    transition
+                    hover:border-red-500/30
+                    hover:text-red-400
+                  "
+                >
+                  Clear
+                </button>
 
-      <p className="mt-1 text-sm text-white/60">
-        Save this order and its player data to the database.
-      </p>
-    </div>
+              </div>
+            </div>
+          </div>
 
-    <button
-      type="button"
-      onClick={saveOrder}
-      disabled={isSaving}
-      className="
-        shrink-0
-        rounded-xl
-        bg-yellow-500
-        px-6
-        py-3
-        text-sm
-        font-semibold
-        text-black
-        transition
-        hover:bg-yellow-400
-        disabled:cursor-not-allowed
-        disabled:opacity-50
-      "
-    >
-      {isSaving ? "Saving Order..." : "💾 Save Order"}
-    </button>
+          {/* ==================================
+              PLAYERS DATA
+          ================================== */}
 
-  </div>
+          {result.players.length > 0 ? (
+            <StickerDataPreview
+              teamName={result.teamName}
+              orderCode={result.orderCode}
+              players={result.players}
+            />
+          ) : (
+            <div
+              className="
+                rounded-xl
+                border
+                border-red-500/20
+                bg-red-500/10
+                px-4
+                py-4
+                text-sm
+                text-red-400
+              "
+            >
+              This order exists, but no players
+              were found in the database.
+            </div>
+          )}
 
-  {/* Success */}
-  {saveMessage && (
-    <div className="mt-4 rounded-lg border border-green-500/20 bg-green-500/10 px-4 py-3 text-sm text-green-400">
-      ✓ {saveMessage}
-    </div>
-  )}
+          {/* ==================================
+              INDIVIDUAL PREVIEWS
+          ================================== */}
 
-  {/* Error */}
-  {saveError && (
-    <div className="mt-4 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-      {saveError}
-    </div>
-  )}
+          {result.players.length > 0 && (
+            <div className="space-y-5">
 
-</div>
+              <div>
+                <p
+                  className="
+                    text-xs
+                    uppercase
+                    tracking-[0.18em]
+                    text-yellow-500
+                  "
+                >
+                  Sticker Previews
+                </p>
 
-    {/* Individual Sticker Preview */}
-  {result.players.length > 0 && (
-  <div className="space-y-5">
-    <div>
-      <p className="text-xs uppercase tracking-[0.18em] text-yellow-500">
-        Sticker Previews
-      </p>
+                <h3
+                  className="
+                    mt-1
+                    text-xl
+                    font-semibold
+                    text-white
+                  "
+                >
+                  {result.players.length}
+                  {" "}
+                  Individual Stickers
+                </h3>
+              </div>
 
-      <h3 className="mt-1 text-xl font-semibold text-white">
-        {result.totalPlayers} Individual Stickers
-      </h3>
-    </div>
+              <div
+                className="
+                  grid
+                  grid-cols-1
+                  gap-6
+                  xl:grid-cols-3
+                "
+              >
+                {result.players.map(
+                  (player, index) => (
+                   <StickerPreview
+  key={
+    player.id ??
+    `${player.number}-${index}`
+  }
+  teamName={
+    result.teamName
+  }
+  playerName={
+    player.playerName
+  }
+  topSize={
+    player.topSize
+  }
+  bottomSize={
+    player.bottomSize
+  }
+  joggerSize={
+    player.joggerSize
+  }
+  jerseyStyle={
+    player.jerseyStyle
+  }
+  material={
+    player.material
+  }
+  hood={
+    player.hood
+  }
+/>
+                  )
+                )}
+              </div>
+            </div>
+          )}
 
-<div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-  {result.players.map((player) => (
-    <StickerPreview
-      key={`${player.number}-${player.playerName}`}
-      teamName={result.teamName}
-      playerName={player.playerName}
-      topSize={player.topSize}
-      bottomSize={player.bottomSize}
-    />
-  ))}
-</div>
-  </div>
-)}
-{result.players.length > 0 && (
-  <A4StickerSheet
-    teamName={result.teamName}
-    players={result.players}
-  />
-)}
+          {/* ==================================
+              A4 STICKER SHEET
+          ================================== */}
 
-  </div>
-)}
+          {result.players.length > 0 && (
+            <A4StickerSheet
+              orderCode={
+                result.orderCode
+              }
+              teamName={
+                result.teamName
+              }
+              players={
+                result.players
+              }
+            />
+          )}
 
-      
+        </div>
+      )}
+
     </div>
   );
 }

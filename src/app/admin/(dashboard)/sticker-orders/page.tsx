@@ -291,7 +291,7 @@ export default function StickerOrdersPage() {
 
                   {/* View */}
                   <Link
-                    href={`/admin/sticker-orders/${order.id}`}
+                 href={`/admin/sticker-orders/${encodeURIComponent(order.order_code)}`}
                     className="
                       inline-flex
                       rounded-lg

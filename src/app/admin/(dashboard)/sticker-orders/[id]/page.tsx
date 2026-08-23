@@ -5,11 +5,16 @@ import { useEffect, useState } from "react";
 import A4StickerSheet from "../../../../../components/stickers/A4StickerSheet";
 
 type Player = {
-  id: string;
+    id?: string | number;
   number: string;
   playerName: string;
   topSize: string;
   bottomSize: string;
+  joggerSize: string;
+  jerseyStyle: string;
+  material: string;
+  hood: string;
+  
 };
 
 type StickerOrder = {
@@ -297,17 +302,23 @@ export default function StickerOrderDetailPage({
 
 {/* Sticker Sheets */}
 {showStickers && (
-  <div className="w-full">
-    <A4StickerSheet
-      teamName={order.teamName}
-      players={order.players.map((player) => ({
-        number: player.number,
-        playerName: player.playerName,
-        topSize: player.topSize,
-        bottomSize: player.bottomSize,
-      }))}
-    />
-  </div>
+ <div className="w-full">
+ <A4StickerSheet
+  orderCode={order.orderCode}
+  teamName={order.teamName}
+  players={order.players.map((player) => ({
+    number: player.number,
+    playerName: player.playerName,
+    topSize: player.topSize,
+    bottomSize: player.bottomSize,
+    joggerSize: player.joggerSize,
+    jerseyStyle: player.jerseyStyle,
+    material: player.material,
+    hood: player.hood,
+  }))}
+/>
+</div>
+ 
 )}
 
     </div>

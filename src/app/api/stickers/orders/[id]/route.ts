@@ -8,9 +8,17 @@ type RouteContext = {
 };
 
 // ==========================================
-// GET — Sticker Order Detail
+// GET — Sticker Order
+//
+// Supports BOTH:
+//
+// /api/admin/stickers/orders/UUID
+//
+// AND
+//
+// /api/admin/stickers/orders/ZE-NKE6AS
+//
 // ==========================================
-
 export async function GET(
   request: Request,
   context: RouteContext
@@ -18,11 +26,13 @@ export async function GET(
   try {
     const { id } = await context.params;
 
-    if (!id) {
+    const orderCode = id?.trim();
+
+    if (!orderCode) {
       return NextResponse.json(
         {
           success: false,
-          error: "Order ID is required.",
+          error: "Order code is required.",
         },
         { status: 400 }
       );
@@ -30,22 +40,36 @@ export async function GET(
 
     const supabase = await createClient();
 
-    // Get order
-    const { data: order, error: orderError } =
-      await supabase
-        .from("sticker_orders")
-        .select(`
-          id,
-          order_code,
-          team_name,
-          file_name,
-          total_players,
-          created_at
-        `)
-        .eq("id", id)
-        .single();
+    // ==========================================
+    // FIND ORDER BY ORDER CODE
+    // Case-insensitive
+    // ==========================================
 
-    if (orderError || !order) {
+  const searchCode = orderCode
+  .trim()
+  .replace(/\s+/g, "");
+
+const {
+  data: order,
+  error: orderError,
+} = await supabase
+  .from("sticker_orders")
+  .select(`
+    id,
+    order_code,
+    team_name,
+    file_name,
+    total_players,
+    created_at
+  `)
+  .ilike(
+    "order_code",
+    `%${searchCode}%`
+  )
+  .limit(1)
+  .maybeSingle();
+
+    if (orderError) {
       console.error(
         "Order fetch error:",
         orderError
@@ -54,13 +78,27 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          error: "Sticker order not found.",
+          error: orderError.message,
         },
-        { status: 404 }
+        { status: 500 }
       );
     }
 
-    // Get players
+   if (!order) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: `Order "${orderCode}" not found in sticker_orders.`,
+      searchedCode: searchCode,
+    },
+    { status: 404 }
+  );
+}
+
+    // ==========================================
+    // GET ALL PLAYERS
+    // ==========================================
+
     const {
       data: players,
       error: playersError,
@@ -71,9 +109,11 @@ export async function GET(
         player_number,
         player_name,
         top_size,
-        bottom_size
+        bottom_size,
+        jogger_size,
+        created_at
       `)
-      .eq("order_id", id)
+      .eq("order_id", order.id)
       .order("created_at", {
         ascending: true,
       });
@@ -87,34 +127,56 @@ export async function GET(
       return NextResponse.json(
         {
           success: false,
-          error: "Failed to load player data.",
+          error: playersError.message,
         },
         { status: 500 }
       );
     }
+
+    // ==========================================
+    // RETURN COMPLETE ORDER
+    // ==========================================
 
     return NextResponse.json({
       success: true,
 
       order: {
         id: order.id,
-        orderCode: order.order_code,
-        teamName: order.team_name,
-        fileName: order.file_name,
-        totalPlayers: order.total_players,
-        createdAt: order.created_at,
+
+        orderCode:
+          order.order_code,
+
+        teamName:
+          order.team_name,
+
+        fileName:
+          order.file_name,
+
+        totalPlayers:
+          players?.length ??
+          order.total_players,
+
+        createdAt:
+          order.created_at,
 
         players: (players || []).map(
           (player) => ({
             id: player.id,
+
             number:
               player.player_number || "",
+
             playerName:
               player.player_name || "",
+
             topSize:
               player.top_size || "",
+
             bottomSize:
               player.bottom_size || "",
+
+            joggerSize:
+              player.jogger_size || "",
           })
         ),
       },
@@ -149,11 +211,11 @@ export async function DELETE(
   try {
     const { id } = await context.params;
 
-    if (!id) {
+    if (!id?.trim()) {
       return NextResponse.json(
         {
           success: false,
-          error: "Order ID is required.",
+          error: "Order ID or Order Code is required.",
         },
         { status: 400 }
       );
@@ -161,32 +223,31 @@ export async function DELETE(
 
     const supabase = await createClient();
 
-    // ----------------------------------------
-    // Check order exists
-    // ----------------------------------------
+    // ========================================
+    // FIND ORDER BY ID OR CODE
+    // ========================================
 
-    const {
-      data: order,
-      error: orderCheckError,
-    } = await supabase
+    let order: any = null;
+
+    const byId = await supabase
       .from("sticker_orders")
       .select("id, order_code")
       .eq("id", id)
       .maybeSingle();
 
-    if (orderCheckError) {
-      console.error(
-        "Order check error:",
-        orderCheckError
-      );
+    if (byId.data) {
+      order = byId.data;
+    } else {
+      const byCode = await supabase
+        .from("sticker_orders")
+        .select("id, order_code")
+        .eq(
+          "order_code",
+          id.trim().toUpperCase()
+        )
+        .maybeSingle();
 
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Failed to check sticker order.",
-        },
-        { status: 500 }
-      );
+      order = byCode.data;
     }
 
     if (!order) {
@@ -199,16 +260,16 @@ export async function DELETE(
       );
     }
 
-    // ----------------------------------------
-    // Delete players first
-    // ----------------------------------------
+    // ========================================
+    // DELETE PLAYERS
+    // ========================================
 
     const {
       error: playersDeleteError,
     } = await supabase
       .from("sticker_order_players")
       .delete()
-      .eq("order_id", id);
+      .eq("order_id", order.id);
 
     if (playersDeleteError) {
       console.error(
@@ -226,16 +287,16 @@ export async function DELETE(
       );
     }
 
-    // ----------------------------------------
-    // Delete order
-    // ----------------------------------------
+    // ========================================
+    // DELETE ORDER
+    // ========================================
 
     const {
       error: orderDeleteError,
     } = await supabase
       .from("sticker_orders")
       .delete()
-      .eq("id", id);
+      .eq("id", order.id);
 
     if (orderDeleteError) {
       console.error(
@@ -253,17 +314,14 @@ export async function DELETE(
       );
     }
 
-    // ----------------------------------------
-    // Success
-    // ----------------------------------------
-
     return NextResponse.json({
       success: true,
-      message: `Order ${order.order_code} deleted successfully.`,
+      message:
+        `Order ${order.order_code} deleted successfully.`,
     });
   } catch (error) {
     console.error(
-      "Sticker order delete API error:",
+      "Sticker order DELETE error:",
       error
     );
 
@@ -273,7 +331,7 @@ export async function DELETE(
         error:
           error instanceof Error
             ? error.message
-            : "Something went wrong while deleting the order.",
+            : "Something went wrong.",
       },
       { status: 500 }
     );

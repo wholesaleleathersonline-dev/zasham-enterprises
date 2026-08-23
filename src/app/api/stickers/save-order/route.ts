@@ -6,6 +6,7 @@ type Player = {
   playerName: string;
   topSize: string;
   bottomSize: string;
+  joggerSize: string;
 };
 
 type SaveOrderRequest = {
@@ -130,13 +131,14 @@ export async function POST(request: Request) {
     // Prepare player records
     // -----------------------------
 
-    const playerRows = players.map((player) => ({
-      order_id: order.id,
-      player_number: player.number?.trim() || null,
-      player_name: player.playerName?.trim() || "",
-      top_size: player.topSize?.trim() || null,
-      bottom_size: player.bottomSize?.trim() || null,
-    }));
+  const playerRows = players.map((player) => ({
+  order_id: order.id,
+  player_number: player.number?.trim() || null,
+  player_name: player.playerName?.trim() || "",
+  top_size: player.topSize?.trim() || null,
+  bottom_size: player.bottomSize?.trim() || null,
+  jogger_size: player.joggerSize?.trim() || null,
+}));
 
     // -----------------------------
     // Save players

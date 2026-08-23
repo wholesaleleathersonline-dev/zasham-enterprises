@@ -5,6 +5,10 @@ type StickerPreviewProps = {
   playerName: string;
   topSize: string;
   bottomSize: string;
+  joggerSize: string;
+  jerseyStyle: string;
+  material: string;
+  hood: string;
 };
 
 export default function StickerPreview({
@@ -12,71 +16,171 @@ export default function StickerPreview({
   playerName,
   topSize,
   bottomSize,
+  joggerSize,
+  jerseyStyle,
+  material,
+  hood,
 }: StickerPreviewProps) {
   return (
     <div className="space-y-3">
       {/* Preview Label */}
-      <div className="text-xs font-medium uppercase tracking-[0.18em] text-yellow-500">
+      <div className="text-xs font-medium uppercase tracking-[0.18em] text-white">
         Sticker Preview
       </div>
 
-      {/* Exact 3.5 × 2.5 inch sticker */}
+      {/* Sticker */}
       <div
         className="
-          flex h-[2.5in] w-[3.5in]
-          flex-col items-center
+          flex
+          h-[2.5in]
+          w-[3.5in]
+          flex-col
+          items-center
           overflow-hidden
-          rounded-[2mm]
-          border-0
-          bg-yellow-500
+          rounded-none
+          border-[3mm]
+          border-black
+          bg-white
           px-[5mm]
           py-[3mm]
           text-center
+          text-black
         "
       >
-        {/* Logo */}
+        {/* LOGO */}
         <div
           className="
             mb-[1.5mm]
-            flex h-[12mm] w-[12mm]
-            items-center justify-center
+            flex
+            h-[1mm]
+            w-[1mm]
+            shrink-0
+            items-center
+            justify-center
           "
         >
           <img
             src="/logo/logo2.png"
             alt="Zasham Enterprises"
-            className="h-[12mm] w-auto object-contain"
+           className="h-[9mm] w-auto object-contain"
           />
         </div>
 
-        {/* Team */}
-        <div className="mt-[1.5mm] text-[15px] font-semibold uppercase text-black">
-          {teamName || "TEAM NAME"}
-        </div>
+        {/* TEAM NAME */}
+      <div
+  className="
+    mt-[0.5mm]
+    w-full
+    text-center
+    text-[14px]
+    font-bold
+    uppercase
+    leading-tight
+    text-black
+  "
+>
+  {teamName || "TEAM NAME"}
+</div>
 
-        {/* Player */}
-        <div className="mt-[1.5mm] max-w-full truncate text-[20px] font-black uppercase text-black">
-          {playerName}
-        </div>
+        {/* PLAYER NAME */}
+     <div
+  className="
+    mt-[0.5mm]
+    w-full
+    text-center
+    text-[15px]
+    font-extrabold
+    uppercase
+    leading-tight
+    text-black
+  "
+>
+  {playerName || "PLAYER NAME"}
+</div>
 
-        {/* Sizes */}
-        <div className="mt-[3mm] flex gap-[2mm]">
-          <div className="rounded-[1mm] border border-black px-[2.5mm] py-[1mm] text-[12px] font-semibold text-black">
-            TOP: <span className="text-black">{topSize || "-"}</span>
+        {/* SIZES */}
+        <div
+          className="
+            mt-[3mm]
+            flex
+            items-center
+            justify-center
+            gap-[2mm]
+          "
+        >
+          <div className="rounded-[1mm] border border-black px-[2.5mm] py-[1mm] text-[12px] font-semibold leading-[1.2] whitespace-nowrap">
+            TOP:{" "}
+            <span className="font-bold">
+              {topSize?.trim() || "-"}
+            </span>
           </div>
 
-          <div className="rounded-[1mm] border border-black px-[2.5mm] py-[1mm] text-[12px] font-semibold text-black">
+          <div className="rounded-[1mm] border border-black px-[2.5mm] py-[1mm] text-[12px] font-semibold leading-[1.2] whitespace-nowrap">
             BOTTOM:{" "}
-            <span className="text-black">
-              {bottomSize || "-"}
+            <span className="font-bold">
+              {bottomSize?.trim() || "-"}
+            </span>
+          </div>
+
+          <div className="rounded-[1mm] border border-black px-[2.5mm] py-[1mm] text-[12px] font-semibold leading-[1.2] whitespace-nowrap">
+            JOGGER:{" "}
+            <span className="font-bold">
+              {joggerSize?.trim() || "-"}
             </span>
           </div>
         </div>
 
-        {/* Contact */}
-        <div className="mt-auto text-[10px] font-medium leading-[1.6] text-black">
+        {/* EXTRA ORDER DETAILS */}
+       <div
+  className="
+    mt-[2.5mm]
+    flex
+    w-full
+    flex-col
+    items-center
+    justify-center
+    gap-[1mm]
+    text-center
+    text-[10px]
+    font-semibold
+    leading-[1.25]
+  "
+>
+  <div>
+    JERSEY STYLE:{" "}
+    <span className="font-bold">
+      {jerseyStyle?.trim() || "-"}
+    </span>
+  </div>
+
+  <div>
+    MATERIAL:{" "}
+    <span className="font-bold">
+      {material?.trim() || "-"}
+    </span>
+  </div>
+
+  <div>
+    HOOD:{" "}
+    <span className="font-bold">
+      {hood?.trim() || "-"}
+    </span>
+  </div>
+</div>
+
+        {/* CONTACT */}
+        <div
+          className="
+            mt-auto
+            w-full
+            text-[10px]
+            font-medium
+            leading-[1.6]
+          "
+        >
           <div className="mt-[0.5mm]">
-            Instagram: @zashamenterprises&nbsp;|&nbsp;&nbsp;
+            Instagram: @zashamenterprises
+            &nbsp;|&nbsp;&nbsp;
             Facebook: Zasham Sportswear
           </div>
 
@@ -90,7 +194,6 @@ export default function StickerPreview({
         </div>
       </div>
 
-      {/* Preview Info */}
       <p className="text-xs text-white/35">
         Physical size: 3.5&quot; × 2.5&quot;
       </p>
