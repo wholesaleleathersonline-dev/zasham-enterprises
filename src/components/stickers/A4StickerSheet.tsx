@@ -415,6 +415,19 @@ export default function A4StickerSheet({
           <style>
 
             /* =========================================
+               SPORTZAN FONT
+               Load the hosted font inside the print window.
+            ========================================= */
+
+            @font-face {
+              font-family: "Sportzan";
+              src: url("${window.location.origin}/fonts/Sportzan.ttf") format("truetype");
+              font-weight: 400;
+              font-style: normal;
+              font-display: block;
+            }
+
+            /* =========================================
                GLOBAL RESET
             ========================================= */
 
@@ -549,7 +562,7 @@ export default function A4StickerSheet({
                 Arial,
                 sans-serif;
 
-              font-size: 21.3px;
+              font-size: 16px;
 
               line-height: 1.1;
 
@@ -748,13 +761,28 @@ export default function A4StickerSheet({
 
             window.addEventListener(
               "load",
-              function () {
+              async function () {
+
+                try {
+                  if (
+                    document.fonts &&
+                    document.fonts.load
+                  ) {
+                    await document.fonts.load(
+                      '400 16px "Sportzan"'
+                    );
+                  }
+                } catch (fontError) {
+                  console.warn(
+                    "Sportzan font load warning:",
+                    fontError
+                  );
+                }
 
                 setTimeout(
                   function () {
 
                     window.focus();
-
                     window.print();
 
                   },
@@ -1023,7 +1051,7 @@ export default function A4StickerSheet({
                                 fontFamily:
                                   "Sportzan, Arial, sans-serif",
                                 fontSize:
-                                  "21.3px",
+                                  "16px",
                                 lineHeight:
                                   1.1,
                                 fontWeight:
@@ -1068,7 +1096,7 @@ export default function A4StickerSheet({
                                 fontFamily:
                                   "Sportzan, Arial, sans-serif",
                                 fontSize:
-                                  "21px",
+                                  "16",
                                 lineHeight: 1,
                                 fontWeight:
                                   400,
