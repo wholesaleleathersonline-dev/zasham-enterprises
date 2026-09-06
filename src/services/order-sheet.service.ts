@@ -157,3 +157,29 @@ export async function deleteOrderSheet(id: string) {
 
   if (error) throw error;
 }
+
+export async function updateTeamName(
+  id: string,
+  token: string,
+  teamName: string
+) {
+  const cleanTeamName = teamName.trim();
+
+  if (!cleanTeamName) {
+    throw new Error("Team name cannot be empty.");
+  }
+
+  const { data, error } = await supabase
+    .from("order_sheets")
+    .update({
+      team_name: cleanTeamName,
+    })
+    .eq("id", id)
+    .eq("manage_token", token)
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  return data;
+}

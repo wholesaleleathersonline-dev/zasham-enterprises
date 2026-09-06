@@ -6,15 +6,17 @@
   import DeletePlayerModal from "../../../../components/order-sheet/DeletePlayerModal";
   import OrderSheetStatusModal from "../../../../components/order-sheet/OrderSheetStatusModal";
   import { useRouter } from "next/navigation";
+  
 
 
   import DeleteOrderSheetModal from "../../../../components/order-sheet/DeleteOrderSheetModal";
 
   import { deleteOrderSheet } from "../../../../services/order-sheet.service";
-  import {
-    lockOrderSheet,
-    unlockOrderSheet,
-  } from "../../../../services/order-sheet.service";
+import {
+  lockOrderSheet,
+  unlockOrderSheet,
+  updateTeamName,
+} from "../../../../services/order-sheet.service";
 
   import {
     getManageOrderSheet,
@@ -45,6 +47,9 @@
     const [locking, setLocking] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [editingTeamName, setEditingTeamName] = useState(false);
+const [teamNameInput, setTeamNameInput] = useState("");
+const [savingTeamName, setSavingTeamName] = useState(false);
 
   const [modalType, setModalType] = useState<"success" | "error">("success");
 
@@ -116,6 +121,52 @@
     setLocking(false);
   }
   }
+
+  async function handleUpdateTeamName() {
+  if (!orderSheet) return;
+
+  const newTeamName = teamNameInput.trim();
+
+  if (!newTeamName) {
+    setModalType("error");
+    setModalTitle("Invalid Team Name");
+    setModalMessage("Team name cannot be empty.");
+    setModalOpen(true);
+    return;
+  }
+
+  if (newTeamName === orderSheet.team_name) {
+    setEditingTeamName(false);
+    return;
+  }
+
+  try {
+    setSavingTeamName(true);
+
+    const updatedOrder = await updateTeamName(
+      orderSheet.id,
+      token,
+      newTeamName
+    );
+
+    setOrderSheet(updatedOrder);
+    setEditingTeamName(false);
+
+    setModalType("success");
+    setModalTitle("Team Name Updated");
+    setModalMessage("Team name has been updated successfully.");
+    setModalOpen(true);
+  } catch (error) {
+    console.error(error);
+
+    setModalType("error");
+    setModalTitle("Update Failed");
+    setModalMessage("Unable to update the team name.");
+    setModalOpen(true);
+  } finally {
+    setSavingTeamName(false);
+  }
+}
 
   async function handleDeleteOrderSheet() {
     if (!orderSheet) return;
@@ -212,10 +263,67 @@
       ? "🔓 Unlock Order"
       : "🔒 Lock Order"}
   </button>
+<div className="flex flex-wrap items-center gap-3">
+  {editingTeamName ? (
+    <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+      <input
+        type="text"
+        value={teamNameInput}
+        onChange={(e) => setTeamNameInput(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleUpdateTeamName();
+          }
 
-                <h1 className="break-words text-3xl font-bold text-white sm:text-4xl">
-                  {orderSheet.team_name}
-                </h1>
+          if (e.key === "Escape") {
+            setEditingTeamName(false);
+          }
+        }}
+        autoFocus
+        maxLength={100}
+        className="w-full rounded-xl border border-yellow-500/40 bg-[#111] px-4 py-3 text-lg font-semibold text-white outline-none transition focus:border-yellow-500 sm:max-w-md"
+        placeholder="Enter team name"
+      />
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={handleUpdateTeamName}
+          disabled={savingTeamName}
+          className="rounded-xl bg-yellow-500 px-4 py-3 font-semibold text-black transition hover:bg-yellow-400 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {savingTeamName ? "Saving..." : "✓ Save"}
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setEditingTeamName(false)}
+          disabled={savingTeamName}
+          className="rounded-xl border border-gray-700 bg-[#111] px-4 py-3 font-semibold text-gray-300 transition hover:bg-gray-800"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  ) : (
+    <>
+      <h1 className="break-words text-3xl font-bold text-white sm:text-4xl">
+        {orderSheet.team_name}
+      </h1>
+
+      <button
+        type="button"
+        onClick={() => {
+          setTeamNameInput(orderSheet.team_name);
+          setEditingTeamName(true);
+        }}
+        className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-3 py-2 text-sm font-semibold text-yellow-400 transition hover:border-yellow-500/60 hover:bg-yellow-500/20"
+      >
+        ✏️ Edit Team Name
+      </button>
+    </>
+  )}
+</div>
 
                 <p className="mt-2 text-gray-400">
                   Order Code:{" "}
