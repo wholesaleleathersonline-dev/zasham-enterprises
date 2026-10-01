@@ -289,34 +289,33 @@ const onSubmit = async (
                 ))}
               </select>
             </div>
+{/* Chest */}
+<div>
+  <label className="mb-2 block text-sm font-medium text-white">
+    Chest
+  </label>
 
-            {/* Chest */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-white">
-                Chest
-              </label>
+  <input
+    {...register(`jerseySizes.${index}.chest`)}
+    type="text"
+    placeholder="17.5 - 18"
+    className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
+  />
+</div>
 
-              <input
-                {...register(`jerseySizes.${index}.chest`)}
-                type="number"
-                placeholder="18"
-                className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
-              />
-            </div>
+{/* Length */}
+<div>
+  <label className="mb-2 block text-sm font-medium text-white">
+    Length
+  </label>
 
-            {/* Length */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-white">
-                Length
-              </label>
-
-              <input
-                {...register(`jerseySizes.${index}.length`)}
-                type="number"
-                placeholder="28"
-                className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
-              />
-            </div>
+  <input
+    {...register(`jerseySizes.${index}.length`)}
+    type="text"
+    placeholder="28 - 28.5"
+    className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
+  />
+</div>
 
             {/* Delete */}
             <div className="flex items-end">
@@ -401,7 +400,7 @@ const onSubmit = async (
 
               <input
                 {...register(`shortsSizes.${index}.waist`)}
-                type="number"
+                type="text"
                 placeholder="30"
                 className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
               />
@@ -415,7 +414,7 @@ const onSubmit = async (
 
               <input
                 {...register(`shortsSizes.${index}.length`)}
-                type="number"
+                type="text"
                 placeholder="18"
                 className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
               />
