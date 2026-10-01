@@ -5,14 +5,13 @@ export interface CompressionSize {
   id: number;
   chart_id: number;
   size: string;
-  waist: number;
-  length: number;
+  waist: string;
+  length: string;
 }
 
 export async function createSizeChart(
   data: SizeChartFormData
 ): Promise<void> {
-
   const {
     data: chart,
     error: chartError,
@@ -38,17 +37,11 @@ export async function createSizeChart(
   const jerseyRows = data.jerseySizes.map(
     (item, index) => ({
       chart_id: chart.id,
-
       measurement_type: "jersey",
-
       size: item.size,
-
-      chest: Number(item.chest),
-
+      chest: item.chest,
       waist: null,
-
-      length: Number(item.length),
-
+      length: item.length,
       sort_order: index + 1,
     })
   );
@@ -56,46 +49,32 @@ export async function createSizeChart(
   const shortsRows = data.shortsSizes.map(
     (item, index) => ({
       chart_id: chart.id,
-
       measurement_type: "shorts",
-
       size: item.size,
-
       chest: null,
-
-      waist: Number(item.waist),
-
-      length: Number(item.length),
-
+      waist: item.waist,
+      length: item.length,
       sort_order: index + 1,
-    }))
-    
-    const compressionRows = data.compressionSizes.map(
-  (item, index) => ({
-    chart_id: chart.id,
+    })
+  );
 
-    measurement_type: "compression",
-
-    size: item.size,
-
-    chest: null,
-
-    waist: Number(item.waist),
-
-    length: Number(item.length),
-
-    sort_order: index + 1,
-  })
-
-
-
+  const compressionRows = data.compressionSizes.map(
+    (item, index) => ({
+      chart_id: chart.id,
+      measurement_type: "compression",
+      size: item.size,
+      chest: null,
+      waist: item.waist,
+      length: item.length,
+      sort_order: index + 1,
+    })
   );
 
   const rows = [
-  ...jerseyRows,
-  ...shortsRows,
-  ...compressionRows,
-];
+    ...jerseyRows,
+    ...shortsRows,
+    ...compressionRows,
+  ];
 
   if (rows.length === 0) {
     return;
@@ -112,7 +91,6 @@ export async function createSizeChart(
     throw new Error(sizeError.message);
   }
 }
-
 
 export async function getSizeCharts() {
   const { data, error } = await supabase
@@ -134,7 +112,6 @@ export async function getCompleteSizeChart(
 ) {
   return getSizeChartById(id);
 }
-
 
 export async function deleteSizeChart(
   id: number
@@ -181,29 +158,29 @@ export async function getSizeChartById(
   }
 
   return {
-  chart,
+    chart,
 
-  jerseySizes:
-    sizes?.filter(
-      (item) =>
-        item.measurement_type ===
-        "jersey"
-    ) ?? [],
+    jerseySizes:
+      sizes?.filter(
+        (item) =>
+          item.measurement_type ===
+          "jersey"
+      ) ?? [],
 
-  shortsSizes:
-    sizes?.filter(
-      (item) =>
-        item.measurement_type ===
-        "shorts"
-    ) ?? [],
+    shortsSizes:
+      sizes?.filter(
+        (item) =>
+          item.measurement_type ===
+          "shorts"
+      ) ?? [],
 
-  compressionSizes:
-    sizes?.filter(
-      (item) =>
-        item.measurement_type ===
-        "compression"
-    ) ?? [],
-};
+    compressionSizes:
+      sizes?.filter(
+        (item) =>
+          item.measurement_type ===
+          "compression"
+      ) ?? [],
+  };
 }
 
 export async function updateSizeChart(
@@ -238,9 +215,9 @@ export async function updateSizeChart(
       chart_id: id,
       measurement_type: "jersey",
       size: item.size,
-      chest: Number(item.chest),
+      chest: item.chest,
       waist: null,
-      length: Number(item.length),
+      length: item.length,
       sort_order: index + 1,
     })
   );
@@ -251,13 +228,29 @@ export async function updateSizeChart(
       measurement_type: "shorts",
       size: item.size,
       chest: null,
-      waist: Number(item.waist),
-      length: Number(item.length),
+      waist: item.waist,
+      length: item.length,
       sort_order: index + 1,
     })
   );
 
-  const rows = [...jerseyRows, ...shortsRows];
+  const compressionRows = data.compressionSizes.map(
+    (item, index) => ({
+      chart_id: id,
+      measurement_type: "compression",
+      size: item.size,
+      chest: null,
+      waist: item.waist,
+      length: item.length,
+      sort_order: index + 1,
+    })
+  );
+
+  const rows = [
+    ...jerseyRows,
+    ...shortsRows,
+    ...compressionRows,
+  ];
 
   console.log("Rows to insert:", rows);
 
@@ -271,10 +264,10 @@ export async function updateSizeChart(
     }
   }
 }
+
 export async function deleteMultipleSizeCharts(
   ids: number[]
 ): Promise<void> {
-
   const { error } = await supabase
     .from("size_charts")
     .delete()
