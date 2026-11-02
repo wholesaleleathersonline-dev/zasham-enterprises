@@ -276,3 +276,42 @@ export async function getPricingProducts() {
 
   return data ?? [];
 }
+
+export async function getProductsBySport(sport: string) {
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("sport", sport)
+    .eq("status", "active")
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching products:", error);
+    throw new Error(error.message);
+  }
+
+  return (data ?? []).map((product) => ({
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    sport: product.sport,
+    category: product.category,
+    image: product.image,
+    gallery: product.gallery ?? [],
+    price: String(product.price ?? ""),
+    moq: product.moq,
+    description: product.description ?? "",
+    shortDescription: product.short_description ?? "",
+    features: product.features ?? [],
+    colors: product.colors ?? [],
+    sizes: product.sizes ?? [],
+    fabric: product.fabric ?? [],
+    tags: product.tags ?? [],
+    isFeatured: product.is_featured,
+    seoTitle: product.seo_title ?? "",
+    seoDescription: product.seo_description ?? "",
+    sportRoute: "",
+    ageGroup: product.age_group,
+    uniformType: product.uniform_type,
+  }));
+}
