@@ -29,7 +29,7 @@ export default async function ViewSizeChartPage({
 
     <div className="mb-6 flex items-center justify-end gap-3">
 <Link
-  href="/admin/size-charts"
+    href="/admin/size-chart"
   className="rounded-xl border border-yellow-500/20 bg-[#171717] px-5 py-3 font-semibold text-white hover:border-yellow-500"
 >
   Back

@@ -440,108 +440,109 @@ const onSubmit = async (
 
 
 
- {/* ================= Compression Shorts Size ================= */}
+{/* ================= Compression Shorts Size ================= */}
 
-  <div className="rounded-2xl border border-yellow-500/20 bg-[#111111] p-4 sm:p-6">
-    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <h2 className="text-xl font-semibold text-white">
-          Compression Shorts
-        </h2>
+<div className="rounded-2xl border border-yellow-500/20 bg-[#111111] p-4 sm:p-6">
+  <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h2 className="text-xl font-semibold text-white">
+        Compression Shorts
+      </h2>
 
-        <p className="mt-1 text-sm text-gray-400">
-          Add compression shorts waist and length measurements.
-        </p>
-      </div>
-
-      <button
-        type="button"
-        onClick={() =>
-          appendCompression({
-            size: "",
-            waist: "",
-            length: "",
-          })
-        }
-        className="w-full rounded-xl bg-yellow-500 px-5 py-3 text-sm font-semibold text-black transition hover:bg-yellow-400 sm:w-auto"
-      >
-        + Add Compression Size
-      </button>
+      <p className="mt-1 text-sm text-gray-400">
+        Add compression shorts waist and length measurements.
+      </p>
     </div>
 
-    <div className="space-y-4">
-      {compressionFields.map((field, index) => (
-        <div
-          key={field.id}
-          className="rounded-xl border border-yellow-500/20 bg-[#1A1A1A] p-4"
-        >
-          <div className="grid gap-4 md:grid-cols-4">
-
-            {/* Size */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-white">
-                Size
-              </label>
-
-              <select
-                {...register(`compressionSizes.${index}.size`)}
-                className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
-              >
-                <option value="">Select Size</option>
-
-                {SIZE_OPTIONS.map((size) => (
-                  <option key={size} value={size}>
-                    {size}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Waist */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-white">
-                Waist
-              </label>
-
-              <input
-                {...register(`compressionSizes.${index}.waist`)}
-                type="number"
-                placeholder="30"
-                className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
-              />
-            </div>
-
-            {/* Length */}
-            <div>
-              <label className="mb-2 block text-sm font-medium text-white">
-                Length
-              </label>
-
-              <input
-                {...register(`compressionSizes.${index}.length`)}
-                type="number"
-                placeholder="18"
-                className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
-              />
-            </div>
-
-            {/* Delete */}
-            <div className="flex items-end">
-              <button
-                type="button"
-                onClick={() => removeCompression(index)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 font-medium text-white transition hover:bg-red-500"
-              >
-                <Trash2 size={18} />
-                Delete
-              </button>
-            </div>
-
-          </div>
-        </div>
-      ))}
-    </div>
+    <button
+      type="button"
+      onClick={() =>
+        appendCompression({
+          size: "",
+          waist: "",
+          length: "",
+        })
+      }
+      className="w-full rounded-xl bg-yellow-500 px-5 py-3 text-sm font-semibold text-black transition hover:bg-yellow-400 sm:w-auto"
+    >
+      + Add Compression Size
+    </button>
   </div>
+
+  <div className="space-y-4">
+    {compressionFields.map((field, index) => (
+      <div
+        key={field.id}
+        className="rounded-xl border border-yellow-500/20 bg-[#1A1A1A] p-4"
+      >
+        <div className="grid gap-4 md:grid-cols-4">
+
+          {/* Size */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-white">
+              Size
+            </label>
+
+            <select
+              {...register(`compressionSizes.${index}.size`)}
+              className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
+            >
+              <option value="">Select Size</option>
+
+              {SIZE_OPTIONS.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Waist */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-white">
+              Waist
+            </label>
+
+            <input
+              {...register(`compressionSizes.${index}.waist`)}
+              type="text"
+              placeholder="25.6"
+              className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
+            />
+          </div>
+
+          {/* Length */}
+          <div>
+            <label className="mb-2 block text-sm font-medium text-white">
+              Length
+            </label>
+
+            <input
+              {...register(`compressionSizes.${index}.length`)}
+              type="text"
+              placeholder="18.5"
+              className="w-full rounded-xl border border-yellow-500/20 bg-[#111111] px-4 py-3 text-white"
+            />
+          </div>
+
+          {/* Delete */}
+          <div className="flex items-end">
+            <button
+              type="button"
+              onClick={() => removeCompression(index)}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 font-medium text-white transition hover:bg-red-500"
+            >
+              <Trash2 size={18} />
+              Delete
+            </button>
+          </div>
+
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
 
 
 
